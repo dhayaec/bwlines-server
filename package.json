@@ -4,11 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.1",
     "@types/connect-redis": "^0.0.7",
     "@types/express-rate-limit": "^2.9.3",
     "@types/glob": "^5.0.35",
     "@types/helmet": "^0.0.38",
     "@types/ioredis": "^3.2.14",
+    "@types/ws": "^6.0.0",
     "copyfiles": "^2.0.0",
     "nodemon": "^1.18.3",
     "reflect-metadata": "^0.1.12",
@@ -21,6 +23,8 @@
   },
   "dependencies": {
     "@gql2ts/from-schema": "^1.8.2",
+    "@gql2ts/types": "^1.8.1",
+    "bcryptjs": "^2.4.3",
     "connect-redis": "^3.3.3",
     "dotenv-safe": "^6.0.0",
     "express-rate-limit": "^2.12.2",
@@ -40,6 +44,7 @@
     "copy": "copyfiles -u 1 src/**/*.graphql dist",
     "dev": "npm run gen-types && NODE_ENV=development nodemon --exec ts-node --files src/index.ts",
     "start:node": "rimraf ./dist && npm run compile && npm run copy && NODE_ENV=production node ./dist/",
-    "gen-types": "ts-node --files ./src/utils/create-types.ts"
+    "gen-types": "ts-node --files ./src/utils/create-types.ts",
+    "debug": "NODE_ENV=development node --inspect -r ts-node/register/transpile-only src/index.ts"
   }
 }

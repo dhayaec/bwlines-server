@@ -1,4 +1,5 @@
 import { ResolverMap } from 'graphql-utils';
+import { User } from '../../entity/User';
 
 export const resolvers: ResolverMap = {
   Query: {
@@ -16,16 +17,15 @@ export const resolvers: ResolverMap = {
     },
   },
   Mutation: {
-    register: (
-      _,
-      { name, email, password, mobile }: GQL.IRegisterOnMutationArguments
-    ) => {
-      return {
-        name,
+    register: async (_, args: GQL.IRegisterOnMutationArguments) => {
+      const { email, password } = args;
+
+      const user = User.create({
         email,
         password,
-        mobile,
-      };
+      });
+      const savedUser = await user.save();
+      return savedUser;
     },
     login: (_, { email, password }: GQL.ILoginOnMutationArguments) => {
       return {

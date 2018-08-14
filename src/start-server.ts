@@ -1,6 +1,7 @@
 // tslint:disable-next-line:no-import-side-effect
 import 'reflect-metadata';
 import { Env, redisSessionPrefix } from './constants';
+import { connectDb, connectDbTest } from './utils/connect-db';
 // tslint:disable-next-line:no-var-requires
 require('dotenv-safe').config();
 import * as connectRedis from 'connect-redis';
@@ -63,6 +64,12 @@ export async function startServer() {
       },
     })
   );
+
+  if (process.env.NODE_ENV === Env.test) {
+    connectDbTest(true);
+  } else {
+    connectDb();
+  }
 
   return server.start(
     { port: process.env.NODE_ENV === 'test' ? 4001 : 4000 },

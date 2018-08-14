@@ -17,6 +17,7 @@
     "copyfiles",
     "flushall",
     "resave",
-    "typeorm"
+    "typeorm",
+    "varchar"
   ]
 }
