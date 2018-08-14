@@ -1,0 +1,15 @@
+{
+    "eslint.autoFixOnSave": true,
+    "files.autoSave": "afterDelay",
+    "git.enableSmartCommit": true,
+    "files.exclude": {
+      "node_modules/": true,
+      "yarn.lock": true,
+      "package-lock.json": true
+    },
+    "git.autofetch": true,
+    "prettier.eslintIntegration": true,
+    "editor.fontSize": 14,
+    "editor.fontLigatures": true,
+    "tslint.autoFixOnSave": true
+}
