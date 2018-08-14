@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": { "*": ["./src/typings/*"] },
+    "types": ["node"],
     "declaration": true,
     "target": "es6",
     "module": "commonjs",

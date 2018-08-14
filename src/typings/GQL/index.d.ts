@@ -23,6 +23,11 @@ column: number;
 interface IQuery {
 __typename: "Query";
 me: IUser | null;
+getUser: IUser | null;
+}
+
+interface IGetUserOnQueryArguments {
+id: string;
 }
 
 interface IUser {

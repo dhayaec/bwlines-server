@@ -10,6 +10,7 @@ import { GraphQLServer } from 'graphql-yoga';
 import * as helmet from 'helmet';
 import * as ioredis from 'ioredis';
 import * as rateLimitRedis from 'rate-limit-redis';
+import { createDb } from './utils/create-db';
 import { genSchema } from './utils/schema-utils';
 
 const redisStore = connectRedis(expressSession as any);
@@ -19,6 +20,8 @@ export async function startServer() {
   if (process.env.NODE_ENV === Env.test) {
     await redis.flushall();
   }
+
+  await createDb();
 
   const server = new GraphQLServer({
     schema: genSchema(),

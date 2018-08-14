@@ -16,6 +16,7 @@
     "bwlines",
     "copyfiles",
     "flushall",
-    "resave"
+    "resave",
+    "typeorm"
   ]
 }

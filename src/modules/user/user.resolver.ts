@@ -7,6 +7,13 @@ export const resolvers: ResolverMap = {
         name: 'name',
       };
     },
+    getUser: (_, { id }: GQL.IGetUserOnQueryArguments) => {
+      return {
+        id,
+        name: 'some',
+        email: 'another',
+      };
+    },
   },
   Mutation: {
     register: (

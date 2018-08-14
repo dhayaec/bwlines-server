@@ -11,7 +11,9 @@ export async function createDb() {
     process.env.NODE_ENV === 'test'
       ? process.env.DB_NAME_TEST
       : process.env.DB_NAME;
-  const grantQ = `GRANT ALL ON ${dbName} .* TO ${process.env.DB_USER}@%;`;
+  const grantQ =
+    // tslint:disable-next-line:prefer-template
+    'GRANT ALL ON ' + dbName + '.* TO `' + process.env.DB_USER + '`@`%`;';
 
   await rootConnection
     .query(`CREATE DATABASE IF NOT EXISTS ${dbName};`)
