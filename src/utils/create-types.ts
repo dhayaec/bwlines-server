@@ -6,7 +6,7 @@ import { genSchema } from './schema-utils';
 const typescriptTypes = generateNamespace('GQL', genSchema());
 
 fs.writeFile(
-  path.join(__dirname, '../../typings/GQL/index.d.ts'),
+  path.join(__dirname, '../typings/GQL/index.d.ts'),
   typescriptTypes,
   err => {
     console.log(err);

@@ -10,6 +10,7 @@ type Mutation {
     mobile: String
   ): User
   login(email: String!, password: String!): User
+  reset(email: String!): User
 }
 
 type User {

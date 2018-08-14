@@ -38,6 +38,7 @@ interface IMutation {
 __typename: "Mutation";
 register: IUser | null;
 login: IUser | null;
+reset: IUser | null;
 }
 
 interface IRegisterOnMutationArguments {
@@ -50,6 +51,10 @@ mobile?: string | null;
 interface ILoginOnMutationArguments {
 email: string;
 password: string;
+}
+
+interface IResetOnMutationArguments {
+email: string;
 }
 }
 

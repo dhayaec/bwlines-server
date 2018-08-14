@@ -1,4 +1,4 @@
-import { ResolverMap } from '../../../typings/graphql-utils';
+import { ResolverMap } from 'graphql-utils';
 
 export const resolvers: ResolverMap = {
   Query: {
@@ -24,6 +24,11 @@ export const resolvers: ResolverMap = {
       return {
         email,
         password,
+      };
+    },
+    reset: (_, { email }: GQL.IResetOnMutationArguments) => {
+      return {
+        email,
       };
     },
   },

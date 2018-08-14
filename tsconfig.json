@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": { "*": ["typings/*"] },
+    "paths": { "*": ["./src/typings/*"] },
     "declaration": true,
     "target": "es6",
     "module": "commonjs",
@@ -21,8 +21,8 @@
     "allowSyntheticDefaultImports": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "typeRoots": ["./node_modules/@types", "./typings"]
+    "typeRoots": ["./src/typings/"]
   },
   "exclude": ["node_modules"],
-  "include": ["./src/**/*.tsx", "./src/**/*.ts", "./typings/**/*.ts"]
+  "include": ["./src/**/*.tsx", "./src/**/*.ts"]
 }
