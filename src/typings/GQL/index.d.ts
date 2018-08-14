@@ -22,12 +22,28 @@ column: number;
 
 interface IQuery {
 __typename: "Query";
+photos: Array<IPhoto>;
+photo: IPhoto | null;
 me: IUser | null;
 getUser: IUser | null;
 }
 
+interface IPhotoOnQueryArguments {
+id: string;
+}
+
 interface IGetUserOnQueryArguments {
 id: string;
+}
+
+interface IPhoto {
+__typename: "Photo";
+id: string;
+name: string;
+description: string;
+filename: string;
+views: number;
+isPublished: boolean;
 }
 
 interface IUser {
