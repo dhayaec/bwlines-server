@@ -13,6 +13,7 @@
   "editor.fontLigatures": true,
   "tslint.autoFixOnSave": true,
   "cSpell.words": [
+    "bwlines",
     "copyfiles",
     "flushall",
     "resave"

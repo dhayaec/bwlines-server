@@ -44,6 +44,7 @@ interface IRegisterOnMutationArguments {
 name?: string | null;
 email: string;
 password: string;
+mobile?: string | null;
 }
 
 interface ILoginOnMutationArguments {

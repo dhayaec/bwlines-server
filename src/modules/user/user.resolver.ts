@@ -11,12 +11,13 @@ export const resolvers: ResolverMap = {
   Mutation: {
     register: (
       _,
-      { name, email, password }: GQL.IRegisterOnMutationArguments
+      { name, email, password, mobile }: GQL.IRegisterOnMutationArguments
     ) => {
       return {
         name,
         email,
         password,
+        mobile,
       };
     },
     login: (_, { email, password }: GQL.ILoginOnMutationArguments) => {
