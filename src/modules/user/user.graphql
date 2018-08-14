@@ -9,9 +9,15 @@ type Mutation {
     email: String!
     password: String!
     mobile: String
-  ): User
+  ): UserResponse!
   login(email: String!, password: String!): User
   reset(email: String!): User
+}
+
+type UserResponse {
+  id: ID!
+  name: String!
+  email: String!
 }
 
 type User {
@@ -19,5 +25,5 @@ type User {
   name: String!
   email: String!
   password: String!
-  mobile: String!
+  mobile: String
 }

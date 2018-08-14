@@ -18,14 +18,16 @@ export const resolvers: ResolverMap = {
   },
   Mutation: {
     register: async (_, args: GQL.IRegisterOnMutationArguments) => {
-      const { email, password } = args;
+      const { email, password: pass, name } = args;
 
       const user = User.create({
+        name,
         email,
-        password,
+        password: pass,
       });
-      const savedUser = await user.save();
-      return savedUser;
+      const userData = await user.save();
+      const { password, ...otherFields } = userData;
+      return otherFields;
     },
     login: (_, { email, password }: GQL.ILoginOnMutationArguments) => {
       return {

@@ -52,12 +52,12 @@ id: string;
 name: string;
 email: string;
 password: string;
-mobile: string;
+mobile: string | null;
 }
 
 interface IMutation {
 __typename: "Mutation";
-register: IUser | null;
+register: IUserResponse;
 login: IUser | null;
 reset: IUser | null;
 }
@@ -75,6 +75,13 @@ password: string;
 }
 
 interface IResetOnMutationArguments {
+email: string;
+}
+
+interface IUserResponse {
+__typename: "UserResponse";
+id: string;
+name: string;
 email: string;
 }
 }
