@@ -9,6 +9,6 @@ fs.writeFile(
   path.join(__dirname, '../typings/GQL/index.d.ts'),
   typescriptTypes,
   err => {
-    console.log(err);
+    console.error(err);
   }
 );

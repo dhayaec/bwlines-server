@@ -63,6 +63,7 @@
     ],
     // tslint-react
     "jsx-no-lambda": true,
-    "object-curly-spacing": true
+    "object-curly-spacing": true,
+    "import-spacing": true
   }
 }

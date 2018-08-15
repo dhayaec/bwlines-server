@@ -9,9 +9,9 @@ type Mutation {
     email: String!
     password: String!
     mobile: String
-  ): UserResponse!
-  login(email: String!, password: String!): User
-  reset(email: String!): User
+  ): UserResponse
+  login(email: String!, password: String!): UserResponse
+  reset(email: String!): UserResponse
 }
 
 type UserResponse {

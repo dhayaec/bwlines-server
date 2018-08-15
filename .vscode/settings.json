@@ -17,6 +17,8 @@
     "bwlines",
     "copyfiles",
     "flushall",
+    "lpush",
+    "lrange",
     "resave",
     "typeorm",
     "varchar"

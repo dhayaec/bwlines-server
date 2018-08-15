@@ -57,9 +57,9 @@ mobile: string | null;
 
 interface IMutation {
 __typename: "Mutation";
-register: IUserResponse;
-login: IUser | null;
-reset: IUser | null;
+register: IUserResponse | null;
+login: IUserResponse | null;
+reset: IUserResponse | null;
 }
 
 interface IRegisterOnMutationArguments {
