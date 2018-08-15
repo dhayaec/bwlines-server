@@ -72,7 +72,7 @@ export async function startServer() {
   }
 
   return server.start(
-    { port: process.env.NODE_ENV === 'test' ? 4001 : 4000 },
+    { port: process.env.NODE_ENV === Env.test ? 4001 : 4000 },
     ({ port }) => console.log('localhost:' + port)
   );
 }

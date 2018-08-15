@@ -1,4 +1,5 @@
 import { createConnection, getConnectionOptions } from 'typeorm';
+import { Env } from '../constants';
 
 export async function createDb() {
   const connectionOptions = await getConnectionOptions('root');
@@ -8,7 +9,7 @@ export async function createDb() {
   });
 
   const dbName =
-    process.env.NODE_ENV === 'test'
+    process.env.NODE_ENV === Env.test
       ? process.env.DB_NAME_TEST
       : process.env.DB_NAME;
   const grantQ =
