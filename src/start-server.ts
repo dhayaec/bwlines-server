@@ -1,7 +1,3 @@
-// tslint:disable-next-line:no-import-side-effect
-import 'reflect-metadata';
-import { Env, redisSessionPrefix } from './constants';
-import { connectDb, connectDbTest } from './utils/connect-db';
 // tslint:disable-next-line:no-var-requires
 require('dotenv-safe').config();
 import * as connectRedis from 'connect-redis';
@@ -11,6 +7,10 @@ import { GraphQLServer } from 'graphql-yoga';
 import * as helmet from 'helmet';
 import * as ioredis from 'ioredis';
 import * as rateLimitRedis from 'rate-limit-redis';
+// tslint:disable-next-line:no-import-side-effect
+import 'reflect-metadata';
+import { Env, redisSessionPrefix } from './constants';
+import { connectDb, connectDbTest } from './utils/connect-db';
 import { createDb } from './utils/create-db';
 import { genSchema } from './utils/schema-utils';
 

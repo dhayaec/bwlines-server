@@ -374,8 +374,8 @@ aws-lambda@^0.1.2:
     dotenv "^0.4.0"
 
 aws-sdk@^*:
-  version "2.292.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.292.0.tgz#c41ab7e85ea25c7b2300604ab950a5aadab702ab"
+  version "2.293.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.293.0.tgz#5474110972d1595f4386e3e0c350af9f6b71ccc8"
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
@@ -610,8 +610,8 @@ chownr@^1.0.1:
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.0.1.tgz#e2a75042a9551908bebd25b8523d5f9769d79181"
 
 ci-info@^1.0.0:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-1.1.3.tgz#710193264bb05c77b8c90d02f5aaf22216a667b2"
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-1.3.0.tgz#ea8219b0355a58692b762baf1cdd76ceb4503283"
 
 class-utils@^0.3.5:
   version "0.3.6"
@@ -1286,9 +1286,9 @@ graphql-import@^0.6.0:
   dependencies:
     lodash "^4.17.4"
 
-graphql-middleware@1.6.5:
-  version "1.6.5"
-  resolved "https://registry.yarnpkg.com/graphql-middleware/-/graphql-middleware-1.6.5.tgz#2a4c7a2393768439bb1c310586a294714dfb4be4"
+graphql-middleware@1.6.6:
+  version "1.6.6"
+  resolved "https://registry.yarnpkg.com/graphql-middleware/-/graphql-middleware-1.6.6.tgz#f40f4e836ced479df718dbc1869ea4cd3b64027b"
   dependencies:
     graphql-tools "^3.0.5"
 
@@ -1339,8 +1339,8 @@ graphql-tools@^3.0.0, graphql-tools@^3.0.5:
     uuid "^3.1.0"
 
 graphql-yoga@^1.16.0:
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/graphql-yoga/-/graphql-yoga-1.16.0.tgz#ac5d8ada0300c8f0a74091cb5c8cb576791dacea"
+  version "1.16.1"
+  resolved "https://registry.yarnpkg.com/graphql-yoga/-/graphql-yoga-1.16.1.tgz#9ebb3c8c17c113e80fe2d37da804a6610ce744d9"
   dependencies:
     "@types/cors" "^2.8.4"
     "@types/express" "^4.11.1"
@@ -1357,7 +1357,7 @@ graphql-yoga@^1.16.0:
     graphql "^0.11.0 || ^0.12.0 || ^0.13.0"
     graphql-deduplicator "^2.0.1"
     graphql-import "^0.6.0"
-    graphql-middleware "1.6.5"
+    graphql-middleware "1.6.6"
     graphql-playground-middleware-express "1.7.2"
     graphql-playground-middleware-lambda "1.6.1"
     graphql-subscriptions "^0.5.8"
@@ -2961,12 +2961,12 @@ tslint-consistent-codestyle@^1.10.0:
     tsutils "^2.27.0"
 
 tslint-eslint-rules@^5.3.1:
-  version "5.3.1"
-  resolved "https://registry.yarnpkg.com/tslint-eslint-rules/-/tslint-eslint-rules-5.3.1.tgz#10dec4361df0b3e4385d91ff8e0226bda4ec2ad4"
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/tslint-eslint-rules/-/tslint-eslint-rules-5.4.0.tgz#e488cc9181bf193fe5cd7bfca213a7695f1737b5"
   dependencies:
     doctrine "0.7.2"
     tslib "1.9.0"
-    tsutils "2.8.0"
+    tsutils "^3.0.0"
 
 tslint-microsoft-contrib@~5.0.1:
   version "5.0.3"
@@ -2991,15 +2991,15 @@ tslint@^5.11.0:
     tslib "^1.8.0"
     tsutils "^2.27.2"
 
-tsutils@2.8.0:
-  version "2.8.0"
-  resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-2.8.0.tgz#0160173729b3bf138628dd14a1537e00851d814a"
-  dependencies:
-    tslib "^1.7.1"
-
 tsutils@^2.12.1, tsutils@^2.24.0, tsutils@^2.27.0, tsutils@^2.27.2:
   version "2.29.0"
   resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-2.29.0.tgz#32b488501467acbedd4b85498673a0812aca0b99"
+  dependencies:
+    tslib "^1.8.1"
+
+tsutils@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-3.0.0.tgz#0c5070a17a0503e056da038c48b5a1870a50a9ad"
   dependencies:
     tslib "^1.8.1"
 
