@@ -60,6 +60,7 @@ __typename: "Mutation";
 register: IUserResponse | null;
 login: IUserResponse | null;
 reset: IUserResponse | null;
+logout: string | null;
 }
 
 interface IRegisterOnMutationArguments {

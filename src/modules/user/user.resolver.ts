@@ -3,7 +3,11 @@ import { ResolverMap } from 'graphql-utils';
 import * as yup from 'yup';
 import { userSessionIdPrefix } from '../../constants';
 import { User } from '../../entity/User';
-import { createMiddleware, middleware } from '../../utils/user-utils';
+import {
+  createMiddleware,
+  middleware,
+  removeAllUsersSessions,
+} from '../../utils/user-utils';
 import { formatYupError } from '../../utils/utils';
 
 const schema = yup.object().shape({
@@ -91,6 +95,18 @@ export const resolvers: ResolverMap = {
       return {
         email,
       };
+    },
+    logout: async (_, __, { session, redis }) => {
+      const { userId } = session;
+      if (userId) {
+        removeAllUsersSessions(userId, redis);
+        session.destroy(err => {
+          if (err) {
+            console.log(err);
+          }
+        });
+      }
+      return userId;
     },
   },
 };
