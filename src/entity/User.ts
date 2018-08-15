@@ -9,7 +9,7 @@ import {
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
-  VersionColumn
+  VersionColumn,
 } from 'typeorm';
 import { Photo } from './Photo';
 
