@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": { "*": ["./src/typings/*"] },
-    "types": ["node"],
+    "paths": {"*": ["./src/typings/*"]},
+    "types": ["node", "jest"],
     "declaration": true,
     "target": "es6",
     "module": "commonjs",

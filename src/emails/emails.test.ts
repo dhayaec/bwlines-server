@@ -7,7 +7,7 @@ describe('email', () => {
       const email = renderEmail({
         subject: random,
         message: 'message' + random,
-        salutation: 'Hello dude'
+        salutation: 'Hello dude',
       });
       expect(email).toContain(paragraphStyle);
       expect(email).toContain(random);
