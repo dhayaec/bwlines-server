@@ -5,13 +5,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
-  VersionColumn,
+  VersionColumn
 } from 'typeorm';
-import { Photo } from './Photo';
 
 @Entity('users')
 @Unique(['email'])
@@ -43,6 +41,9 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   lastResetRequestTime: Date;
 
+  @Column('varchar', { length: 255, nullable: true })
+  profilePic: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
@@ -51,9 +52,6 @@ export class User extends BaseEntity {
 
   @VersionColumn()
   version: number;
-
-  @OneToMany(() => Photo, photo => photo.user)
-  photos: Photo[];
 
   @BeforeInsert()
   async hashPassword() {

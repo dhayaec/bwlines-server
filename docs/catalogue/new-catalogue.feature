@@ -2,9 +2,9 @@
 
     Scenario: add invalid catalogue
         Given see Add new catalogue form
-        When I enter invalid details such as name='', price=''
-        Then  should see validation errors
-        And when correct errors errors should disappear
+        When I enter invalid details such as name='', price='' etc
+        Then should see validation errors
+        And when corrected errors should disappear
 
     Scenario: add valid catalogue details
         Given see Add new catalogue form

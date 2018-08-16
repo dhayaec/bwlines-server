@@ -35,7 +35,9 @@
     "proviced",
     "resave",
     "rspace",
+    "slugify",
     "typeorm",
-    "varchar"
+    "varchar",
+    "slugify"
   ]
 }
