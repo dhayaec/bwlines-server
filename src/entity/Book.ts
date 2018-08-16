@@ -12,8 +12,8 @@ import {
   UpdateDateColumn,
   VersionColumn
 } from 'typeorm';
+import { Cart } from './Cart';
 import { Category } from './Category';
-import { Publisher } from './Publisher';
 
 @Entity('books')
 @Unique(['slug', 'isbn'])
@@ -28,10 +28,10 @@ export class Book extends BaseEntity {
   @Column('varchar', { length: 255 })
   slug: string;
 
-  @Column('varchar', { length: 255 })
+  @Column('varchar', { length: 255, nullable: true })
   coverImage: string;
 
-  @Column('text')
+  @Column('text', { nullable: true })
   description: string;
 
   @Column('varchar', { length: 13 })
@@ -49,7 +49,7 @@ export class Book extends BaseEntity {
   @Column('double', { default: 0 })
   yourSavings: number;
 
-  @Column('date')
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   datePublished: Date;
 
   @Column({ default: false })
@@ -67,11 +67,12 @@ export class Book extends BaseEntity {
   @ManyToOne(() => Category, category => category.book)
   category: Category;
 
-  @ManyToOne(() => Publisher, publisher => publisher.book)
-  publisher: Publisher;
+  @ManyToOne(() => Cart, cart => cart.book)
+  cart: Cart;
 
   @BeforeInsert()
   async slugify() {
-    this.slug = slugify(this.slug);
+    this.slug = slugify(this.title, { lower: true });
+    this.yourSavings = this.listPrice - this.displayPrice;
   }
 }

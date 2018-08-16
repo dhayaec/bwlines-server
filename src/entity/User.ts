@@ -6,11 +6,13 @@ import {
   CreateDateColumn,
   Entity,
   Index,
+  ManyToOne,
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
   VersionColumn
 } from 'typeorm';
+import { Cart } from './Cart';
 
 @Entity('users')
 @Unique(['email'])
@@ -54,6 +56,9 @@ export class User extends BaseEntity {
 
   @VersionColumn()
   version: number;
+
+  @ManyToOne(() => Cart, cart => cart.book)
+  cart: Cart;
 
   @BeforeInsert()
   async hashPassword() {
