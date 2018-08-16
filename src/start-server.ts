@@ -9,7 +9,9 @@ import * as ioredis from 'ioredis';
 import * as rateLimitRedis from 'rate-limit-redis';
 // tslint:disable-next-line:no-import-side-effect
 import 'reflect-metadata';
+// import { Connection } from 'typeorm';
 import { Env, redisSessionPrefix } from './constants';
+// import { Category } from './entity/Category';
 import { connectDb, connectDbTest } from './utils/connect-db';
 import { createDb } from './utils/create-db';
 import { genSchema } from './utils/schema-utils';
@@ -64,12 +66,20 @@ export async function startServer() {
       },
     })
   );
+  // let connection: Connection;
 
   if (process.env.NODE_ENV === Env.test) {
-    connectDbTest(true);
+    await connectDbTest(true);
   } else {
-    connectDb();
+    await connectDb();
   }
+
+  // if (process.env.NODE_ENV !== Env.test) {
+  //   const category = new Category();
+  //   category.name = 'Science Fiction';
+  //   const categoryRepository = connection.getRepository(Category);
+  //   await categoryRepository.save(category);
+  // }
 
   return server.start(
     { port: process.env.NODE_ENV === Env.test ? 4001 : 4000 },

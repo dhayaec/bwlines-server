@@ -27,6 +27,6 @@ export class Publisher extends BaseEntity {
 
   @BeforeInsert()
   async slugify() {
-    this.slug = slugify(this.slug);
+    this.slug = slugify(this.name, { lower: true });
   }
 }
