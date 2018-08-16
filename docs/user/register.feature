@@ -5,6 +5,10 @@
     When Enter empty name='', email='some', password='' press register
     Then Should see validation errors
 
+  Scenario: Register through bot
+    Given when fill register form with bot
+    Then should see captcha warning from Invisible ReCaptcha
+
   Scenario: Register with correct details
     Given See register Form
     When Enter valid name=example, email=example@example.com, password=123456
