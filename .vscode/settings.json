@@ -14,8 +14,9 @@
   "editor.fontLigatures": true,
   "tslint.autoFixOnSave": true,
   "cSpell.words": [
-    "bwlines",
     "antialiased",
+    "bwlines",
+    "captcha",
     "cellpadding",
     "cellspacing",
     "copyfiles",
