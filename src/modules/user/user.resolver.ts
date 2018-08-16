@@ -1,6 +1,5 @@
 import * as bcryptjs from 'bcryptjs';
 import { ResolverMap } from 'graphql-utils';
-import * as yup from 'yup';
 import { errorResponse, userSessionIdPrefix } from '../../constants';
 import { User } from '../../entity/User';
 import {
@@ -9,24 +8,7 @@ import {
   removeAllUsersSessions
 } from '../../utils/user-utils';
 import { formatYupError } from '../../utils/utils';
-
-const userSchema = yup.object().shape({
-  name: yup
-    .string()
-    .min(3)
-    .max(100)
-    .required(),
-  email: yup
-    .string()
-    .min(6)
-    .max(255)
-    .email(),
-  password: yup
-    .string()
-    .min(6)
-    .max(255)
-    .required(),
-});
+import { userSchema } from '../validation-rules';
 
 export const resolvers: ResolverMap = {
   Query: {
