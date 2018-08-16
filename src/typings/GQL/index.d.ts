@@ -48,9 +48,9 @@ isPublished: boolean;
 
 interface IUserResponse {
 __typename: "UserResponse";
-id: string;
-name: string;
-email: string;
+id: string | null;
+name: string | null;
+email: string | null;
 mobile: string | null;
 }
 
@@ -76,6 +76,12 @@ password: string;
 
 interface IResetOnMutationArguments {
 email: string;
+}
+
+interface IError {
+__typename: "Error";
+path: string;
+message: string;
 }
 
 interface IUser {

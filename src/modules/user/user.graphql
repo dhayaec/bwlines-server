@@ -16,10 +16,15 @@ type Mutation {
 }
 
 type UserResponse {
-  id: ID!
-  name: String!
-  email: String!
+  id: ID
+  name: String
+  email: String
   mobile: String
+}
+
+type Error {
+  path: String!
+  message: String!
 }
 
 type User {
