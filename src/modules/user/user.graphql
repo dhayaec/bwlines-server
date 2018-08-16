@@ -1,6 +1,6 @@
 type Query {
-  me: User
-  getUser(id: ID!): User
+  me: UserResponse
+  getUser(id: ID!): UserResponse
 }
 
 type Mutation {
@@ -19,6 +19,7 @@ type UserResponse {
   id: ID!
   name: String!
   email: String!
+  mobile: String
 }
 
 type User {

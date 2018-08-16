@@ -24,8 +24,8 @@ interface IQuery {
 __typename: "Query";
 photos: Array<IPhoto>;
 photo: IPhoto | null;
-me: IUser | null;
-getUser: IUser | null;
+me: IUserResponse | null;
+getUser: IUserResponse | null;
 }
 
 interface IPhotoOnQueryArguments {
@@ -46,12 +46,11 @@ views: number;
 isPublished: boolean;
 }
 
-interface IUser {
-__typename: "User";
+interface IUserResponse {
+__typename: "UserResponse";
 id: string;
 name: string;
 email: string;
-password: string;
 mobile: string | null;
 }
 
@@ -79,11 +78,13 @@ interface IResetOnMutationArguments {
 email: string;
 }
 
-interface IUserResponse {
-__typename: "UserResponse";
+interface IUser {
+__typename: "User";
 id: string;
 name: string;
 email: string;
+password: string;
+mobile: string | null;
 }
 }
 

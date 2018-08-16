@@ -7,3 +7,10 @@ export enum Env {
   test = 'test',
   production = 'production',
 }
+
+export const errorResponse = [
+  {
+    path: 'email',
+    message: 'invalid email',
+  },
+];

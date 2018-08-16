@@ -1,39 +1,14 @@
 import * as bcryptjs from 'bcryptjs';
 import { ResolverMap } from 'graphql-utils';
-import * as yup from 'yup';
-import { userSessionIdPrefix } from '../../constants';
+import { errorResponse, userSessionIdPrefix } from '../../constants';
 import { User } from '../../entity/User';
 import {
   createMiddleware,
   middleware,
-  removeAllUsersSessions,
+  removeAllUsersSessions
 } from '../../utils/user-utils';
 import { formatYupError } from '../../utils/utils';
-
-const schema = yup.object().shape({
-  name: yup
-    .string()
-    .min(3)
-    .max(100)
-    .required(),
-  email: yup
-    .string()
-    .min(6)
-    .max(255)
-    .email(),
-  password: yup
-    .string()
-    .min(6)
-    .max(255)
-    .required(),
-});
-
-const errorResponse = [
-  {
-    path: 'email',
-    message: 'invalid email',
-  },
-];
+import { userSchema } from '../validation-rules';
 
 export const resolvers: ResolverMap = {
   Query: {
@@ -45,12 +20,17 @@ export const resolvers: ResolverMap = {
   Mutation: {
     register: async (_, args: GQL.IRegisterOnMutationArguments) => {
       try {
-        await schema.validate(args, { abortEarly: false });
+        await userSchema.validate(args, { abortEarly: false });
       } catch (err) {
         return formatYupError(err);
       }
 
       const { email, password: pass, name } = args;
+
+      const userExists = await User.findOne({ where: { email } });
+      if (userExists) {
+        throw new Error(`${email} is already registered with us`);
+      }
 
       const user = User.create({
         name,
