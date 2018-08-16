@@ -24,8 +24,7 @@ export const resolvers: ResolverMap = {
       try {
         await userSchema.validate(args, { abortEarly: false });
       } catch (error) {
-        const errors = formatYupError(error);
-        throw new Error(JSON.stringify(errors));
+        throw new Error(formatYupError(error));
       }
 
       const userExists = await User.findOne({ where: { email } });
