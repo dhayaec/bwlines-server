@@ -5,6 +5,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
@@ -13,6 +14,7 @@ import {
 
 @Entity('users')
 @Unique(['email'])
+@Index(['isBanned'])
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

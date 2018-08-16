@@ -5,6 +5,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   ManyToOne,
   PrimaryGeneratedColumn,
   Unique,
@@ -16,6 +17,7 @@ import { Publisher } from './Publisher';
 
 @Entity('books')
 @Unique(['slug', 'isbn'])
+@Index(['isBanned'])
 export class Book extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -25,6 +27,12 @@ export class Book extends BaseEntity {
 
   @Column('varchar', { length: 255 })
   slug: string;
+
+  @Column('varchar', { length: 255 })
+  coverImage: string;
+
+  @Column('text')
+  description: string;
 
   @Column('varchar', { length: 13 })
   isbn: string;
@@ -43,6 +51,9 @@ export class Book extends BaseEntity {
 
   @Column('date')
   datePublished: Date;
+
+  @Column({ default: false })
+  isBanned: boolean;
 
   @CreateDateColumn()
   createdAt: Date;
