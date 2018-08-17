@@ -1,4 +1,5 @@
-import { Redis } from 'ioredis';
+import { Redis } from "ioredis";
+import { Connection } from "typeorm";
 
 export interface Session extends Express.Session {
   userId?: string;
@@ -9,6 +10,7 @@ export interface Context {
   url: string;
   session: Session;
   req: Express.Request;
+  db: Connection;
 }
 
 export type Resolver = (

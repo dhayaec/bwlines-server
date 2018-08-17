@@ -1,44 +1,49 @@
-import * as bcryptjs from 'bcryptjs';
-import { ResolverMap } from 'graphql-utils';
-import { errorResponse, userSessionIdPrefix } from '../../constants';
-import { User } from '../../entity/User';
+import * as bcryptjs from "bcryptjs";
+import { ResolverMap } from "graphql-utils";
+import { errorResponse, userSessionIdPrefix } from "../../constants";
+import { User } from "../../entity/User";
 import {
   createMiddleware,
   middleware,
   removeAllUsersSessions
-} from '../../utils/user-utils';
-import { formatYupError } from '../../utils/utils';
-import { userSchema } from '../validation-rules';
+} from "../../utils/user-utils";
+import { formatYupError } from "../../utils/utils";
+import { userSchema } from "../validation-rules";
 
 export const resolvers: ResolverMap = {
   Query: {
-    me: createMiddleware(middleware, (_, __, { session }) => {
+    me: createMiddleware(middleware, (_, __, { session, db }) => {
       if (session) {
-        return User.findOne({ where: { id: session.userId } });
+        const userRepository = db.getRepository(User);
+        return userRepository.findOne({ where: { id: session.userId } });
       }
       return null;
     }),
     getUser: (_, { id }: GQL.IGetUserOnQueryArguments) => User.findOne(id),
+    getEmail: (_, { id }: GQL.IGetEmailOnQueryArguments, { db }) => {
+      const userRepository = db.getRepository(User);
+      return userRepository.findOne({ where: { id } });
+    }
   },
   Mutation: {
-    register: async (_, args: GQL.IRegisterOnMutationArguments) => {
+    register: async (_, args: GQL.IRegisterOnMutationArguments, { db }) => {
       try {
         await userSchema.validate(args, { abortEarly: false });
       } catch (err) {
         return formatYupError(err);
       }
-
+      const userRepository = db.getRepository(User);
       const { email, password: pass, name } = args;
 
-      const userExists = await User.findOne({ where: { email } });
+      const userExists = await userRepository.findOne({ where: { email } });
       if (userExists) {
         throw new Error(`${email} is already registered with us`);
       }
 
-      const user = User.create({
+      const user = userRepository.create({
         name: name.trim(),
         email: email.trim(),
-        password: pass,
+        password: pass
       });
 
       const userData = await user.save();
@@ -48,9 +53,10 @@ export const resolvers: ResolverMap = {
     login: async (
       _,
       { email, password }: GQL.ILoginOnMutationArguments,
-      { session, redis, req }
+      { session, redis, req, db }
     ) => {
-      const user = await User.findOne({ where: { email } });
+      const userRepository = db.getRepository(User);
+      const user = await userRepository.findOne({ where: { email } });
       if (!user) {
         return errorResponse;
       }
@@ -72,12 +78,12 @@ export const resolvers: ResolverMap = {
       return {
         id,
         name,
-        email: emailAddress,
+        email: emailAddress
       };
     },
     reset: (_, { email }: GQL.IResetOnMutationArguments) => {
       return {
-        email,
+        email
       };
     },
     logout: async (_, __, { session, redis }) => {
@@ -91,6 +97,6 @@ export const resolvers: ResolverMap = {
         });
       }
       return userId;
-    },
-  },
+    }
+  }
 };
