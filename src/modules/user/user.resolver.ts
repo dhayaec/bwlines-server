@@ -19,9 +19,6 @@ export const resolvers: ResolverMap = {
       return null;
     }),
     getUser: (_, { id }: GQL.IGetUserOnQueryArguments) => User.findOne(id),
-    animals: () => {
-      return [{ kind: 'Dog' }];
-    },
   },
   Mutation: {
     register: async (_, args: GQL.IRegisterOnMutationArguments) => {

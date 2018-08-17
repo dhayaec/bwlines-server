@@ -53,7 +53,7 @@ id: string | null;
 name: string | null;
 email: string | null;
 mobile: string | null;
-errors: Array<IError> | null;
+errors: Array<IError>;
 }
 
 interface IError {

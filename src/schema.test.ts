@@ -2,20 +2,6 @@ import { graphql } from 'graphql';
 import { addMockFunctionsToSchema, mockServer } from 'graphql-tools';
 import { genSchema } from './utils/schema-utils';
 
-const animalsQueryTest = {
-  id: 'Animals Resolver Test',
-  query: `
-      query {
-        animals{
-          kind
-        }
-      }
-    `,
-  variables: {},
-  context: {},
-  expected: { data: { animals: [{ kind: 'Dog' }] } },
-};
-
 const meQueryTest = {
   id: 'me Resolver Test',
   query: `
@@ -31,7 +17,7 @@ const meQueryTest = {
 };
 
 describe('Schema', () => {
-  const cases = [animalsQueryTest, meQueryTest];
+  const cases = [meQueryTest];
 
   addMockFunctionsToSchema({
     schema: genSchema(),
