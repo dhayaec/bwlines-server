@@ -25,7 +25,7 @@ export const resolvers: ResolverMap = {
       try {
         await userSchema.validate(args, { abortEarly: false });
       } catch (err) {
-        return { errors: formatYupError(err) };
+        return formatYupError(err);
       }
 
       const { email, password: pass, name } = args;
