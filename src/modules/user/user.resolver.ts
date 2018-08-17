@@ -1,14 +1,14 @@
-import * as bcryptjs from "bcryptjs";
-import { ResolverMap } from "graphql-utils";
-import { errorResponse, userSessionIdPrefix } from "../../constants";
-import { User } from "../../entity/User";
+import * as bcryptjs from 'bcryptjs';
+import { ResolverMap } from 'graphql-utils';
+import { errorResponse, userSessionIdPrefix } from '../../constants';
+import { User } from '../../entity/User';
 import {
   createMiddleware,
   middleware,
   removeAllUsersSessions
-} from "../../utils/user-utils";
-import { formatYupError } from "../../utils/utils";
-import { userSchema } from "../validation-rules";
+} from '../../utils/user-utils';
+import { formatYupError } from '../../utils/utils';
+import { userSchema } from '../validation-rules';
 
 export const resolvers: ResolverMap = {
   Query: {
@@ -23,7 +23,7 @@ export const resolvers: ResolverMap = {
     getEmail: (_, { id }: GQL.IGetEmailOnQueryArguments, { db }) => {
       const userRepository = db.getRepository(User);
       return userRepository.findOne({ where: { id } });
-    }
+    },
   },
   Mutation: {
     register: async (_, args: GQL.IRegisterOnMutationArguments, { db }) => {
@@ -43,7 +43,7 @@ export const resolvers: ResolverMap = {
       const user = userRepository.create({
         name: name.trim(),
         email: email.trim(),
-        password: pass
+        password: pass,
       });
 
       const userData = await user.save();
@@ -78,12 +78,12 @@ export const resolvers: ResolverMap = {
       return {
         id,
         name,
-        email: emailAddress
+        email: emailAddress,
       };
     },
     reset: (_, { email }: GQL.IResetOnMutationArguments) => {
       return {
-        email
+        email,
       };
     },
     logout: async (_, __, { session, redis }) => {
@@ -97,6 +97,6 @@ export const resolvers: ResolverMap = {
         });
       }
       return userId;
-    }
-  }
+    },
+  },
 };
