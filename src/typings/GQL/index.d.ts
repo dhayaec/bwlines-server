@@ -26,6 +26,7 @@ photos: Array<IPhoto>;
 photo: IPhoto | null;
 me: IUserResponse | null;
 getUser: IUserResponse | null;
+animals: Array<IAnimal> | null;
 }
 
 interface IPhotoOnQueryArguments {
@@ -52,6 +53,18 @@ id: string | null;
 name: string | null;
 email: string | null;
 mobile: string | null;
+errors: Array<IError> | null;
+}
+
+interface IError {
+__typename: "Error";
+path: string;
+message: string;
+}
+
+interface IAnimal {
+__typename: "Animal";
+kind: string;
 }
 
 interface IMutation {
@@ -76,12 +89,6 @@ password: string;
 
 interface IResetOnMutationArguments {
 email: string;
-}
-
-interface IError {
-__typename: "Error";
-path: string;
-message: string;
 }
 
 interface IUser {

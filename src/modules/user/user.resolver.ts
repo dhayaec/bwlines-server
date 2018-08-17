@@ -16,16 +16,19 @@ export const resolvers: ResolverMap = {
       return User.findOne({ where: { id: session.userId } });
     }),
     getUser: (_, { id }: GQL.IGetUserOnQueryArguments) => User.findOne(id),
+    animals: () => {
+      return [{ kind: 'Dog' }];
+    },
   },
   Mutation: {
     register: async (_, args: GQL.IRegisterOnMutationArguments) => {
-      const { email, password: pass, name } = args;
-
       try {
         await userSchema.validate(args, { abortEarly: false });
-      } catch (error) {
-        throw new Error(formatYupError(error));
+      } catch (err) {
+        return { errors: formatYupError(err) };
       }
+
+      const { email, password: pass, name } = args;
 
       const userExists = await User.findOne({ where: { email } });
       if (userExists) {
@@ -33,10 +36,11 @@ export const resolvers: ResolverMap = {
       }
 
       const user = User.create({
-        name,
-        email,
+        name: name.trim(),
+        email: email.trim(),
         password: pass,
       });
+
       const userData = await user.save();
       const { password, ...otherFields } = userData;
       return otherFields;

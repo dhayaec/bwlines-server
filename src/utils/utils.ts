@@ -10,6 +10,5 @@ export const formatYupError = (err: ValidationError) => {
       message: e.message,
     });
   });
-
-  return JSON.stringify(errors);
+  return errors;
 };

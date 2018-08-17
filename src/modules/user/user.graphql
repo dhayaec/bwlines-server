@@ -1,6 +1,7 @@
 type Query {
   me: UserResponse
   getUser(id: ID!): UserResponse
+  animals: [Animal]
 }
 
 type Mutation {
@@ -15,11 +16,16 @@ type Mutation {
   logout: String
 }
 
+type Animal {
+  kind: String!
+}
+
 type UserResponse {
   id: ID
   name: String
   email: String
   mobile: String
+  errors: [Error!]
 }
 
 type Error {
