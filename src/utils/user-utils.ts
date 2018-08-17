@@ -11,7 +11,7 @@ import {
 export const createForgotPasswordLink = async (
   url: string,
   userId: string,
-  redis: Redis
+  redis: Redis,
 ) => {
   const id = v4();
   await redis.set(`${forgotPasswordPrefix}${id}`, userId, 'ex', 60 * 60);
@@ -22,7 +22,7 @@ export const removeAllUsersSessions = async (userId: string, redis: Redis) => {
   const sessionIds = await redis.lrange(
     `${userSessionIdPrefix}${userId}`,
     0,
-    -1
+    -1,
   );
 
   const promises = [];
@@ -47,7 +47,7 @@ export const formatYupError = (err: ValidationError) => {
 
 export const createMiddleware = (
   middlewareFunc: GraphQLMiddlewareFunc,
-  resolverFunc: Resolver
+  resolverFunc: Resolver,
 ) => (parent: any, args: any, context: any, info: any) =>
   middlewareFunc(resolverFunc, parent, args, context, info);
 
@@ -56,7 +56,7 @@ export const middleware = async (
   parent: any,
   args: any,
   context: any,
-  info: any
+  info: any,
 ) => {
   return resolver(parent, args, context, info);
 };

@@ -55,6 +55,7 @@
     "gen-types": "ts-node --files ./src/utils/create-types.ts",
     "debug": "NODE_ENV=development node --inspect -r ts-node/register/transpile-only src/index.ts",
     "test": "jest",
-    "testw": "jest --watch"
+    "testw": "jest --watch",
+    "lint": "tslint -c tslint.json 'src/**/*.ts' --fix"
   }
 }

@@ -10,7 +10,7 @@ import {
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
-  VersionColumn
+  VersionColumn,
 } from 'typeorm';
 import { Cart } from './Cart';
 

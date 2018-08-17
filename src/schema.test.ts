@@ -1,10 +1,10 @@
-import { graphql } from "graphql";
-import { addMockFunctionsToSchema, mockServer } from "graphql-tools";
-import { genSchema } from "./utils/schema-utils";
-import { connectDbTest } from "./utils/connect-db";
+import { graphql } from 'graphql';
+import { addMockFunctionsToSchema, mockServer } from 'graphql-tools';
+import { connectDbTest } from './utils/connect-db';
+import { genSchema } from './utils/schema-utils';
 
 const meQueryTest = {
-  id: "me Resolver Test",
+  id: 'me Resolver Test',
   query: `
   query{
     me {
@@ -14,11 +14,11 @@ const meQueryTest = {
   }`,
   variables: {},
   context: {},
-  expected: { data: { me: null } }
+  expected: { data: { me: null } },
 };
 
 const getEmailQueryTest = {
-  id: "me Resolver Test",
+  id: 'me Resolver Test',
   query: `
   query{
     getUser(
@@ -30,26 +30,26 @@ const getEmailQueryTest = {
   }`,
   variables: {},
   context: {
-    db: async () => await connectDbTest()
+    db: async () => await connectDbTest(),
   },
-  expected: { data: { me: null } }
+  expected: { data: { me: null } },
 };
 
-describe("Schema", () => {
+describe('Schema', () => {
   const cases = [meQueryTest, getEmailQueryTest];
 
   addMockFunctionsToSchema({
     schema: genSchema(),
     mocks: {
       Boolean: () => false,
-      ID: () => "1",
+      ID: () => '1',
       Int: () => 1,
       Float: () => 12.34,
-      String: () => "Dog"
-    }
+      String: () => 'Dog',
+    },
   });
 
-  test("has valid type definitions", async () => {
+  test('has valid type definitions', async () => {
     expect(async () => {
       const MockServer = mockServer(genSchema(), {});
 
@@ -62,7 +62,7 @@ describe("Schema", () => {
 
     test(`query: ${id}`, async () => {
       return await expect(
-        graphql(genSchema(), query, null, { ctx }, variables)
+        graphql(genSchema(), query, null, { ctx }, variables),
       ).resolves.toEqual(expected);
     });
   });

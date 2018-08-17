@@ -10,5 +10,5 @@ fs.writeFile(
   typescriptTypes,
   err => {
     console.error(err);
-  }
+  },
 );

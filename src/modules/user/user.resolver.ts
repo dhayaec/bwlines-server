@@ -5,7 +5,7 @@ import { User } from '../../entity/User';
 import {
   createMiddleware,
   middleware,
-  removeAllUsersSessions
+  removeAllUsersSessions,
 } from '../../utils/user-utils';
 import { formatYupError } from '../../utils/utils';
 import { userSchema } from '../validation-rules';
@@ -53,17 +53,17 @@ export const resolvers: ResolverMap = {
     login: async (
       _,
       { email, password }: GQL.ILoginOnMutationArguments,
-      { session, redis, req, db }
+      { session, redis, req, db },
     ) => {
       const userRepository = db.getRepository(User);
       const user = await userRepository.findOne({ where: { email } });
       if (!user) {
-        return errorResponse;
+        return { errors: errorResponse };
       }
 
       const valid = await bcryptjs.compare(password, user.password);
       if (!valid) {
-        return errorResponse;
+        return { errors: errorResponse };
       }
 
       const { id, name, email: emailAddress } = user;
