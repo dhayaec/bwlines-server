@@ -54,6 +54,7 @@
     "start:node": "rimraf ./dist && npm run compile && npm run copy && NODE_ENV=production node ./dist/",
     "gen-types": "ts-node --files ./src/utils/create-types.ts",
     "debug": "NODE_ENV=development node --inspect -r ts-node/register/transpile-only src/index.ts",
-    "test": "jest"
+    "test": "jest",
+    "testw": "jest --watch"
   }
 }

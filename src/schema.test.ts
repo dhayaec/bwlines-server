@@ -16,8 +16,22 @@ const animalsQueryTest = {
   expected: { data: { animals: [{ kind: 'Dog' }] } },
 };
 
+const meQueryTest = {
+  id: 'me Resolver Test',
+  query: `
+  query{
+    me {
+      id
+      email
+    }
+  }`,
+  variables: {},
+  context: {},
+  expected: { data: { me: null } },
+};
+
 describe('Schema', () => {
-  const cases = [animalsQueryTest];
+  const cases = [animalsQueryTest, meQueryTest];
 
   addMockFunctionsToSchema({
     schema: genSchema(),

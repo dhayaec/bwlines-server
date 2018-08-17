@@ -13,7 +13,10 @@ import { userSchema } from '../validation-rules';
 export const resolvers: ResolverMap = {
   Query: {
     me: createMiddleware(middleware, (_, __, { session }) => {
-      return User.findOne({ where: { id: session.userId } });
+      if (session) {
+        return User.findOne({ where: { id: session.userId } });
+      }
+      return null;
     }),
     getUser: (_, { id }: GQL.IGetUserOnQueryArguments) => User.findOne(id),
     animals: () => {
