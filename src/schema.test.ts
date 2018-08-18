@@ -17,26 +17,8 @@ const meQueryTest = {
   expected: { data: { me: null } },
 };
 
-const getEmailQueryTest = {
-  id: 'me Resolver Test',
-  query: `
-  query{
-    getUser(
-      id:"2611219f-95a5-423b-bc31-955b4febb1ac"
-    ){
-      id
-      name
-    }
-  }`,
-  variables: {},
-  context: {
-    db: async () => await connectDbTest(),
-  },
-  expected: { data: { me: null } },
-};
-
 describe('Schema', () => {
-  const cases = [meQueryTest, getEmailQueryTest];
+  const cases = [meQueryTest];
 
   addMockFunctionsToSchema({
     schema: genSchema(),

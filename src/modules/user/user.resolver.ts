@@ -14,15 +14,12 @@ export const resolvers: ResolverMap = {
   Query: {
     me: createMiddleware(middleware, (_, __, { session, db }) => {
       if (session) {
-        const userRepository = db.getRepository(User);
-        return userRepository.findOne({ where: { id: session.userId } });
+        return db.getRepository(User).findOne({ where: { id: session.userId } });
       }
       return null;
     }),
-    getUser: (_, { id }: GQL.IGetUserOnQueryArguments) => User.findOne(id),
-    getEmail: (_, { id }: GQL.IGetEmailOnQueryArguments, { db }) => {
-      const userRepository = db.getRepository(User);
-      return userRepository.findOne({ where: { id } });
+    getUser: (_, { id }: GQL.IGetUserOnQueryArguments, { db }) => {
+      return db.getRepository(User).findOne(id);
     },
   },
   Mutation: {
@@ -32,15 +29,15 @@ export const resolvers: ResolverMap = {
       } catch (err) {
         return formatYupError(err);
       }
-      const userRepository = db.getRepository(User);
+
       const { email, password: pass, name } = args;
 
-      const userExists = await userRepository.findOne({ where: { email } });
+      const userExists = await db.getRepository(User).findOne({ where: { email } });
       if (userExists) {
         throw new Error(`${email} is already registered with us`);
       }
 
-      const user = userRepository.create({
+      const user = db.getRepository(User).create({
         name: name.trim(),
         email: email.trim(),
         password: pass,
@@ -55,8 +52,7 @@ export const resolvers: ResolverMap = {
       { email, password }: GQL.ILoginOnMutationArguments,
       { session, redis, req, db },
     ) => {
-      const userRepository = db.getRepository(User);
-      const user = await userRepository.findOne({ where: { email } });
+      const user = await db.getRepository(User).findOne({ where: { email } });
       if (!user) {
         return { errors: errorResponse };
       }

@@ -27,7 +27,6 @@ photo: IPhoto | null;
 me: IUserResponse | null;
 getUser: IUserResponse | null;
 animals: Array<IAnimal> | null;
-getEmail: string | null;
 }
 
 interface IPhotoOnQueryArguments {
@@ -35,10 +34,6 @@ id: string;
 }
 
 interface IGetUserOnQueryArguments {
-id: string;
-}
-
-interface IGetEmailOnQueryArguments {
 id: string;
 }
 
