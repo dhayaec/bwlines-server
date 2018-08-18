@@ -1,3 +1,9 @@
+// tslint:disable-next-line:no-var-requires
+const iconv = require('iconv-lite');
+// tslint:disable-next-line:no-var-requires
+const encodings = require('iconv-lite/encodings');
+iconv.encodings = encodings;
+
 import { createConnection, getConnectionOptions } from 'typeorm';
 
 export const connectDb = async () => {

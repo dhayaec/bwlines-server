@@ -1,5 +1,6 @@
 import * as bcryptjs from 'bcryptjs';
 import { ResolverMap } from 'graphql-utils';
+import { Connection } from 'typeorm';
 import { errorResponse, userSessionIdPrefix } from '../../constants';
 import { User } from '../../entity/User';
 import {
@@ -18,8 +19,11 @@ export const resolvers: ResolverMap = {
       }
       return null;
     }),
-    getUser: (_, { id }: GQL.IGetUserOnQueryArguments, { db }) => {
-      return db.getRepository(User).findOne(id);
+    getUser: async (_, { id }: GQL.IGetUserOnQueryArguments, { db }) => {
+      if (db) {
+        return await db.getRepository(User).findOne(id);
+      }
+      return null;
     },
   },
   Mutation: {

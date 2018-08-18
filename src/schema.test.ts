@@ -1,6 +1,5 @@
 import { graphql } from 'graphql';
 import { addMockFunctionsToSchema, mockServer } from 'graphql-tools';
-import { connectDbTest } from './utils/connect-db';
 import { genSchema } from './utils/schema-utils';
 
 const meQueryTest = {
