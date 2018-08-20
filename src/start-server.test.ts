@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AddressInfo, Server } from 'net';
+import { Server } from 'net';
 import { startServer } from './start-server';
 
 let server: Server;
@@ -8,13 +8,14 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await server.close();
+  if (server) {
+    await server.close();
+  }
 });
 
 describe('start-server', () => {
   it('should start', async () => {
-    const { port } = server.address() as AddressInfo;
-    const { data } = await axios.get(`http://localhost:${port}/ping`);
+    const { data } = await axios.get(`${process.env.TEST_HOST}/ping`);
     expect(data).toEqual({ message: 'pong' });
   });
 });

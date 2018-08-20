@@ -15,7 +15,7 @@ import * as rateLimitRedis from 'rate-limit-redis';
 // tslint:disable-next-line:no-import-side-effect
 import 'reflect-metadata';
 import { Env, redisSessionPrefix } from './constants';
-import { connectDb, connectDbTest } from './utils/connect-db';
+import { connectDb } from './utils/connect-db';
 import { createDb } from './utils/create-db';
 import { genSchema } from './utils/schema-utils';
 const redisStore = connectRedis(expressSession as any);
@@ -43,10 +43,7 @@ export async function startServer() {
 
   await createDb();
 
-  const db =
-    process.env.NODE_ENV === Env.test
-      ? await connectDbTest(true)
-      : await connectDb();
+  const db = process.env.NODE_ENV !== Env.test && (await connectDb());
 
   const server = new GraphQLServer({
     schema: genSchema(),
