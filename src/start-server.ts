@@ -1,4 +1,3 @@
-// import { Cart } from './entity/Cart';
 // tslint:disable-next-line:no-var-requires
 require('dotenv-safe').config();
 import * as connectRedis from 'connect-redis';
