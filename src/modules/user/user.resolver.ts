@@ -1,6 +1,5 @@
 import * as bcryptjs from 'bcryptjs';
 import { ResolverMap } from 'graphql-utils';
-import { Connection } from 'typeorm';
 import { errorResponse, userSessionIdPrefix } from '../../constants';
 import { User } from '../../entity/User';
 import {
@@ -15,7 +14,9 @@ export const resolvers: ResolverMap = {
   Query: {
     me: createMiddleware(middleware, (_, __, { session, db }) => {
       if (session) {
-        return db.getRepository(User).findOne({ where: { id: session.userId } });
+        return db
+          .getRepository(User)
+          .findOne({ where: { id: session.userId } });
       }
       return null;
     }),
@@ -36,7 +37,9 @@ export const resolvers: ResolverMap = {
 
       const { email, password: pass, name } = args;
 
-      const userExists = await db.getRepository(User).findOne({ where: { email } });
+      const userExists = await db
+        .getRepository(User)
+        .findOne({ where: { email } });
       if (userExists) {
         throw new Error(`${email} is already registered with us`);
       }
