@@ -7,13 +7,15 @@ const getUserQuery = async () => {
   return {
     id: 'getUser',
     query: `
-    {
-        getUser(id: "8aee2bd3-4941-4b70-a7b5-1e20e826cfa6") {
-          name
-          email
-        }
-      }`,
-    variables: {},
+    query($id: ID!){
+      getUser(id: $id) {
+        name
+        email
+      }
+    }`,
+    variables: {
+      id: '123',
+    },
     context: {
       db: await connectDbTest(),
     },

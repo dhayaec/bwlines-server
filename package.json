@@ -36,6 +36,7 @@
     "express-rate-limit": "^2.12.2",
     "express-session": "^1.15.6",
     "glob": "^7.1.2",
+    "graphql-tag": "^2.9.2",
     "graphql-yoga": "^1.16.0",
     "helmet": "^3.13.0",
     "iconv-lite": "^0.4.23",
