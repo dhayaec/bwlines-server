@@ -26,7 +26,7 @@ export async function startServer() {
 
   const db =
     process.env.NODE_ENV === Env.test
-      ? await connectDbTest()
+      ? await connectDbTest(true)
       : await connectDb();
 
   const server = new GraphQLServer({

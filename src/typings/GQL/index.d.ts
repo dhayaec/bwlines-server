@@ -22,29 +22,13 @@ column: number;
 
 interface IQuery {
 __typename: "Query";
-photos: Array<IPhoto>;
-photo: IPhoto | null;
 me: IUserResponse | null;
 getUser: IUserResponse | null;
 animals: Array<IAnimal> | null;
 }
 
-interface IPhotoOnQueryArguments {
-id: string;
-}
-
 interface IGetUserOnQueryArguments {
 id: string;
-}
-
-interface IPhoto {
-__typename: "Photo";
-id: string;
-name: string;
-description: string;
-filename: string;
-views: number;
-isPublished: boolean;
 }
 
 interface IUserResponse {
