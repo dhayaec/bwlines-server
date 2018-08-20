@@ -37,13 +37,6 @@ id: string | null;
 name: string | null;
 email: string | null;
 mobile: string | null;
-errors: Array<IError>;
-}
-
-interface IError {
-__typename: "Error";
-path: string;
-message: string;
 }
 
 interface IAnimal {
@@ -73,6 +66,12 @@ password: string;
 
 interface IResetOnMutationArguments {
 email: string;
+}
+
+interface IError {
+__typename: "Error";
+path: string;
+message: string;
 }
 
 interface IUser {

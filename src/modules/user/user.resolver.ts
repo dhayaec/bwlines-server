@@ -1,6 +1,6 @@
 import * as bcryptjs from 'bcryptjs';
 import { ResolverMap } from 'graphql-utils';
-import { errorResponse, userSessionIdPrefix } from '../../constants';
+import { userSessionIdPrefix } from '../../constants';
 import { User } from '../../entity/User';
 import {
   createMiddleware,
@@ -9,6 +9,7 @@ import {
 } from '../../utils/user-utils';
 import { formatYupError } from '../../utils/utils';
 import { userSchema } from '../validation-rules';
+import { InputValidationError } from './../../utils/errors';
 
 export const resolvers: ResolverMap = {
   Query: {
@@ -32,7 +33,11 @@ export const resolvers: ResolverMap = {
       try {
         await userSchema.validate(args, { abortEarly: false });
       } catch (err) {
-        return formatYupError(err);
+        const errors = formatYupError(err);
+
+        throw new InputValidationError({
+          data: errors,
+        });
       }
 
       const { email, password: pass, name } = args;
@@ -61,12 +66,12 @@ export const resolvers: ResolverMap = {
     ) => {
       const user = await db.getRepository(User).findOne({ where: { email } });
       if (!user) {
-        return { errors: errorResponse };
+        throw new Error('User does not exists');
       }
 
       const valid = await bcryptjs.compare(password, user.password);
       if (!valid) {
-        return { errors: errorResponse };
+        throw new Error('Invalid Email or Password');
       }
 
       const { id, name, email: emailAddress } = user;

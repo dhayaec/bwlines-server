@@ -1,3 +1,8 @@
+import {
+  formatError as formatApolloError,
+  isInstance as isApolloErrorInstance,
+} from 'apollo-errors';
+
 // tslint:disable-next-line:no-var-requires
 require('dotenv-safe').config();
 import * as connectRedis from 'connect-redis';
@@ -13,9 +18,23 @@ import { Env, redisSessionPrefix } from './constants';
 import { connectDb, connectDbTest } from './utils/connect-db';
 import { createDb } from './utils/create-db';
 import { genSchema } from './utils/schema-utils';
-
 const redisStore = connectRedis(expressSession as any);
 const redis = new ioredis();
+
+function formatError(error: any) {
+  const { originalError } = error;
+  if (isApolloErrorInstance(originalError)) {
+    // log internalData to stdout but not include it in the formattedError
+    console.log(
+      JSON.stringify({
+        type: `error`,
+        data: originalError.data,
+        internalData: originalError.internalData,
+      }),
+    );
+  }
+  return formatApolloError(error);
+}
 
 export async function startServer() {
   if (process.env.NODE_ENV === Env.test) {
@@ -74,7 +93,10 @@ export async function startServer() {
   server.express.get('/ping', (_, res) => res.json({ message: 'pong' }));
 
   return server.start(
-    { port: process.env.NODE_ENV === Env.test ? 4001 : 4000 },
+    {
+      port: process.env.NODE_ENV === Env.test ? 4001 : 4000,
+      formatError: (err: any) => formatError(err),
+    },
     ({ port }) => console.log('localhost:' + port),
   );
 }
