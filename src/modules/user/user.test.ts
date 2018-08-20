@@ -4,7 +4,6 @@ import * as ioredis from 'ioredis';
 import { Connection } from 'typeorm';
 import { genSchema } from '../../utils/schema-utils';
 import { connectDbTest } from './../../utils/connect-db';
-import { logout } from './logout';
 
 let connection: Connection;
 beforeAll(async () => {
