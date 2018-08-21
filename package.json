@@ -4,19 +4,19 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
-    "@types/axios": "^0.14.0",
     "@types/bcryptjs": "^2.4.1",
     "@types/connect-redis": "^0.0.7",
     "@types/express-rate-limit": "^2.9.3",
     "@types/glob": "^5.0.35",
     "@types/helmet": "^0.0.38",
-    "@types/iconv-lite": "^0.0.1",
     "@types/ioredis": "^3.2.14",
     "@types/jest": "^23.3.1",
     "@types/node-fetch": "^2.1.2",
     "@types/uuid": "^3.4.3",
     "@types/ws": "^6.0.0",
     "@types/yup": "^0.24.8",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.4.2",
     "copyfiles": "^2.0.0",
     "husky": "^0.14.3",
     "jest": "^23.5.0",
@@ -42,6 +42,7 @@
     "express-rate-limit": "^2.12.2",
     "express-session": "^1.15.6",
     "glob": "^7.1.2",
+    "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2",
     "graphql-yoga": "^1.16.0",
     "helmet": "^3.13.0",
@@ -59,6 +60,7 @@
   },
   "scripts": {
     "compile": "tsc --project ./",
+    "check": "tsc --project ./ --noEmit",
     "copy": "copyfiles -u 1 src/**/*.graphql dist",
     "dev": "npm run gen-types && NODE_ENV=development nodemon --exec ts-node --files src/index.ts",
     "start:node": "rimraf ./dist && npm run compile && npm run copy && NODE_ENV=production node ./dist/",
@@ -66,12 +68,12 @@
     "debug": "NODE_ENV=development node --inspect -r ts-node/register/transpile-only src/index.ts",
     "test": "jest",
     "test:w": "jest --watch",
-    "lint": "tslint -c tslint.json 'src/**/*.ts' --fix",
+    "lint": "tslint --project tsconfig.json -c tslint.json 'src/**/*.ts' --fix",
     "precommit": "lint-staged"
   },
   "lint-staged": {
     "*.ts": [
-      "tslint -c tslint.json 'src/**/*.ts' --fix",
+      "yarn lint",
       "git add ."
     ]
   }

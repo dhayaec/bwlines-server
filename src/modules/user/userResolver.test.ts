@@ -3,7 +3,6 @@ import * as ioredis from 'ioredis';
 import { Connection } from 'typeorm';
 import { connectDbTest } from '../../utils/connect-db';
 import { genSchema } from '../../utils/schema-utils';
-import { register } from './register';
 
 let connection: Connection;
 beforeAll(async () => {
