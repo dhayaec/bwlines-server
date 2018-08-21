@@ -9,27 +9,13 @@ beforeAll(async () => {
   connection = await connectDbTest(true);
 });
 
-afterAll(async () => connection.close());
+afterAll(async () => {
+  if (connection) {
+    connection.close();
+  }
+});
 
 describe('login', () => {
-  it('non existing login', async () => {
-    const query = `
-      mutation {
-        login(email: "nonexisting@email.com", password: "123456") {
-          name
-        }
-      }
-    `;
-    const context = {
-      db: connection,
-      redis: new ioredis(),
-    };
-
-    const result = await graphql(genSchema(), query, null, context, {});
-    const { errors } = result;
-    expect(errors![0].message).toEqual('User does not exists');
-  });
-
   it('register and login', async () => {
     const context = {
       db: connection,
@@ -56,9 +42,17 @@ describe('login', () => {
     const error = registerInvalidResult.errors;
     expect(error![0].message).toEqual('Validation failed');
 
+    const user = {
+      name: 'example',
+      email: 'example@email.com',
+      password: '123456',
+    };
+
     const query = `
       mutation {
-        register(name:"example", email: "email@email.com", password: "123456") {
+        register(name:"${user.name}", email: "${user.email}", password: "${
+      user.password
+    }") {
           email
           name
           id
@@ -67,11 +61,15 @@ describe('login', () => {
     `;
 
     const result = await graphql(genSchema(), query, null, context, {});
-    expect(result.data!.register.email).toEqual('email@email.com');
+    expect(result.data!.register.email).toEqual(user.email);
+
     const registerId = result.data!.register.id;
+
     const reRegister = `
       mutation {
-        register(name:"example", email: "email@email.com", password: "123456") {
+        register(name:"${user.name}", email: "${user.email}", password: "${
+      user.password
+    }") {
           email
           name
         }
@@ -85,11 +83,15 @@ describe('login', () => {
       {},
     );
 
-    expect(reRegisterResult.errors!.length).toEqual(1);
+    const { errors: err } = reRegisterResult;
+
+    expect(err![0].message).toEqual(
+      `${user.email} is already registered with us`,
+    );
 
     const login = `
     mutation {
-      login( email: "email@email.com", password: "123456") {
+      login( email: "${user.email}", password: "${user.password}") {
         email
         name
       }
@@ -117,12 +119,12 @@ describe('login', () => {
     );
 
     expect(loginResult).toEqual({
-      data: { login: { email: 'email@email.com', name: 'example' } },
+      data: { login: { email: user.email, name: user.name } },
     });
 
     const inValidLogin = `
     mutation {
-      login( email: "email@email.com", password: "beautiful") {
+      login( email: "${user.email}", password: "beautiful") {
         email
         name
       }
@@ -180,7 +182,7 @@ describe('login', () => {
 
     expect(meResult).toEqual({
       data: {
-        me: { id: registerId, name: 'example' },
+        me: { id: registerId, name: user.name },
       },
     });
 
@@ -216,5 +218,23 @@ describe('login', () => {
       {},
     );
     expect(meQueryNow).toEqual({ data: { me: null } });
+
+    const queryNonExisting = `
+      mutation {
+        login(email: "nonexisting@email.com", password: "123456") {
+          name
+        }
+      }
+    `;
+
+    const nonExisting = await graphql(
+      genSchema(),
+      queryNonExisting,
+      null,
+      context,
+      {},
+    );
+    const { errors: nonExistingError } = nonExisting;
+    expect(nonExistingError![0].message).toEqual('User does not exists');
   });
 });

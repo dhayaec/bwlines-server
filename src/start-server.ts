@@ -1,4 +1,3 @@
-import { categoryLoader } from './modules/loaders';
 // tslint:disable-next-line:no-var-requires
 require('dotenv-safe').config();
 import * as connectRedis from 'connect-redis';
@@ -37,7 +36,6 @@ export async function startServer() {
       session: request.session,
       db: connection,
       req: request,
-      categoryLoader: categoryLoader(),
     }),
   });
 
