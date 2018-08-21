@@ -23,10 +23,15 @@ column: number;
 interface IQuery {
 __typename: "Query";
 listBooks: Array<IBookResponse> | null;
+getBook: IBookResponse | null;
 listCategories: Array<ICategoryResponse> | null;
 me: IUserResponse | null;
 getUser: IUserResponse | null;
 animals: Array<IAnimal> | null;
+}
+
+interface IGetBookOnQueryArguments {
+id: string;
 }
 
 interface IGetUserOnQueryArguments {

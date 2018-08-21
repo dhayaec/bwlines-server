@@ -1,4 +1,7 @@
 import { AppResolverMap } from 'graphql-utils';
+import { InputValidationError } from '../../utils/errors';
+import { formatYupError } from '../../utils/utils';
+import { bookSchema } from '../validation-rules';
 import { Book } from './../../entity/Book';
 import { Category } from './../../entity/Category';
 
@@ -10,11 +13,30 @@ export const resolvers: AppResolverMap = {
       });
       return c;
     },
+    getBook: async (_, { id }: GQL.IGetBookOnQueryArguments, { db }) => {
+      return await db
+        .getRepository(Book)
+        .findOne(id, { relations: ['category'] });
+    },
   },
   Mutation: {
-    addBook: async (
-      _,
-      {
+    addBook: async (_, args: GQL.IAddBookOnMutationArguments, { db }) => {
+      const values = {
+        ...args,
+        datePublished: new Date(args.datePublished),
+      };
+
+      try {
+        await bookSchema.validate(values, { abortEarly: false });
+      } catch (err) {
+        const errors = formatYupError(err);
+
+        throw new InputValidationError({
+          data: errors,
+        });
+      }
+
+      const {
         title,
         coverImage,
         isbn,
@@ -24,10 +46,13 @@ export const resolvers: AppResolverMap = {
         displayPrice,
         datePublished,
         categoryId,
-      }: GQL.IAddBookOnMutationArguments,
-      { db },
-    ) => {
+      } = values;
+
       const category = await db.getRepository(Category).findOne(categoryId);
+
+      if (!category) {
+        throw new Error('Category does not exists');
+      }
 
       const c = db.getRepository(Book).create({
         title,

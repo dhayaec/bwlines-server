@@ -2,6 +2,7 @@ scalar Date
 
 type Query {
   listBooks: [BookResponse]
+  getBook(id: ID!): BookResponse
 }
 
 type Mutation {

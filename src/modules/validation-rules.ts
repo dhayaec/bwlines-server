@@ -17,3 +17,27 @@ export const userSchema = yup.object().shape({
     .min(6)
     .max(255),
 });
+
+export const bookSchema = yup.object().shape({
+  title: yup
+    .string()
+    .trim()
+    .min(3)
+    .max(255),
+  coverImage: yup
+    .string()
+    .trim()
+    .min(3)
+    .max(255),
+  isbn: yup
+    .string()
+    .trim()
+    .max(13),
+  description: yup
+    .string()
+    .trim()
+    .min(140),
+  listPrice: yup.number().required(),
+  displayPrice: yup.number().required(),
+  datePublished: yup.date().required(),
+});
