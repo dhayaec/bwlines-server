@@ -3,9 +3,9 @@ import { Redis } from 'ioredis';
 import { v4 } from 'uuid';
 import { ValidationError } from 'yup';
 import {
-  forgotPasswordPrefix,
-  redisSessionPrefix,
-  userSessionIdPrefix,
+  FORGOT_PASSWORD_PREFIX,
+  REDIS_SESSION_PREFIX,
+  USER_SESSION_PREFIX,
 } from '../constants';
 
 export const createForgotPasswordLink = async (
@@ -14,13 +14,13 @@ export const createForgotPasswordLink = async (
   redis: Redis,
 ) => {
   const id = v4();
-  await redis.set(`${forgotPasswordPrefix}${id}`, userId, 'ex', 60 * 60);
+  await redis.set(`${FORGOT_PASSWORD_PREFIX}${id}`, userId, 'ex', 60 * 60);
   return `${url}/change-password/${id}`;
 };
 
 export const removeAllUsersSessions = async (userId: string, redis: Redis) => {
   const sessionIds = await redis.lrange(
-    `${userSessionIdPrefix}${userId}`,
+    `${USER_SESSION_PREFIX}${userId}`,
     0,
     -1,
   );
@@ -28,7 +28,7 @@ export const removeAllUsersSessions = async (userId: string, redis: Redis) => {
   const promises = [];
   // tslint:disable-next-line:prefer-for-of
   for (let i = 0; i < sessionIds.length; i += 1) {
-    promises.push(redis.del(`${redisSessionPrefix}${sessionIds[i]}`));
+    promises.push(redis.del(`${REDIS_SESSION_PREFIX}${sessionIds[i]}`));
   }
   await Promise.all(promises);
 };

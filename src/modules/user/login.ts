@@ -1,5 +1,5 @@
 import * as bcryptjs from 'bcryptjs';
-import { userSessionIdPrefix } from '../../constants';
+import { USER_SESSION_PREFIX } from '../../constants';
 import { User } from '../../entity/User';
 import { Resolver } from './../../typings/graphql-utils';
 
@@ -24,7 +24,7 @@ export const login: Resolver = async (
   session.email = emailAddress;
 
   if (req.sessionID) {
-    await redis.lpush(`${userSessionIdPrefix}${user.id}`, req.sessionID);
+    await redis.lpush(`${USER_SESSION_PREFIX}${user.id}`, req.sessionID);
   }
 
   return {
