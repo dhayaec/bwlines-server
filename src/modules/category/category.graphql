@@ -1,0 +1,13 @@
+type Query {
+  list: [CategoryResponse]
+}
+
+type Mutation {
+  add(name: String!): CategoryResponse
+}
+
+type CategoryResponse {
+  id: ID
+  name: String
+  slug: String
+}

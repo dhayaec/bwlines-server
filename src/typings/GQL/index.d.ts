@@ -22,6 +22,7 @@ column: number;
 
 interface IQuery {
 __typename: "Query";
+list: Array<ICategoryResponse> | null;
 me: IUserResponse | null;
 getUser: IUserResponse | null;
 animals: Array<IAnimal> | null;
@@ -29,6 +30,13 @@ animals: Array<IAnimal> | null;
 
 interface IGetUserOnQueryArguments {
 id: string;
+}
+
+interface ICategoryResponse {
+__typename: "CategoryResponse";
+id: string | null;
+name: string | null;
+slug: string | null;
 }
 
 interface IUserResponse {
@@ -46,10 +54,15 @@ kind: string;
 
 interface IMutation {
 __typename: "Mutation";
+add: ICategoryResponse | null;
 register: IUserResponse | null;
 login: IUserResponse | null;
 reset: IUserResponse | null;
 logout: string | null;
+}
+
+interface IAddOnMutationArguments {
+name: string;
 }
 
 interface IRegisterOnMutationArguments {

@@ -26,13 +26,15 @@ export async function startServer() {
 
   await createDb();
 
+  const connection = await connectDb();
+
   const server = new GraphQLServer({
     schema: genSchema(),
-    context: async ({ request }) => ({
+    context: ({ request }) => ({
       redis,
       url: `${request.protocol}://${request.get('host')}`,
       session: request.session,
-      db: await connectDb(),
+      db: connection,
       req: request,
     }),
   });
