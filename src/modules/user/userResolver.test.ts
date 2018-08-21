@@ -120,6 +120,27 @@ describe('login', () => {
       data: { login: { email: 'email@email.com', name: 'example' } },
     });
 
+    const inValidLogin = `
+    mutation {
+      login( email: "email@email.com", password: "beautiful") {
+        email
+        name
+      }
+    }
+  `;
+
+    const inValidLoginResult = await graphql(
+      genSchema(),
+      inValidLogin,
+      null,
+      loggedInContext,
+      {},
+    );
+
+    const errors = inValidLoginResult.errors;
+
+    expect(errors![0].message).toEqual('Invalid Email or Password');
+
     const getUserQuery = `
     {
       getUser(id:"${registerId}"){
