@@ -1,15 +1,19 @@
 import { Category } from './../../entity/Category';
-import { ResolverMap } from './../../typings/graphql-utils';
+import { AppResolverMap } from './../../typings/graphql-utils';
 
-export const resolvers: ResolverMap = {
+export const resolvers: AppResolverMap = {
   Query: {
-    list: async (_, __, { db }) => {
+    listCategories: async (_, __, { db }) => {
       const c = db.getRepository(Category).find();
       return c;
     },
   },
   Mutation: {
-    add: async (_, { name }: GQL.IAddOnMutationArguments, { db }) => {
+    addCategory: async (
+      _,
+      { name }: GQL.IAddCategoryOnMutationArguments,
+      { db },
+    ) => {
       const c = db.getRepository(Category).create({
         name,
       });

@@ -2,6 +2,7 @@ import {
   formatError as formatApolloError,
   isInstance as isApolloErrorInstance,
 } from 'apollo-errors';
+import slugify from 'slugify';
 import { ValidationError } from 'yup';
 
 export const add = (...args: number[]) => args.reduce((c, p) => c + p);
@@ -31,3 +32,5 @@ export function formatError(error: any) {
   }
   return formatApolloError(error);
 }
+
+export const makeSlug = (str: string) => slugify(str, { lower: true });

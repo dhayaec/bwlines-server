@@ -1,9 +1,9 @@
 type Query {
-  list: [CategoryResponse]
+  listCategories: [CategoryResponse]
 }
 
 type Mutation {
-  add(name: String!): CategoryResponse
+  addCategory(name: String!): CategoryResponse
 }
 
 type CategoryResponse {

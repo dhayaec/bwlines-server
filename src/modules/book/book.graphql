@@ -1,0 +1,28 @@
+scalar Date
+
+type Query {
+  listBooks: [BookResponse]
+}
+
+type Mutation {
+  addBook(
+    title: String!
+    coverImage: String!
+    isbn: String!
+    description: String!
+    rating: Float!
+    listPrice: Float!
+    displayPrice: Float!
+    datePublished: Date!
+    categoryId: ID!
+  ): BookResponse
+}
+
+type BookResponse {
+  id: ID
+  title: String
+  slug: String
+  coverImage: String
+  isbn: String
+  category: CategoryResponse
+}

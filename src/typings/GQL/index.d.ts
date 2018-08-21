@@ -22,7 +22,8 @@ column: number;
 
 interface IQuery {
 __typename: "Query";
-list: Array<ICategoryResponse> | null;
+listBooks: Array<IBookResponse> | null;
+listCategories: Array<ICategoryResponse> | null;
 me: IUserResponse | null;
 getUser: IUserResponse | null;
 animals: Array<IAnimal> | null;
@@ -30,6 +31,16 @@ animals: Array<IAnimal> | null;
 
 interface IGetUserOnQueryArguments {
 id: string;
+}
+
+interface IBookResponse {
+__typename: "BookResponse";
+id: string | null;
+title: string | null;
+slug: string | null;
+coverImage: string | null;
+isbn: string | null;
+category: ICategoryResponse | null;
 }
 
 interface ICategoryResponse {
@@ -54,14 +65,27 @@ kind: string;
 
 interface IMutation {
 __typename: "Mutation";
-add: ICategoryResponse | null;
+addBook: IBookResponse | null;
+addCategory: ICategoryResponse | null;
 register: IUserResponse | null;
 login: IUserResponse | null;
 reset: IUserResponse | null;
 logout: string | null;
 }
 
-interface IAddOnMutationArguments {
+interface IAddBookOnMutationArguments {
+title: string;
+coverImage: string;
+isbn: string;
+description: string;
+rating: number;
+listPrice: number;
+displayPrice: number;
+datePublished: any;
+categoryId: string;
+}
+
+interface IAddCategoryOnMutationArguments {
 name: string;
 }
 
