@@ -14,7 +14,7 @@ export const formatYupError = (err: ValidationError) => {
       message: e.message,
     });
   });
-  return { errors };
+  return errors;
 };
 
 export function formatError(error: any) {

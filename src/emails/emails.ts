@@ -36,7 +36,7 @@ const defaultFooter = () => {
      `;
 };
 
-const defaultSalutation = () => /*html*/ `<p>Hi there</p>`;
+export const defaultSalutation = () => /*html*/ `<p>Hi there</p>`;
 
 const defaultSpacer = () => /*html*/ `<td style="${fontStyle}">&nbsp;</td>`;
 
