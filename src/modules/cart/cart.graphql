@@ -1,0 +1,15 @@
+type CartResponse {
+  id: ID
+  book: BookResponse
+  user: UserResponse
+  title: String
+}
+
+type Query {
+  getCart: [CartResponse]
+}
+
+type Mutation {
+  addToCart(bookId: String!, quantity: Float): CartResponse
+  removeFromCart(bookId: String!): Boolean
+}

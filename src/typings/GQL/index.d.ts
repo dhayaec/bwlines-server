@@ -24,6 +24,7 @@ interface IQuery {
 __typename: "Query";
 listBooks: Array<IBookResponse> | null;
 getBook: IBookResponse | null;
+getCart: Array<ICartResponse> | null;
 listCategories: Array<ICategoryResponse> | null;
 me: IUserResponse | null;
 getUser: IUserResponse | null;
@@ -55,6 +56,14 @@ name: string | null;
 slug: string | null;
 }
 
+interface ICartResponse {
+__typename: "CartResponse";
+id: string | null;
+book: IBookResponse | null;
+user: IUserResponse | null;
+title: string | null;
+}
+
 interface IUserResponse {
 __typename: "UserResponse";
 id: string | null;
@@ -71,6 +80,8 @@ kind: string;
 interface IMutation {
 __typename: "Mutation";
 addBook: IBookResponse | null;
+addToCart: ICartResponse | null;
+removeFromCart: boolean | null;
 addCategory: ICategoryResponse | null;
 register: IUserResponse | null;
 login: IUserResponse | null;
@@ -88,6 +99,15 @@ listPrice: number;
 displayPrice: number;
 datePublished: any;
 categoryId: string;
+}
+
+interface IAddToCartOnMutationArguments {
+bookId: string;
+quantity?: number | null;
+}
+
+interface IRemoveFromCartOnMutationArguments {
+bookId: string;
 }
 
 interface IAddCategoryOnMutationArguments {

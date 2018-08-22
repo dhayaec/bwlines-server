@@ -25,6 +25,9 @@ export class Cart extends BaseEntity {
   @Column('varchar', { length: 255 })
   title: string;
 
+  @Column('int', { default: 1 })
+  quantity: number;
+
   @CreateDateColumn()
   createdAt: Date;
 

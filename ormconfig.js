@@ -7,7 +7,7 @@ const {
   DB_TYPE,
   DB_NAME_TEST,
   ROOT_USER,
-  ROOT_PASS
+  ROOT_PASS,
 } = process.env;
 
 module.exports = [
@@ -28,8 +28,8 @@ module.exports = [
     cli: {
       entitiesDir: 'src/entity',
       migrationsDir: 'src/migration',
-      subscribersDir: 'src/subscriber'
-    }
+      subscribersDir: 'src/subscriber',
+    },
   },
   {
     name: 'test',
@@ -48,8 +48,8 @@ module.exports = [
     cli: {
       entitiesDir: 'src/entity',
       migrationsDir: 'src/migration',
-      subscribersDir: 'src/subscriber'
-    }
+      subscribersDir: 'src/subscriber',
+    },
   },
   {
     name: 'root',
@@ -57,6 +57,6 @@ module.exports = [
     host: DB_HOST,
     port: DB_PORT,
     username: ROOT_USER,
-    password: ROOT_PASS
-  }
+    password: ROOT_PASS,
+  },
 ];
