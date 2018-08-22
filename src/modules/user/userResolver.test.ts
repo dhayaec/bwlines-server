@@ -3,11 +3,11 @@ import * as ioredis from 'ioredis';
 import { Connection } from 'typeorm';
 import { connectDbTest } from '../../utils/connect-db';
 import { genSchema } from '../../utils/schema-utils';
+import { user } from '../data';
 
 let connection: Connection;
 let context: any;
 let loggedInContext: any;
-let user: any;
 let registerId: any;
 
 beforeAll(async () => {
@@ -30,12 +30,6 @@ beforeAll(async () => {
         sessionID: '123',
       },
     };
-  };
-
-  user = {
-    name: 'example',
-    email: 'example@email.com',
-    password: '123456',
   };
 });
 

@@ -3,10 +3,13 @@ import * as ioredis from 'ioredis';
 import { Connection } from 'typeorm';
 import { genSchema } from '../../utils/schema-utils';
 import { connectDbTest } from './../../utils/connect-db';
+import { bookData } from './../data';
 
 let connection: Connection;
 let context: any;
 let user: any;
+let bookId: any;
+let userId: any;
 beforeAll(async () => {
   connection = await connectDbTest(true);
   context = {
@@ -67,7 +70,7 @@ describe('getCart', () => {
     );
     expect(loginQueryResult.data!.register.email).toEqual(user.email);
 
-    const userId = loginQueryResult.data!.register.id;
+    userId = loginQueryResult.data!.register.id;
 
     const loggedInQueryResult = await graphql(
       genSchema(),
@@ -78,5 +81,100 @@ describe('getCart', () => {
     );
     const { data } = loggedInQueryResult;
     expect(data).toEqual({ getCart: [] });
+  });
+
+  describe('addToCart', () => {
+    it('should add to cart', async () => {
+      const category = 'Information Technology' + Math.random();
+      const addCategoryQuery = `
+    mutation {
+      addCategory(name:"${category}"){
+          id
+          name
+        }
+      }`;
+
+      const { data } = await graphql(
+        genSchema(),
+        addCategoryQuery,
+        null,
+        { db: connection },
+        {},
+      );
+      const categoryId = data!.addCategory.id;
+      const categoryName = data!.addCategory.name;
+      expect(categoryName).toEqual(category);
+
+      const bookDataWithCategoryId = {
+        ...bookData,
+        categoryId,
+      };
+
+      const queryWithCategoryId = `
+    mutation{
+        addBook(
+            title:"${bookDataWithCategoryId.title}",
+            coverImage:"${bookDataWithCategoryId.coverImage}",
+            isbn:"${bookDataWithCategoryId.isbn}",
+            description:"${bookDataWithCategoryId.description}",
+            rating:${bookDataWithCategoryId.rating},
+            listPrice:${bookDataWithCategoryId.listPrice},
+            displayPrice:${bookDataWithCategoryId.displayPrice},
+            categoryId:"${bookDataWithCategoryId.categoryId}",
+            datePublished:${bookDataWithCategoryId.datePublished}
+        ){
+            id
+            title
+            isbn
+            category{
+                name
+            }
+        }
+    }`;
+
+      const resultWithCategoryId = await graphql(
+        genSchema(),
+        queryWithCategoryId,
+        null,
+        { db: connection },
+        {},
+      );
+
+      const { data: savedBook } = resultWithCategoryId;
+      bookId = savedBook!.addBook.id;
+
+      const addToCartQuery = `
+      mutation {
+        addToCart(bookId: "${bookId}") {
+          id
+          book {
+            title
+            slug
+          }
+          user {
+            name
+            email
+          }
+          title
+        }
+      }`;
+
+      const addToCartQueryResult = await graphql(
+        genSchema(),
+        addToCartQuery,
+        null,
+        {
+          db: connection,
+          session: {
+            userId,
+          },
+        },
+        {},
+      );
+
+      expect(addToCartQueryResult.data!.addToCart!.title).toEqual(
+        bookData.title,
+      );
+    });
   });
 });

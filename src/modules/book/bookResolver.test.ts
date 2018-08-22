@@ -1,10 +1,10 @@
 import { graphql } from 'graphql';
 import { Connection } from 'typeorm';
 import { genSchema } from '../../utils/schema-utils';
+import { bookData } from '../data';
 import { connectDbTest } from './../../utils/connect-db';
 
 let connection: Connection;
-let bookData: any;
 let bookId: any;
 let bookDataWithCategoryId: any;
 let category: any;
@@ -13,21 +13,6 @@ let categoryName: any;
 
 beforeAll(async () => {
   connection = await connectDbTest(true);
-  bookData = {
-    title: 'My Book',
-    coverImage: 'my-book.jpg',
-    isbn: '1233434234',
-    description:
-      'Right now when I run npm test the output is just: ' +
-      'and the number of passed and failed tests (when the tests are successful). ' +
-      'I would like the output to include  and any other test descriptions' +
-      ' (like how the output looks when an test is run).',
-    rating: 0,
-    listPrice: 66.0,
-    displayPrice: 56.0,
-    categoryId: 'invalid',
-    datePublished: 1534851948491,
-  };
 });
 
 afterAll(async () => {
