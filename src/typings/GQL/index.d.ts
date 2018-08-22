@@ -85,7 +85,6 @@ removeFromCart: boolean | null;
 addCategory: ICategoryResponse | null;
 register: IUserResponse | null;
 login: IUserResponse | null;
-reset: IUserResponse | null;
 logout: string | null;
 }
 
@@ -124,10 +123,6 @@ mobile?: string | null;
 interface ILoginOnMutationArguments {
 email: string;
 password: string;
-}
-
-interface IResetOnMutationArguments {
-email: string;
 }
 
 interface IError {

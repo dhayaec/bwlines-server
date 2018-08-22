@@ -12,7 +12,6 @@ type Mutation {
     mobile: String
   ): UserResponse
   login(email: String!, password: String!): UserResponse
-  reset(email: String!): UserResponse
   logout: String
 }
 
