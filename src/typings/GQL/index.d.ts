@@ -28,7 +28,6 @@ getCart: Array<ICartResponse> | null;
 listCategories: Array<ICategoryResponse> | null;
 me: IUserResponse | null;
 getUser: IUserResponse | null;
-animals: Array<IAnimal> | null;
 }
 
 interface IGetBookOnQueryArguments {
@@ -70,11 +69,6 @@ id: string | null;
 name: string | null;
 email: string | null;
 mobile: string | null;
-}
-
-interface IAnimal {
-__typename: "Animal";
-kind: string;
 }
 
 interface IMutation {
@@ -123,6 +117,11 @@ mobile?: string | null;
 interface ILoginOnMutationArguments {
 email: string;
 password: string;
+}
+
+interface IAnimal {
+__typename: "Animal";
+kind: string;
 }
 
 interface IError {

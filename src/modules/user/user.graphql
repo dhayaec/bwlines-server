@@ -1,7 +1,6 @@
 type Query {
   me: UserResponse
   getUser(id: ID!): UserResponse
-  animals: [Animal]
 }
 
 type Mutation {
