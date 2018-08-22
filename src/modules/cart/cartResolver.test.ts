@@ -175,6 +175,114 @@ describe('getCart', () => {
       expect(addToCartQueryResult.data!.addToCart!.title).toEqual(
         bookData.title,
       );
+      const addToCartQueryInvalidBook = `
+      mutation {
+        addToCart(bookId: "123") {
+          id
+          book {
+            title
+            slug
+          }
+          user {
+            name
+            email
+          }
+          title
+        }
+      }`;
+
+      const addToCart2QueryResult = await graphql(
+        genSchema(),
+        addToCartQuery,
+        null,
+        {
+          db: connection,
+          session: {
+            userId,
+          },
+        },
+        {},
+      );
+
+      const { errors: errorAgain } = addToCart2QueryResult;
+      expect(errorAgain![0].message).toEqual('Already in cart');
+
+      const addToCartQueryInvalidBookResult = await graphql(
+        genSchema(),
+        addToCartQueryInvalidBook,
+        null,
+        {
+          db: connection,
+          session: {
+            userId,
+          },
+        },
+        {},
+      );
+
+      const { errors } = addToCartQueryInvalidBookResult;
+      expect(errors![0].message).toEqual('Book not found');
+
+      const addToCartQueryInvalidUserResult = await graphql(
+        genSchema(),
+        addToCartQueryInvalidBook,
+        null,
+        {
+          db: connection,
+          session: {
+            userId: '',
+          },
+        },
+        {},
+      );
+      const { errors: e } = addToCartQueryInvalidUserResult;
+      expect(e![0].message).toEqual('Login to add to cart');
+    });
+  });
+
+  describe('removeFromCart', () => {
+    it('should remove item from cart', async () => {
+      const removeQuery = `
+      mutation{
+        removeFromCart(bookId:"${bookId}")
+        } `;
+      const removeQueryResult = await graphql(
+        genSchema(),
+        removeQuery,
+        null,
+        {
+          db: connection,
+          session: {
+            userId,
+          },
+        },
+        {},
+      );
+      expect(removeQueryResult).toEqual({
+        data: {
+          removeFromCart: true,
+        },
+      });
+
+      const removeInvalidQuery = `
+      mutation{
+        removeFromCart(bookId:"123")
+        } `;
+
+      const removeInvalidQueryResult = await graphql(
+        genSchema(),
+        removeInvalidQuery,
+        null,
+        {
+          db: connection,
+          session: {
+            userId,
+          },
+        },
+        {},
+      );
+      const { errors } = removeInvalidQueryResult;
+      expect(errors![0].message).toEqual('Unable to find item in cart');
     });
   });
 });

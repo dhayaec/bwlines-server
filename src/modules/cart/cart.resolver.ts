@@ -37,10 +37,6 @@ export const resolvers: AppResolverMap = {
         throw new Error('Book not found');
       }
 
-      if (!user) {
-        throw new Error('User not found');
-      }
-
       const cartRepository = db.getRepository(Cart);
 
       const cart = await cartRepository.findOne({
