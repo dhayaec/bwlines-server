@@ -6,8 +6,5 @@ export const getUser: Resolver = async (
   { id }: GQL.IGetUserOnQueryArguments,
   { db },
 ) => {
-  if (db) {
-    return await db.getRepository(User).findOne(id);
-  }
-  return null;
+  return await db.getRepository(User).findOne(id);
 };

@@ -29,6 +29,7 @@ describe('book reducer', () => {
       categoryId: 'invalid',
       datePublished: 1534851948491,
     };
+
     const query = `
     mutation{
         addBook(
@@ -47,8 +48,8 @@ describe('book reducer', () => {
             slug
             isbn
         }
-    }
-    `;
+    }`;
+
     const result = await graphql(
       genSchema(),
       query,
@@ -56,8 +57,39 @@ describe('book reducer', () => {
       { db: connection },
       {},
     );
+
     const { errors } = result;
     expect(errors![0].message).toEqual('Category does not exists');
+
+    const validationFailQuery = `
+    mutation{
+        addBook(
+            title:"",
+            coverImage:"${bookData.coverImage}",
+            isbn:"0",
+            description:"${bookData.description}",
+            rating:${bookData.rating},
+            listPrice:${bookData.listPrice},
+            displayPrice:${bookData.displayPrice},
+            categoryId:"${bookData.categoryId}",
+            datePublished:${bookData.datePublished}
+        ){
+            id
+            title
+            slug
+            isbn
+        }
+    }`;
+
+    const validationFailQueryResult = await graphql(
+      genSchema(),
+      validationFailQuery,
+      null,
+      { db: connection },
+      {},
+    );
+    const { errors: validationFAil } = validationFailQueryResult;
+    expect(validationFAil![0].message).toEqual('Validation failed');
 
     const name = 'Information Technology' + Math.random();
     const addCategoryQuery = `
@@ -104,8 +136,8 @@ describe('book reducer', () => {
                 name
             }
         }
-    }
-    `;
+    }`;
+
     const resultWithCategoryId = await graphql(
       genSchema(),
       queryWithCategoryId,
@@ -131,8 +163,7 @@ describe('book reducer', () => {
                 name
             }
         }
-    }
-    `;
+    }`;
 
     const resultListBooks = await graphql(
       genSchema(),
