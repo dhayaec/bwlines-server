@@ -4,7 +4,6 @@ import { login } from './login';
 import { logout } from './logout';
 import { me } from './me';
 import { register } from './register';
-import { reset } from './reset';
 
 export const resolvers: AppResolverMap = {
   Query: {
@@ -15,6 +14,5 @@ export const resolvers: AppResolverMap = {
     register,
     login,
     logout,
-    reset,
   },
 };
