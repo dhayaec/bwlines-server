@@ -1,6 +1,5 @@
 {
-  "eslint.autoFixOnSave": true,
-  "files.autoSave": "afterDelay",
+  "files.autoSave": "onFocusChange",
   "editor.formatOnSave": true,
   "git.enableSmartCommit": true,
   "files.exclude": {
@@ -13,6 +12,7 @@
   "editor.fontSize": 14,
   "editor.fontLigatures": true,
   "tslint.autoFixOnSave": true,
+  "prettier.trailingComma": "all",
   "cSpell.words": [
     "antialiased",
     "bwlines",

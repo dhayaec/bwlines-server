@@ -1,6 +1,7 @@
 {
   "extends": [
     "tslint-config-airbnb",
+    "tslint-plugin-graphql",
     "tslint:recommended",
     "tslint-config-prettier"
   ],
@@ -59,6 +60,12 @@
     ],
     // tslint-react
     "object-curly-spacing": true,
-    "import-spacing": true
+    "import-spacing": true,
+    "graphql": [
+      true,
+      {
+        "env": "apollo"
+      }
+    ]
   }
 }
