@@ -5,16 +5,19 @@ import { genSchema } from '../../utils/schema-utils';
 import { makeSlug } from './../../utils/utils';
 
 let connection: Connection;
+let name: any;
+let slug: any;
+
 beforeAll(async () => {
   connection = await connectDbTest(true);
+  name = 'Information Technology ' + Math.random();
+  slug = makeSlug(name);
 });
 
 afterAll(async () => connection && connection.close());
 
 describe('category resolver', () => {
   it('addCategory', async () => {
-    const name = 'Information Technology';
-    const slug = makeSlug(name);
     const query = `
     mutation {
       addCategory(name:"${name}"){
@@ -32,7 +35,9 @@ describe('category resolver', () => {
     );
     expect(result.data!.addCategory.name).toEqual(name);
     expect(result.data!.addCategory.slug).toEqual(slug);
+  });
 
+  it('listCategory', async () => {
     const queryList = `
     {
       listCategories{
@@ -49,7 +54,7 @@ describe('category resolver', () => {
     );
 
     expect(resultList).toEqual({
-      data: { listCategories: [{ slug: 'information-technology' }] },
+      data: { listCategories: [{ slug }] },
     });
   });
 });

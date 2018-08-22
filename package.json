@@ -69,7 +69,7 @@
     "gen-types": "ts-node --files ./src/utils/create-types.ts",
     "debug": "NODE_ENV=development node --inspect -r ts-node/register/transpile-only src/index.ts",
     "test": "jest --runInBand --detectOpenHandles",
-    "test:w": "jest --watch",
+    "test:w": "jest --watch --runInBand",
     "lint": "tslint --project tsconfig.json -c tslint.json 'src/**/*.ts' --fix",
     "precommit": "lint-staged"
   },

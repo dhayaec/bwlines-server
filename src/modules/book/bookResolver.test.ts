@@ -4,8 +4,30 @@ import { genSchema } from '../../utils/schema-utils';
 import { connectDbTest } from './../../utils/connect-db';
 
 let connection: Connection;
+let bookData: any;
+let bookId: any;
+let bookDataWithCategoryId: any;
+let category: any;
+let categoryId: any;
+let categoryName: any;
+
 beforeAll(async () => {
   connection = await connectDbTest(true);
+  bookData = {
+    title: 'My Book',
+    coverImage: 'my-book.jpg',
+    isbn: '1233434234',
+    description:
+      'Right now when I run npm test the output is just: ' +
+      'and the number of passed and failed tests (when the tests are successful). ' +
+      'I would like the output to include  and any other test descriptions' +
+      ' (like how the output looks when an test is run).',
+    rating: 0,
+    listPrice: 66.0,
+    displayPrice: 56.0,
+    categoryId: 'invalid',
+    datePublished: 1534851948491,
+  };
 });
 
 afterAll(async () => {
@@ -14,22 +36,8 @@ afterAll(async () => {
   }
 });
 
-describe('book reducer', () => {
-  it('addBook', async () => {
-    const bookData = {
-      title: 'IT book 3',
-      coverImage: 'adfsd.jpg',
-      isbn: '1233434234',
-      description:
-        'This is sddescription sdfs dfsdf sdfsdfsdfsdfsdfsdfsdfsf' +
-        'sdfsd fsdfds fsdfsd fsdf  sdfsdf sdfsdf sdfds fsdfsdfs sdfsdfsdfsdfsdfsdfsdfsdfd fsdfsd',
-      rating: 0,
-      listPrice: 66.0,
-      displayPrice: 56.0,
-      categoryId: 'invalid',
-      datePublished: 1534851948491,
-    };
-
+describe('addBook', () => {
+  it('addBook invalid category', async () => {
     const query = `
     mutation{
         addBook(
@@ -60,7 +68,9 @@ describe('book reducer', () => {
 
     const { errors } = result;
     expect(errors![0].message).toEqual('Category does not exists');
+  });
 
+  it('addBook invalid input', async () => {
     const validationFailQuery = `
     mutation{
         addBook(
@@ -90,11 +100,13 @@ describe('book reducer', () => {
     );
     const { errors: validationFAil } = validationFailQueryResult;
     expect(validationFAil![0].message).toEqual('Validation failed');
+  });
 
-    const name = 'Information Technology' + Math.random();
+  it('valid category', async () => {
+    category = 'Information Technology' + Math.random();
     const addCategoryQuery = `
     mutation {
-      addCategory(name:"${name}"){
+      addCategory(name:"${category}"){
           id
           name
         }
@@ -107,11 +119,11 @@ describe('book reducer', () => {
       { db: connection },
       {},
     );
-    const categoryId = data!.addCategory.id;
-    const categoryName = data!.addCategory.name;
-    expect(categoryName).toEqual(name);
+    categoryId = data!.addCategory.id;
+    categoryName = data!.addCategory.name;
+    expect(categoryName).toEqual(category);
 
-    const bookDataWithCategoryId = {
+    bookDataWithCategoryId = {
       ...bookData,
       categoryId,
     };
@@ -147,14 +159,17 @@ describe('book reducer', () => {
     );
 
     const { data: savedBook } = resultWithCategoryId;
-    const bookId = savedBook!.addBook.id;
+    bookId = savedBook!.addBook.id;
 
     expect(resultWithCategoryId.data!.addBook.title).toEqual(
       bookDataWithCategoryId.title,
     );
+  });
+});
 
-    const listBooksQuery = `
-    {
+describe('listBooks', () => {
+  it('list books', async () => {
+    const listBooksQuery = `{
         listBooks{
             id
             isbn
@@ -178,21 +193,23 @@ describe('book reducer', () => {
         listBooks: [
           {
             id: bookId,
-            category: { name },
+            category: { name: category },
             isbn: bookDataWithCategoryId.isbn,
             title: bookData.title,
           },
         ],
       },
     });
+  });
+});
 
-    const getBookQuery = `
-    {
+describe('getBook', () => {
+  it('should get book by id', async () => {
+    const getBookQuery = `{
         getBook(id:"${bookId}"){
             title
         }
-    }
-    `;
+    }`;
 
     const getBookResult = await graphql(
       genSchema(),
