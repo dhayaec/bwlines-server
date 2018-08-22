@@ -1,13 +1,13 @@
 module.exports = {
-  verbose: false,
+  verbose: true,
   rootDir: './',
   moduleFileExtensions: ['ts', 'tsx', 'js'],
   transform: {
-    '^.+\\.tsx?$': 'ts-jest'
+    '^.+\\.tsx?$': 'ts-jest',
   },
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(tsx?)$',
   testPathIgnorePatterns: ['<rootDir>/node_modules/'],
-  collectCoverage: true,
+  collectCoverage: false,
   testEnvironment: 'node',
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
@@ -15,6 +15,6 @@ module.exports = {
     '!src/utils/create-types.ts',
     '!src/index.ts',
     '!**/node_modules/**',
-    '!**/vendor/**'
-  ]
+    '!**/vendor/**',
+  ],
 };
