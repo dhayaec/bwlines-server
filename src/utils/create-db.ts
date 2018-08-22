@@ -8,10 +8,16 @@ export async function createDb() {
     name: 'default',
   });
 
-  const dbName =
-    process.env.NODE_ENV === Env.test
-      ? process.env.DB_NAME_TEST
-      : process.env.DB_NAME;
+  let dbName: string;
+
+  if (process.env.NODE_ENV === Env.test) {
+    dbName = process.env.DB_NAME_TEST as string;
+  } else if (process.env.NODE_ENV === Env.development) {
+    dbName = process.env.DB_NAME as string;
+  } else {
+    dbName = process.env.DB_NAME_PRODUCTION as string;
+  }
+
   const grantQ =
     // tslint:disable-next-line:prefer-template
     'GRANT ALL ON ' + dbName + '.* TO `' + process.env.DB_USER + '`@`%`;';

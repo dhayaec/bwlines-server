@@ -65,13 +65,15 @@
     "check": "tsc --project ./ --noEmit",
     "copy": "copyfiles -u 1 src/**/*.graphql dist",
     "dev": "npm run gen-types && NODE_ENV=development nodemon --exec ts-node --files src/index.ts",
+    "start": "NODE_ENV=production ts-node --files src/index.ts",
     "start:node": "rimraf ./dist && npm run compile && npm run copy && NODE_ENV=production node ./dist/",
     "gen-types": "ts-node --files ./src/utils/create-types.ts",
     "debug": "NODE_ENV=development node --inspect -r ts-node/register/transpile-only src/index.ts",
     "test": "jest --runInBand --detectOpenHandles",
     "test:w": "jest --watch --runInBand",
     "lint": "tslint --project tsconfig.json -c tslint.json 'src/**/*.ts' --fix",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "create:migration": "ts-node ./node_modules/.bin/typeorm migration:generate -n Create -c production"
   },
   "lint-staged": {
     "*.ts": [

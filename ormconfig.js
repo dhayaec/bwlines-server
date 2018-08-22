@@ -1,3 +1,4 @@
+require('dotenv-safe').config();
 const {
   DB_HOST,
   DB_PORT,
@@ -8,6 +9,7 @@ const {
   DB_NAME_TEST,
   ROOT_USER,
   ROOT_PASS,
+  DB_NAME_PRODUCTION,
 } = process.env;
 
 module.exports = [
@@ -42,6 +44,23 @@ module.exports = [
     dropSchema: true,
     synchronize: true,
     logging: false,
+    entities: ['src/entity/**/*.ts'],
+    migrations: ['src/migration/**/*.ts'],
+    subscribers: ['src/subscriber/**/*.ts'],
+    cli: {
+      entitiesDir: 'src/entity',
+      migrationsDir: 'src/migration',
+      subscribersDir: 'src/subscriber',
+    },
+  },
+  {
+    name: 'production',
+    type: DB_TYPE,
+    host: DB_HOST,
+    port: DB_PORT,
+    username: DB_USER,
+    password: DB_PASS,
+    database: DB_NAME_PRODUCTION,
     entities: ['src/entity/**/*.ts'],
     migrations: ['src/migration/**/*.ts'],
     subscribers: ['src/subscriber/**/*.ts'],

@@ -28,6 +28,10 @@ export async function startServer() {
 
   const connection = await connectDb();
 
+  if (process.env.NODE_ENV === Env.production) {
+    await connection.runMigrations();
+  }
+
   const server = new GraphQLServer({
     schema: genSchema(),
     context: ({ request }) => ({
