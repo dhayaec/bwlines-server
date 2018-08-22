@@ -97,6 +97,7 @@ describe('book reducer', () => {
             categoryId:"${bookDataWithCategoryId.categoryId}",
             datePublished:${bookDataWithCategoryId.datePublished}
         ){
+            id
             title
             isbn
             category{
@@ -113,19 +114,17 @@ describe('book reducer', () => {
       {},
     );
 
-    expect(resultWithCategoryId).toEqual({
-      data: {
-        addBook: {
-          category: { name },
-          isbn: bookDataWithCategoryId.isbn,
-          title: bookDataWithCategoryId.title,
-        },
-      },
-    });
+    const { data: savedBook } = resultWithCategoryId;
+    const bookId = savedBook!.addBook.id;
+
+    expect(resultWithCategoryId.data!.addBook.title).toEqual(
+      bookDataWithCategoryId.title,
+    );
 
     const listBooksQuery = `
     {
         listBooks{
+            id
             isbn
             title
             category{
@@ -147,6 +146,7 @@ describe('book reducer', () => {
       data: {
         listBooks: [
           {
+            id: bookId,
             category: { name },
             isbn: bookDataWithCategoryId.isbn,
             title: bookData.title,
@@ -154,5 +154,23 @@ describe('book reducer', () => {
         ],
       },
     });
+
+    const getBookQuery = `
+    {
+        getBook(id:"${bookId}"){
+            title
+        }
+    }
+    `;
+
+    const getBookResult = await graphql(
+      genSchema(),
+      getBookQuery,
+      null,
+      { db: connection },
+      {},
+    );
+
+    expect(getBookResult.data!.getBook.title).toEqual(bookData.title);
   });
 });
