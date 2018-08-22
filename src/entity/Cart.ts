@@ -19,7 +19,7 @@ export class Cart extends BaseEntity {
   @ManyToOne(() => Book, book => book.cart)
   book: Book;
 
-  @ManyToOne(() => User, user => user.cart)
+  @ManyToOne(() => User)
   user: User;
 
   @Column('varchar', { length: 255 })

@@ -12,6 +12,7 @@ module.exports = {
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
     '!src/typings/**',
+    '!src/migration/**',
     '!src/utils/create-types.ts',
     '!src/index.ts',
     '!**/node_modules/**',
