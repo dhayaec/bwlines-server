@@ -1,4 +1,3 @@
-import { GraphQLMiddlewareFunc, Resolver } from 'graphql-utils';
 import { Redis } from 'ioredis';
 import { v4 } from 'uuid';
 import { ValidationError } from 'yup';
@@ -7,6 +6,7 @@ import {
   REDIS_SESSION_PREFIX,
   USER_SESSION_PREFIX,
 } from '../constants';
+import { GraphQLMiddlewareFunc, Resolver } from '../typings/app-utility-types';
 
 export const createForgotPasswordLink = async (
   url: string,
@@ -34,7 +34,7 @@ export const removeAllUsersSessions = async (userId: string, redis: Redis) => {
 };
 
 export const formatYupError = (err: ValidationError) => {
-  const errors: [{path: string; message: string}] = [] as any;
+  const errors: [{ path: string; message: string }] = [] as any;
   err.inner.forEach(e => {
     errors.push({
       path: e.path,

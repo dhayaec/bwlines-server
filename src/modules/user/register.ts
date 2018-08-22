@@ -1,5 +1,5 @@
 import { User } from '../../entity/User';
-import { Resolver } from '../../typings/graphql-utils';
+import { Resolver } from '../../typings/app-utility-types';
 import { InputValidationError } from '../../utils/errors';
 import { formatYupError } from '../../utils/user-utils';
 import { userSchema } from '../validation-rules';

@@ -1,7 +1,7 @@
 import * as bcryptjs from 'bcryptjs';
 import { USER_SESSION_PREFIX } from '../../constants';
 import { User } from '../../entity/User';
-import { Resolver } from './../../typings/graphql-utils';
+import { Resolver } from './../../typings/app-utility-types';
 
 export const login: Resolver = async (
   _,

@@ -1,9 +1,9 @@
-import { AppResolverMap } from 'graphql-utils';
 import { InputValidationError } from '../../utils/errors';
 import { formatYupError } from '../../utils/utils';
 import { bookSchema } from '../validation-rules';
 import { Book } from './../../entity/Book';
 import { Category } from './../../entity/Category';
+import { AppResolverMap } from './../../typings/app-utility-types';
 
 export const resolvers: AppResolverMap = {
   Query: {

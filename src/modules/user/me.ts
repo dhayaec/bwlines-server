@@ -1,6 +1,6 @@
 import { User } from '../../entity/User';
 import { createMiddleware, middleware } from '../../utils/user-utils';
-import { Resolver } from './../../typings/graphql-utils';
+import { Resolver } from './../../typings/app-utility-types';
 
 export const me: Resolver = createMiddleware(
   middleware,

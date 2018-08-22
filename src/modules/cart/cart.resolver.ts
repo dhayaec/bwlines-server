@@ -1,7 +1,7 @@
-import { AppResolverMap } from 'graphql-utils';
 import { User } from '../../entity/User';
 import { Book } from './../../entity/Book';
 import { Cart } from './../../entity/Cart';
+import { AppResolverMap } from './../../typings/app-utility-types';
 
 export const resolvers: AppResolverMap = {
   Query: {

@@ -1,5 +1,5 @@
 import { removeAllUsersSessions } from '../../utils/user-utils';
-import { Resolver } from './../../typings/graphql-utils';
+import { Resolver } from './../../typings/app-utility-types';
 
 export const logout: Resolver = async (_, __, { session, redis }) => {
   const { userId } = session;

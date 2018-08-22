@@ -1,4 +1,4 @@
-import { AppResolverMap } from 'graphql-utils';
+import { AppResolverMap } from '../../typings/app-utility-types';
 import { getUser } from './get-user';
 import { login } from './login';
 import { logout } from './logout';

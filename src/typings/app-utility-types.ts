@@ -1,6 +1,5 @@
 import { Redis } from 'ioredis';
 import { Connection } from 'typeorm';
-import { categoryLoader } from '../modules/loaders';
 
 export interface Session extends Express.Session {
   userId?: string;
@@ -12,7 +11,6 @@ export interface Context {
   session: Session;
   req: Express.Request;
   db: Connection;
-  categoryLoader: ReturnType<typeof categoryLoader>;
 }
 
 export type Resolver = (

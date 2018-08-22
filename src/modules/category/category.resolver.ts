@@ -1,5 +1,5 @@
 import { Category } from './../../entity/Category';
-import { AppResolverMap } from './../../typings/graphql-utils';
+import { AppResolverMap } from './../../typings/app-utility-types';
 
 export const resolvers: AppResolverMap = {
   Query: {

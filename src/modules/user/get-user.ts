@@ -1,5 +1,5 @@
 import { User } from '../../entity/User';
-import { Resolver } from './../../typings/graphql-utils';
+import { Resolver } from './../../typings/app-utility-types';
 
 export const getUser: Resolver = async (
   _,
