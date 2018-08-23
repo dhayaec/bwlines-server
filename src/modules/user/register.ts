@@ -22,7 +22,7 @@ export const register: Resolver = async (
     });
   }
 
-  const { email, password: pass, name } = args;
+  const { email, password: pass, name, mobile } = args;
 
   const userExists = await db.getRepository(User).findOne({ where: { email } });
   if (userExists) {
@@ -33,6 +33,7 @@ export const register: Resolver = async (
     name: name.trim(),
     email: email.trim(),
     password: pass,
+    mobile: mobile ? mobile.trim() : '',
   });
 
   const userData = await user.save();
