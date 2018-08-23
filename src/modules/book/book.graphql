@@ -25,5 +25,11 @@ type BookResponse {
   slug: String
   coverImage: String
   isbn: String
+  description: String
+  rating: Float
+  listPrice: Float
+  displayPrice: Float
+  yourSavings: Float
+  datePublished: Date
   category: CategoryResponse
 }

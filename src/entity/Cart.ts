@@ -16,7 +16,7 @@ export class Cart extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Book, book => book.cart)
+  @ManyToOne(() => Book)
   book: Book;
 
   @ManyToOne(() => User)

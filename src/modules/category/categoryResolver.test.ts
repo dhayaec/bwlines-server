@@ -1,6 +1,7 @@
 import { graphql } from 'graphql';
 import { Connection } from 'typeorm';
 import { connectDbTest } from '../../utils/connect-db';
+import { createDb } from '../../utils/create-db';
 import { genSchema } from '../../utils/schema-utils';
 import { makeSlug } from './../../utils/utils';
 
@@ -9,6 +10,8 @@ let name: any;
 let slug: any;
 
 beforeAll(async () => {
+  await createDb();
+
   connection = await connectDbTest(true);
   name = 'Information Technology ' + Math.random();
   slug = makeSlug(name);

@@ -12,7 +12,6 @@ import {
   UpdateDateColumn,
   VersionColumn,
 } from 'typeorm';
-import { Cart } from './Cart';
 import { Category } from './Category';
 
 @Entity('books')
@@ -66,9 +65,6 @@ export class Book extends BaseEntity {
 
   @ManyToOne(() => Category, category => category.book)
   category: Category;
-
-  @ManyToOne(() => Cart, cart => cart.book)
-  cart: Cart;
 
   @BeforeInsert()
   async slugify() {

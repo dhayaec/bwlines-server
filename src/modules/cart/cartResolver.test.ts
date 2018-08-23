@@ -1,6 +1,7 @@
 import { graphql } from 'graphql';
 import * as ioredis from 'ioredis';
 import { Connection } from 'typeorm';
+import { createDb } from '../../utils/create-db';
 import { genSchema } from '../../utils/schema-utils';
 import { connectDbTest } from './../../utils/connect-db';
 import { bookData } from './../data';
@@ -12,6 +13,8 @@ let bookId: any;
 let userId: any;
 
 beforeAll(async () => {
+  await createDb();
+
   connection = await connectDbTest(true);
   context = {
     db: connection,
