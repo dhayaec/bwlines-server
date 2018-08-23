@@ -6,58 +6,49 @@ import { genSchema } from '../../utils/schema-utils';
 import { makeSlug } from './../../utils/utils';
 
 let connection: Connection;
-let name: any;
-let slug: any;
 
 beforeAll(async () => {
   await createDb();
-
   connection = await connectDbTest(true);
-  name = 'Information Technology ' + Math.random();
-  slug = makeSlug(name);
 });
 
 afterAll(async () => connection && connection.close());
 
 describe('category resolver', () => {
-  it('addCategory', async () => {
-    const query = `
-    mutation {
-      addCategory(name:"${name}"){
-          id
-          name
-          slug
-        }
-      }`;
-    const result = await graphql(
-      genSchema(),
-      query,
-      null,
-      { db: connection },
-      {},
-    );
-    expect(result.data!.addCategory.name).toEqual(name);
-    expect(result.data!.addCategory.slug).toEqual(slug);
-  });
+  const name = 'Information Technology ' + Math.random();
+  const slug = makeSlug(name);
 
-  it('listCategory', async () => {
-    const queryList = `
-    {
-      listCategories{
+  const addCategoryTestCase = {
+    caseId: 'addCategory',
+    query: `mutation { addCategory(name:"${name}"){
+        id
+        name
         slug
-      }
-    }
-    `;
-    const resultList = await graphql(
-      genSchema(),
-      queryList,
-      null,
-      { db: connection },
-      {},
-    );
+      }}`,
+    expectation: (result: any) => {
+      expect(result.data!.addCategory.name).toEqual(name);
+      expect(result.data!.addCategory.slug).toEqual(slug);
+    },
+  };
 
-    expect(resultList).toEqual({
-      data: { listCategories: [{ slug }] },
+  const listCategoriesTestCase = {
+    caseId: 'listCategories',
+    query: `{ listCategories{ slug } }`,
+    expectation: (result: any) => {
+      expect(result).toEqual({
+        data: { listCategories: [{ slug }] },
+      });
+    },
+  };
+
+  const cases = [addCategoryTestCase, listCategoriesTestCase];
+
+  cases.forEach(c => {
+    const { query, expectation } = c;
+    it(`case: ${c.caseId}`, async () => {
+      const ctx = { db: connection };
+      const result = await graphql(genSchema(), query, null, ctx, {});
+      expectation(result);
     });
   });
 });
