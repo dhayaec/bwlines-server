@@ -1,5 +1,5 @@
 module.exports = {
-  verbose: true,
+  verbose: false,
   rootDir: './',
   moduleFileExtensions: ['ts', 'tsx', 'js'],
   transform: {

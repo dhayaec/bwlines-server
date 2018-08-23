@@ -69,10 +69,18 @@ export const resolvers: AppResolverMap = {
       if (!userId) {
         throw new Error('Login to remove from cart');
       }
+
+      const book = await db.getRepository(Book).findOne(bookId);
+      if (!book) {
+        throw new Error('Book not found');
+      }
+
+      const user = await db.getRepository(User).findOne(userId);
+
       const cart = await db.getRepository(Cart).findOne({
         where: {
-          bookId,
-          userId,
+          book,
+          user,
         },
       });
 
@@ -80,9 +88,29 @@ export const resolvers: AppResolverMap = {
         throw new Error('Unable to find item in cart');
       }
 
-      await db.getRepository(Cart).delete(cart.id);
+      return await db.getRepository(Cart).delete(cart.id);
+    },
+    emptyCart: async (_, __, { db, session }) => {
+      const { userId } = session;
 
-      return true;
+      if (!userId) {
+        throw new Error('Login to remove from cart');
+      }
+
+      const user = await db.getRepository(User).findOne(userId);
+
+      const cart = await db.getRepository(Cart).find({
+        where: {
+          user,
+        },
+      });
+
+      if (!cart.length) {
+        throw new Error('Nothing in cart');
+      }
+
+      const ids = cart.map(x => x.id);
+      return await db.getRepository(Cart).delete(ids);
     },
   },
 };

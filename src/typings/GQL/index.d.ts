@@ -76,6 +76,7 @@ __typename: "Mutation";
 addBook: IBookResponse | null;
 addToCart: ICartResponse | null;
 removeFromCart: boolean | null;
+emptyCart: boolean | null;
 addCategory: ICategoryResponse | null;
 register: IUserResponse | null;
 login: IUserResponse | null;

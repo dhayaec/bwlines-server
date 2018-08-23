@@ -10,6 +10,7 @@ let context: any;
 let user: any;
 let bookId: any;
 let userId: any;
+
 beforeAll(async () => {
   connection = await connectDbTest(true);
   context = {
@@ -297,7 +298,107 @@ describe('getCart', () => {
       );
 
       const { errors } = removeInvalidQueryResult;
-      expect(errors![0].message).toEqual('Unable to find item in cart');
+      expect(errors![0].message).toEqual('Book not found');
+    });
+  });
+
+  describe('emptyCart', () => {
+    it('should empty cart', async () => {
+      const q = `mutation{emptyCart}`;
+      const emptyCartResult = await graphql(
+        genSchema(),
+        q,
+        null,
+        {
+          db: connection,
+          session: {},
+        },
+        {},
+      );
+
+      const { errors } = emptyCartResult;
+      expect(errors![0].message).toEqual('Login to remove from cart');
+
+      const q1 = `mutation{emptyCart}`;
+      const emptyCart1Result = await graphql(
+        genSchema(),
+        q1,
+        null,
+        {
+          db: connection,
+          session: { userId },
+        },
+        {},
+      );
+
+      const { errors: e1 } = emptyCart1Result;
+      expect(e1![0].message).toEqual('Nothing in cart');
+
+      const q2 = `mutation{addToCart(bookId:"${bookId}"){
+        title
+      }}`;
+      const addToCart2Result = await graphql(
+        genSchema(),
+        q2,
+        null,
+        {
+          db: connection,
+          session: { userId },
+        },
+        {},
+      );
+
+      const { data } = addToCart2Result;
+
+      expect(data!.addToCart.title).toEqual(bookData.title);
+
+      const q3 = `{getCart{ title }}`;
+
+      const getCart2Result = await graphql(
+        genSchema(),
+        q3,
+        null,
+        {
+          db: connection,
+          session: { userId },
+        },
+        {},
+      );
+      expect(getCart2Result.data).toEqual({
+        getCart: [{ title: bookData.title }],
+      });
+
+      const q4 = `mutation{ emptyCart }`;
+
+      const getCart4Result = await graphql(
+        genSchema(),
+        q4,
+        null,
+        {
+          db: connection,
+          session: { userId },
+        },
+        {},
+      );
+      expect(getCart4Result.data).toEqual({
+        emptyCart: true,
+      });
+
+      const q5 = `{getCart{ title }}`;
+
+      const getCart5Result = await graphql(
+        genSchema(),
+        q5,
+        null,
+        {
+          db: connection,
+          session: { userId },
+        },
+        {},
+      );
+      expect(getCart5Result.data).toEqual({
+        getCart: [],
+      });
     });
   });
 });
