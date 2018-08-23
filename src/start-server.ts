@@ -18,7 +18,7 @@ import { formatError } from './utils/utils';
 
 const RedisStore = connectRedis(ExpressSession as any);
 
-const redis = new IORedis();
+export const redis = new IORedis();
 
 export async function startServer() {
   if (process.env.NODE_ENV === Env.test) {

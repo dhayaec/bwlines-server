@@ -1,7 +1,6 @@
 {
   "extends": [
     "tslint-config-airbnb",
-    "tslint-plugin-graphql",
     "tslint:recommended",
     "tslint-config-prettier"
   ],
