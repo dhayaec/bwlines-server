@@ -67,7 +67,7 @@ export const resolvers: AppResolverMap = {
     ) => {
       const { userId } = session;
       if (!userId) {
-        throw new Error('Login to add to cart');
+        throw new Error('Login to remove from cart');
       }
       const cart = await db.getRepository(Cart).findOne({
         where: {

@@ -269,6 +269,20 @@ describe('getCart', () => {
         removeFromCart(bookId:"123")
         } `;
 
+      const removeInvalidQueryWithoutLoginResult = await graphql(
+        genSchema(),
+        removeInvalidQuery,
+        null,
+        {
+          db: connection,
+          session: {},
+        },
+        {},
+      );
+
+      const { errors: wLErrors } = removeInvalidQueryWithoutLoginResult;
+      expect(wLErrors![0].message).toEqual('Login to remove from cart');
+
       const removeInvalidQueryResult = await graphql(
         genSchema(),
         removeInvalidQuery,
@@ -281,6 +295,7 @@ describe('getCart', () => {
         },
         {},
       );
+
       const { errors } = removeInvalidQueryResult;
       expect(errors![0].message).toEqual('Unable to find item in cart');
     });
