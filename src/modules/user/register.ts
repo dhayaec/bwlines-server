@@ -33,7 +33,7 @@ export const register: Resolver = async (
     name: name.trim(),
     email: email.trim(),
     password: pass,
-    mobile: mobile ? mobile.trim() : '',
+    mobile: mobile && mobile.length > 0 ? mobile.trim() : '',
   });
 
   const userData = await user.save();

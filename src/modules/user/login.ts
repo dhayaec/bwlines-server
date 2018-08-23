@@ -27,9 +27,5 @@ export const login: Resolver = async (
     await redis.lpush(`${USER_SESSION_PREFIX}${user.id}`, req.sessionID);
   }
 
-  return {
-    id,
-    name,
-    email: emailAddress,
-  };
+  return user;
 };
