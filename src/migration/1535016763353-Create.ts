@@ -1,3 +1,4 @@
+/* cSpell:disable */
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class Create1535016763353 implements MigrationInterface {
