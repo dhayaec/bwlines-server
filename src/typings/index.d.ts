@@ -16,3 +16,10 @@ interface EmailRendererProps {
   message: string;
   footer?: string;
 }
+
+interface SendEmailParams {
+  to: string;
+  subject: string;
+  text: string;
+  html: string;
+}

@@ -16,6 +16,7 @@ beforeAll(async () => {
   context = {
     db: connection,
     redis: new ioredis(),
+    url: 'http://localhost:4000',
   };
 
   loggedInContext = (userId: any) => {
@@ -26,6 +27,7 @@ beforeAll(async () => {
         userId,
         destroy: () => null,
       },
+      url: 'http://localhost:4000',
       req: {
         sessionID: '123',
       },

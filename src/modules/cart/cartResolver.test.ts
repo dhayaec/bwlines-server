@@ -16,6 +16,7 @@ beforeAll(async () => {
   context = {
     db: connection,
     redis: new ioredis(),
+    url: 'http://localhost:4000',
   };
   user = {
     name: 'example',

@@ -1,4 +1,7 @@
+import { Request, Response } from 'express';
 import { Redis } from 'ioredis';
+// tslint:disable-next-line:no-duplicate-imports
+import * as IORedis from 'ioredis';
 import { v4 } from 'uuid';
 import { ValidationError } from 'yup';
 import {
@@ -6,6 +9,7 @@ import {
   REDIS_SESSION_PREFIX,
   USER_SESSION_PREFIX,
 } from '../constants';
+import { User } from '../entity/User';
 import { GraphQLMiddlewareFunc, Resolver } from '../typings/app-utility-types';
 
 export const createForgotPasswordLink = async (
@@ -59,4 +63,27 @@ export const middleware = async (
   info: any,
 ) => {
   return resolver(parent, args, context, info);
+};
+
+export const createConfirmEmailLink = async (
+  url: string,
+  userId: string,
+  redis: Redis,
+) => {
+  const id = v4();
+  await redis.set(id, userId, 'ex', 60 * 60 * 24);
+  return `${url}/confirm/${id}`;
+};
+
+export const confirmEmail = async (req: Request, res: Response) => {
+  const redis = new IORedis();
+  const { id } = req.params;
+  const userId = await redis.get(id);
+  if (userId) {
+    await User.update({ id: userId }, { confirmed: true });
+    await redis.del(id);
+    res.redirect(`${process.env.FRONTEND_HOST}/login`);
+  } else {
+    res.send('invalid or expired token');
+  }
 };

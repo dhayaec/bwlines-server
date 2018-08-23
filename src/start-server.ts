@@ -13,6 +13,7 @@ import { Env, REDIS_SESSION_PREFIX } from './constants';
 import { connectDb } from './utils/connect-db';
 import { createDb } from './utils/create-db';
 import { genSchema } from './utils/schema-utils';
+import { confirmEmail } from './utils/user-utils';
 import { formatError } from './utils/utils';
 
 const RedisStore = connectRedis(ExpressSession as any);
@@ -78,6 +79,7 @@ export async function startServer() {
   );
 
   express.get('/ping', (_, res) => res.json({ message: 'pong' }));
+  express.get('/confirm/:id', confirmEmail);
 
   return server.start(
     {

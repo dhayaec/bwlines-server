@@ -21,7 +21,7 @@ module.exports = [
     username: DB_USER,
     password: DB_PASS,
     database: DB_NAME,
-    dropSchema: false,
+    dropSchema: true,
     synchronize: true,
     logging: true,
     entities: ['src/entity/**/*.ts'],
