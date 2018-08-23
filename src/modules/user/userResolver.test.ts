@@ -36,9 +36,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  if (connection) {
-    connection.close();
-  }
+  connection.close();
 });
 
 describe('login', () => {
