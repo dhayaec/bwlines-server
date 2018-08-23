@@ -267,7 +267,7 @@ describe('getCart', () => {
       const removeInvalidQuery = `
       mutation{
         removeFromCart(bookId:"123")
-      }`;
+      } `;
 
       const removeInvalidQueryWithoutLoginResult = await graphql(
         genSchema(),
