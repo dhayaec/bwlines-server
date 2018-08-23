@@ -283,6 +283,20 @@ describe('getCart', () => {
       const { errors: wLErrors } = removeInvalidQueryWithoutLoginResult;
       expect(wLErrors![0].message).toEqual('Login to remove from cart');
 
+      const removeInvalidQueryWithoutLoginResult = await graphql(
+        genSchema(),
+        removeInvalidQuery,
+        null,
+        {
+          db: connection,
+          session: {},
+        },
+        {},
+      );
+
+      const { errors: wLErrors } = removeInvalidQueryWithoutLoginResult;
+      expect(wLErrors![0].message).toEqual('Login to remove from cart');
+
       const removeInvalidQueryResult = await graphql(
         genSchema(),
         removeInvalidQuery,
