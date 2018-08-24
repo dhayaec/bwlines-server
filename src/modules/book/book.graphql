@@ -3,6 +3,7 @@ scalar Date
 type Query {
   listBooks: [BookResponse]
   getBook(id: ID!): BookResponse
+  getBookByCategory(categoryId: ID!): [BookResponse]
 }
 
 type Mutation {

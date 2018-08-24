@@ -18,6 +18,21 @@ export const resolvers: AppResolverMap = {
         .getRepository(Book)
         .findOne(id, { relations: ['category'] });
     },
+    getBookByCategory: async (
+      _,
+      { categoryId }: GQL.IGetBookByCategoryOnQueryArguments,
+      { db },
+    ) => {
+      const category = await db.getRepository(Category).findOne(categoryId);
+      if (!category) {
+        throw new Error('Invalid category');
+      }
+
+      const books = await db
+        .getRepository(Book)
+        .find({ where: { category }, relations: ['category'] });
+      return books;
+    },
   },
   Mutation: {
     addBook: async (_, args: GQL.IAddBookOnMutationArguments, { db }) => {

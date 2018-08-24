@@ -24,6 +24,7 @@ interface IQuery {
 __typename: "Query";
 listBooks: Array<IBookResponse> | null;
 getBook: IBookResponse | null;
+getBookByCategory: Array<IBookResponse> | null;
 getCart: Array<ICartResponse> | null;
 listCategories: Array<ICategoryResponse> | null;
 me: IUserResponse | null;
@@ -32,6 +33,10 @@ getUser: IUserResponse | null;
 
 interface IGetBookOnQueryArguments {
 id: string;
+}
+
+interface IGetBookByCategoryOnQueryArguments {
+categoryId: string;
 }
 
 interface IGetUserOnQueryArguments {

@@ -10,6 +10,7 @@ import * as RateLimitRedis from 'rate-limit-redis';
 // tslint:disable-next-line:no-import-side-effect
 import 'reflect-metadata';
 import { Env, REDIS_SESSION_PREFIX } from './constants';
+import { seeder } from './seeder';
 import { connectDb } from './utils/connect-db';
 import { createDb } from './utils/create-db';
 import { genSchema } from './utils/schema-utils';
@@ -32,6 +33,8 @@ export async function startServer() {
   if (process.env.NODE_ENV === Env.production) {
     await connection.runMigrations();
   }
+
+  await seeder(connection);
 
   const server = new GraphQLServer({
     schema: genSchema(),
@@ -78,13 +81,17 @@ export async function startServer() {
     }),
   );
 
-  express.get('/ping', (_, res) => res.json({ message: 'pong' }));
+  express.get('/', (_, res) => res.json({ message: 'pong' }));
   express.get('/confirm/:id', confirmEmail);
+
+  const { NODE_ENV } = process.env;
 
   return server.start(
     {
-      port: process.env.NODE_ENV === Env.test ? 4001 : 4000,
+      port: NODE_ENV === Env.test ? 4001 : 4000,
       formatError: (err: any) => formatError(err),
+      playground: NODE_ENV === Env.production ? false : '/playground',
+      endpoint: '/api',
     },
     ({ port }) => console.log('localhost:' + port),
   );

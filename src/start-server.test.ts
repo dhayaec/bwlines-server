@@ -15,7 +15,7 @@ afterAll(async () => {
 
 describe('start-server', () => {
   it('should start', async () => {
-    const { data } = await axios.get(`${process.env.TEST_HOST}/ping`);
+    const { data } = await axios.get(`${process.env.TEST_HOST}/`);
     expect(data).toEqual({ message: 'pong' });
   });
 });
