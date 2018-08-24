@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Redis } from 'ioredis';
+import * as IORedis from 'ioredis';
 import { v4 } from 'uuid';
 import { ValidationError } from 'yup';
 import {
@@ -8,20 +8,22 @@ import {
   USER_SESSION_PREFIX,
 } from '../constants';
 import { User } from '../entity/User';
-import { redis as RedisInstance } from '../start-server';
 import { GraphQLMiddlewareFunc, Resolver } from '../typings/app-utility-types';
 
 export const createForgotPasswordLink = async (
   url: string,
   userId: string,
-  redis: Redis,
+  redis: IORedis.Redis,
 ) => {
   const id = v4();
   await redis.set(`${FORGOT_PASSWORD_PREFIX}${id}`, userId, 'ex', 60 * 60);
   return `${url}/change-password/${id}`;
 };
 
-export const removeAllUsersSessions = async (userId: string, redis: Redis) => {
+export const removeAllUsersSessions = async (
+  userId: string,
+  redis: IORedis.Redis,
+) => {
   const sessionIds = await redis.lrange(
     `${USER_SESSION_PREFIX}${userId}`,
     0,
@@ -67,7 +69,7 @@ export const middleware = async (
 export const createConfirmEmailLink = async (
   url: string,
   userId: string,
-  redis: Redis,
+  redis: IORedis.Redis,
 ) => {
   const id = v4();
   await redis.set(id, userId, 'ex', 60 * 60 * 24);
@@ -76,6 +78,7 @@ export const createConfirmEmailLink = async (
 
 export const confirmEmail = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const RedisInstance = new IORedis();
   const userId = await RedisInstance.get(id);
   if (userId) {
     await User.update({ id: userId }, { confirmed: true });
