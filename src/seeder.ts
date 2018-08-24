@@ -33,13 +33,18 @@ export async function seeder(db: Connection) {
   child2.parent = p;
 
   const child3 = new TCategory();
-  child3.name = 'Arts';
+  child3.name = 'Arts Crafts';
   child3.parent = parent1;
   await treeCategory.save(child3);
 
   await treeCategory.save(child2);
 
   const trees = await manager.getTreeRepository(TCategory).findRoots();
+
+  const grandChild = new TCategory();
+  grandChild.name = 'Grand Child';
+  grandChild.parent = child3;
+  await treeCategory.save(grandChild);
 
   console.log(trees);
 
@@ -57,6 +62,8 @@ export async function seeder(db: Connection) {
 
   console.log(children);
 
+  const treeList = await manager.getTreeRepository(TCategory).findTrees();
+  console.log(JSON.stringify(treeList));
   //   const d = await manager.getTreeRepository(TCategory);
 
   //   const existingUsers = await user.find({});

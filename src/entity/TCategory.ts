@@ -8,9 +8,9 @@ import {
 } from 'typeorm';
 
 @Entity('tree_category')
-@Tree('materialized-path')
+@Tree('nested-set')
 export class TCategory {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Column()
