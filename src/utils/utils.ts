@@ -6,6 +6,7 @@ import * as nodemailer from 'nodemailer';
 import slugify from 'slugify';
 import { ValidationError } from 'yup';
 import { Env } from '../constants';
+import { AuthenticationError, AuthorizationError } from './errors';
 
 export const add = (...args: number[]) => args.reduce((c, p) => c + p);
 
@@ -80,4 +81,14 @@ export const sendEmail = async ({
     throw new Error(error);
   }
   return true;
+};
+
+export const checkAdminRights = (session: any) => {
+  const { userId, isAdmin } = session;
+  if (!userId) {
+    throw new AuthenticationError();
+  }
+  if (!isAdmin) {
+    throw new AuthorizationError();
+  }
 };

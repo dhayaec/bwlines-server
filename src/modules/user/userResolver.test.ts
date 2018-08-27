@@ -66,6 +66,25 @@ describe('login', () => {
     });
 
     it('register with valid detail and login', async () => {
+      const registerAdmin = `
+      mutation {
+        register(name:"admin user", email: "dummy@dummy.com", password: "123456", admin:true) {
+          email
+          name
+          id
+        }
+      }
+    `;
+      const registerAdminResult = await graphql(
+        genSchema(),
+        registerAdmin,
+        null,
+        { db: connection, session: { userId: '' } },
+        {},
+      );
+      const regAdminError = registerAdminResult.errors;
+      expect(regAdminError![0].message).toEqual('Authentication Failed');
+
       const query = `
       mutation {
         register(name:"${user.name}", email: "${user.email}", password: "${

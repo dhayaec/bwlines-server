@@ -1,6 +1,6 @@
+import { checkAdminRights } from '../../utils/utils';
 import { Category } from './../../entity/Category';
 import { AppResolverMap } from './../../typings/app-utility-types';
-import { AuthenticationError, AuthorizationError } from './../../utils/errors';
 
 export const resolvers: AppResolverMap = {
   Query: {
@@ -45,15 +45,7 @@ export const resolvers: AppResolverMap = {
       { name, parentId }: GQL.IAddCategoryOnMutationArguments,
       { db, session },
     ) => {
-      const { userId, isAdmin } = session;
-
-      if (!userId) {
-        throw new AuthenticationError();
-      }
-
-      if (!isAdmin) {
-        throw new AuthorizationError();
-      }
+      checkAdminRights(session);
 
       let parent;
       if (parentId) {

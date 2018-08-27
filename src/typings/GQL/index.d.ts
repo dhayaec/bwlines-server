@@ -32,6 +32,7 @@ getBreadCrumbPath: IBreadCrumb | null;
 getCategoryById: ICategoryResponse | null;
 me: IUserResponse | null;
 getUser: IUserResponse | null;
+getAdmins: Array<IUserResponse> | null;
 }
 
 interface IGetBookOnQueryArguments {
@@ -156,6 +157,7 @@ name: string;
 email: string;
 password: string;
 mobile?: string | null;
+admin?: boolean | null;
 }
 
 interface ILoginOnMutationArguments {

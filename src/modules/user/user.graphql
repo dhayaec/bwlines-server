@@ -1,6 +1,7 @@
 type Query {
   me: UserResponse
   getUser(id: ID!): UserResponse
+  getAdmins: [UserResponse]
 }
 
 type Mutation {
@@ -9,6 +10,7 @@ type Mutation {
     email: String!
     password: String!
     mobile: String
+    admin: Boolean
   ): UserResponse
   login(email: String!, password: String!): UserResponse
   logout: String

@@ -3,6 +3,7 @@ import { User } from '../../entity/User';
 import { Resolver } from '../../typings/app-utility-types';
 import { InputValidationError } from '../../utils/errors';
 import { createConfirmEmailLink, formatYupError } from '../../utils/user-utils';
+import { checkAdminRights } from '../../utils/utils';
 import { userSchema } from '../validation-rules';
 // import { renderEmail } from './../../emails/emails';
 // import { sendEmail } from './../../utils/utils';
@@ -10,8 +11,14 @@ import { userSchema } from '../validation-rules';
 export const register: Resolver = async (
   _,
   args: GQL.IRegisterOnMutationArguments,
-  { db, url, redis },
+  { db, url, redis, session },
 ) => {
+  const { admin = false } = args;
+
+  if (admin) {
+    checkAdminRights(session);
+  }
+
   try {
     await userSchema.validate(args, { abortEarly: false });
   } catch (err) {
@@ -34,6 +41,7 @@ export const register: Resolver = async (
     email: email.trim(),
     password: pass,
     mobile: mobile && mobile.length > 0 ? mobile.trim() : '',
+    isAdmin: !!admin,
   });
 
   const userData = await user.save();
