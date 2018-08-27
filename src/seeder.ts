@@ -2,7 +2,7 @@
 import { Connection, getManager } from 'typeorm';
 // import { Book } from './entity/Book';
 // import { Category } from './entity/Category';
-import { TCategory } from './entity/TCategory';
+import { Category } from './entity/Category';
 // import { User } from './entity/User';
 
 export async function seeder(db: Connection) {
@@ -12,36 +12,36 @@ export async function seeder(db: Connection) {
   //   const user = db.getRepository(User);
   //   const book = db.getRepository(Book);
   const manager = getManager();
-  const treeCategory = db.getRepository(TCategory);
+  const treeCategory = db.getRepository(Category);
 
-  const parent = new TCategory();
+  const parent = new Category();
   parent.name = 'Agriculture';
   const p = await treeCategory.save(parent);
 
-  const parent1 = new TCategory();
+  const parent1 = new Category();
   parent1.name = 'Arts';
   await treeCategory.save(parent1);
 
-  const child = new TCategory();
+  const child = new Category();
   child.name = 'Agriculture Products';
   child.parent = p;
 
   await treeCategory.save(child);
 
-  const child2 = new TCategory();
+  const child2 = new Category();
   child2.name = 'Agriculture Machines';
   child2.parent = p;
 
-  const child3 = new TCategory();
-  child3.name = 'Arts Crafts';
+  const child3 = new Category();
+  child3.name = 'Arts & Crafts';
   child3.parent = parent1;
   await treeCategory.save(child3);
 
   await treeCategory.save(child2);
 
-  const trees = await manager.getTreeRepository(TCategory).findRoots();
+  const trees = await manager.getTreeRepository(Category).findRoots();
 
-  const grandChild = new TCategory();
+  const grandChild = new Category();
   grandChild.name = 'Grand Child';
   grandChild.parent = child3;
   await treeCategory.save(grandChild);
@@ -54,17 +54,34 @@ export async function seeder(db: Connection) {
 
   //   const deleteId = trees[1].id;
 
-  const children = await manager
-    .getTreeRepository(TCategory)
-    .findDescendants(parent);
+  //   const children = await manager
+  //     .getTreeRepository(Category)
+  //     .findDescendants(parent);
 
-  console.log('children');
+  //   console.log('children');
 
-  console.log(children);
+  //   console.log(children);
 
-  const treeList = await manager.getTreeRepository(TCategory).findTrees();
-  console.log(JSON.stringify(treeList));
-  //   const d = await manager.getTreeRepository(TCategory);
+  //   const treeList = await manager.getTreeRepository(Category).findTrees();
+  //   console.log(JSON.stringify(treeList));
+
+  const descendants = await manager
+    .getTreeRepository(Category)
+    .findDescendantsTree(parent1);
+  console.log('descs');
+  console.log(JSON.stringify(descendants));
+
+  //   const ancestorTree = await manager
+  //     .getTreeRepository(Category)
+  //     .findAncestorsTree(grandChild);
+  //   console.log(JSON.stringify(ancestorTree));
+
+  //   const ancestorCount = await manager
+  //     .getTreeRepository(Category)
+  //     .countDescendants(parent1);
+  //   console.log(ancestorCount);
+
+  //   const d = await manager.getTreeRepository(Category);
 
   //   const existingUsers = await user.find({});
 

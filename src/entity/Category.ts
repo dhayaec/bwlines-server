@@ -7,6 +7,9 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  Tree,
+  TreeChildren,
+  TreeParent,
   Unique,
   UpdateDateColumn,
   VersionColumn,
@@ -15,8 +18,9 @@ import { Book } from './Book';
 
 @Entity('categories')
 @Unique(['slug'])
+@Tree('nested-set')
 export class Category extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column('varchar', { length: 255 })
@@ -24,6 +28,15 @@ export class Category extends BaseEntity {
 
   @Column('varchar', { length: 255 })
   slug: string;
+
+  @TreeChildren()
+  children: Category[];
+
+  @TreeParent()
+  parent: Category;
+
+  @Column({ default: false })
+  isBanned: boolean;
 
   @CreateDateColumn()
   createdAt: Date;
