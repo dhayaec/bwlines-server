@@ -26,7 +26,10 @@ listBooks: Array<IBookResponse> | null;
 getBook: IBookResponse | null;
 getBookByCategory: Array<IBookResponse> | null;
 getCart: Array<ICartResponse> | null;
-listCategories: Array<ICategoryResponse> | null;
+listMainCategories: Array<ICategoryResponse> | null;
+getChildCategories: INestedChildren | null;
+getBreadCrumbPath: IBreadCrumb | null;
+getCategoryById: ICategoryResponse | null;
 me: IUserResponse | null;
 getUser: IUserResponse | null;
 }
@@ -37,6 +40,18 @@ id: string;
 
 interface IGetBookByCategoryOnQueryArguments {
 categoryId: string;
+}
+
+interface IGetChildCategoriesOnQueryArguments {
+id: string;
+}
+
+interface IGetBreadCrumbPathOnQueryArguments {
+id: string;
+}
+
+interface IGetCategoryByIdOnQueryArguments {
+id: string;
 }
 
 interface IGetUserOnQueryArguments {
@@ -82,6 +97,22 @@ email: string | null;
 mobile: string | null;
 }
 
+interface INestedChildren {
+__typename: "NestedChildren";
+id: string | null;
+name: string | null;
+slug: string | null;
+children: Array<INestedChildren> | null;
+}
+
+interface IBreadCrumb {
+__typename: "BreadCrumb";
+id: string | null;
+name: string | null;
+slug: string | null;
+parent: IBreadCrumb | null;
+}
+
 interface IMutation {
 __typename: "Mutation";
 addBook: IBookResponse | null;
@@ -117,6 +148,7 @@ bookId: string;
 
 interface IAddCategoryOnMutationArguments {
 name: string;
+parentId?: string | null;
 }
 
 interface IRegisterOnMutationArguments {

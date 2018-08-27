@@ -70,7 +70,7 @@
     "dev": "npm run gen-types && NODE_ENV=development nodemon --exec ts-node --files src/index.ts",
     "start": "NODE_ENV=production ts-node --files src/index.ts",
     "start:node": "rimraf ./dist && npm run compile && npm run copy && NODE_ENV=production node ./dist/",
-    "gen-types": "ts-node --files ./src/utils/create-types.ts",
+    "gen-types": "ts-node --transpile-only --files ./src/utils/create-types.ts",
     "debug": "NODE_ENV=development node --inspect -r ts-node/register/transpile-only src/index.ts",
     "test": "jest --runInBand --forceExit --detectOpenHandles",
     "test:w": "jest --watch --runInBand",

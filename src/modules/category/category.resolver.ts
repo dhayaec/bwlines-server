@@ -3,22 +3,60 @@ import { AppResolverMap } from './../../typings/app-utility-types';
 
 export const resolvers: AppResolverMap = {
   Query: {
-    listCategories: async (_, __, { db }) => {
-      const c = db.getRepository(Category).find();
-      return c;
+    getCategoryById: async (
+      _,
+      { id }: GQL.IGetCategoryByIdOnQueryArguments,
+      { db },
+    ) => {
+      return await db.getRepository(Category).findOne(id);
+    },
+    listMainCategories: async (_, __, { db }) => {
+      return await db.getTreeRepository(Category).findRoots();
+    },
+    getChildCategories: async (
+      _,
+      { id }: GQL.IGetChildCategoriesOnQueryArguments,
+      { db },
+    ) => {
+      const m = await db.getRepository(Category).findOne(id);
+
+      if (!m) {
+        throw new Error('Invalid category');
+      }
+      return await db.getTreeRepository(Category).findDescendantsTree(m);
+    },
+    getBreadCrumbPath: async (
+      _,
+      { id }: GQL.IGetBreadCrumbPathOnQueryArguments,
+      { db },
+    ) => {
+      const m = await db.getRepository(Category).findOne(id);
+
+      if (!m) {
+        throw new Error('Invalid category');
+      }
+      return await db.getTreeRepository(Category).findAncestorsTree(m);
     },
   },
   Mutation: {
     addCategory: async (
       _,
-      { name }: GQL.IAddCategoryOnMutationArguments,
+      { name, parentId }: GQL.IAddCategoryOnMutationArguments,
       { db },
     ) => {
+      let parent;
+      if (parentId) {
+        parent = await db.getRepository(Category).findOne(parentId);
+        if (!parent) {
+          throw new Error('Invalid parent');
+        }
+      }
+
       const c = db.getRepository(Category).create({
         name,
+        parent,
       });
-      const category = await c.save();
-      return category;
+      return await c.save();
     },
   },
 };

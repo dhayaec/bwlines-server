@@ -1,13 +1,30 @@
 type Query {
-  listCategories: [CategoryResponse]
+  listMainCategories: [CategoryResponse]
+  getChildCategories(id: ID!): NestedChildren
+  getBreadCrumbPath(id: ID!): BreadCrumb
+  getCategoryById(id: ID!): CategoryResponse
 }
 
 type Mutation {
-  addCategory(name: String!): CategoryResponse
+  addCategory(name: String!, parentId: ID): CategoryResponse
 }
 
 type CategoryResponse {
   id: ID
   name: String
   slug: String
+}
+
+type NestedChildren {
+  id: ID
+  name: String
+  slug: String
+  children: [NestedChildren]
+}
+
+type BreadCrumb {
+  id: ID
+  name: String
+  slug: String
+  parent: BreadCrumb
 }

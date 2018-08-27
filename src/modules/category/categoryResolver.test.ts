@@ -31,17 +31,17 @@ describe('category resolver', () => {
     },
   };
 
-  const listCategoriesTestCase = {
-    caseId: 'listCategories',
-    query: `{ listCategories{ slug } }`,
+  const listMainCategoriesTestCase = {
+    caseId: 'listMainCategories',
+    query: `{ listMainCategories{ slug } }`,
     expectation: (result: any) => {
       expect(result).toEqual({
-        data: { listCategories: [{ slug }] },
+        data: { listMainCategories: [{ slug }] },
       });
     },
   };
 
-  const cases = [addCategoryTestCase, listCategoriesTestCase];
+  const cases = [addCategoryTestCase, listMainCategoriesTestCase];
 
   cases.forEach(c => {
     const { query, expectation } = c;

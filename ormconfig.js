@@ -23,7 +23,7 @@ module.exports = [
     database: DB_NAME,
     dropSchema: false,
     synchronize: true,
-    logging: true,
+    logging: false,
     entities: ['src/entity/**/*.ts'],
     migrations: ['src/migration/**/*.ts'],
     subscribers: ['src/subscriber/**/*.ts'],

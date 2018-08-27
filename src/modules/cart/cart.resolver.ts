@@ -14,10 +14,9 @@ export const resolvers: AppResolverMap = {
       }
       const user = await db.getRepository(User).findOne(userId);
 
-      const cartData = await db
+      return await db
         .getRepository(Cart)
         .find({ where: { user }, relations: ['book', 'user'] });
-      return cartData;
     },
   },
   Mutation: {
@@ -58,8 +57,7 @@ export const resolvers: AppResolverMap = {
         quantity: quantity || 1,
       });
 
-      const cartItem = await c.save();
-      return cartItem;
+      return await c.save();
     },
     removeFromCart: async (
       _,

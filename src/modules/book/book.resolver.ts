@@ -8,10 +8,9 @@ import { AppResolverMap } from './../../typings/app-utility-types';
 export const resolvers: AppResolverMap = {
   Query: {
     listBooks: async (_, __, { db }) => {
-      const c = await db.getRepository(Book).find({
+      return await db.getRepository(Book).find({
         relations: ['category'],
       });
-      return c;
     },
     getBook: async (_, { id }: GQL.IGetBookOnQueryArguments, { db }) => {
       return await db
@@ -28,10 +27,9 @@ export const resolvers: AppResolverMap = {
         throw new Error('Invalid category');
       }
 
-      const books = await db
+      return await db
         .getRepository(Book)
         .find({ where: { category }, relations: ['category'] });
-      return books;
     },
   },
   Mutation: {
@@ -81,8 +79,7 @@ export const resolvers: AppResolverMap = {
         category,
       });
 
-      const book = await c.save();
-      return book;
+      return await c.save();
     },
   },
 };
