@@ -2,6 +2,7 @@ import { User } from '../../entity/User';
 import { Book } from './../../entity/Book';
 import { Cart } from './../../entity/Cart';
 import { AppResolverMap } from './../../typings/app-utility-types';
+import { AuthError } from './../../utils/errors';
 
 export const resolvers: AppResolverMap = {
   Query: {
@@ -9,7 +10,7 @@ export const resolvers: AppResolverMap = {
       const { userId } = session;
 
       if (!userId) {
-        throw new Error('Login to view cart');
+        throw new AuthError();
       }
       const user = await db.getRepository(User).findOne(userId);
 
@@ -28,7 +29,7 @@ export const resolvers: AppResolverMap = {
       const { userId } = session;
 
       if (!userId) {
-        throw new Error('Login to add to cart');
+        throw new AuthError();
       }
 
       const book = await db.getRepository(Book).findOne(bookId);
@@ -67,7 +68,7 @@ export const resolvers: AppResolverMap = {
     ) => {
       const { userId } = session;
       if (!userId) {
-        throw new Error('Login to remove from cart');
+        throw new AuthError();
       }
 
       const book = await db.getRepository(Book).findOne(bookId);
@@ -94,7 +95,7 @@ export const resolvers: AppResolverMap = {
       const { userId } = session;
 
       if (!userId) {
-        throw new Error('Login to remove from cart');
+        throw new AuthError();
       }
 
       const user = await db.getRepository(User).findOne(userId);

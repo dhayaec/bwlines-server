@@ -58,6 +58,5 @@ export const register: Resolver = async (
     // });
   }
 
-  const { password, ...otherFields } = userData;
-  return otherFields;
+  return userData;
 };
