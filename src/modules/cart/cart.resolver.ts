@@ -2,7 +2,12 @@ import { User } from '../../entity/User';
 import { Book } from './../../entity/Book';
 import { Cart } from './../../entity/Cart';
 import { AppResolverMap } from './../../typings/app-utility-types';
-import { AuthenticationError } from './../../utils/errors';
+import {
+  AuthenticationError,
+  ERROR_ALREADY_IN_CART,
+  ERROR_EMPTY,
+  ERROR_ITEM_NOT_FOUND,
+} from './../../utils/errors';
 
 export const resolvers: AppResolverMap = {
   Query: {
@@ -34,7 +39,7 @@ export const resolvers: AppResolverMap = {
       const book = await db.getRepository(Book).findOne(bookId);
       const user = await db.getRepository(User).findOne(userId);
       if (!book) {
-        throw new Error('Book not found');
+        throw new Error(ERROR_ITEM_NOT_FOUND);
       }
 
       const cartRepository = db.getRepository(Cart);
@@ -47,7 +52,7 @@ export const resolvers: AppResolverMap = {
       });
 
       if (cart) {
-        throw new Error('Already in cart');
+        throw new Error(ERROR_ALREADY_IN_CART);
       }
 
       const c = cartRepository.create({
@@ -71,7 +76,7 @@ export const resolvers: AppResolverMap = {
 
       const book = await db.getRepository(Book).findOne(bookId);
       if (!book) {
-        throw new Error('Book not found');
+        throw new Error(ERROR_ITEM_NOT_FOUND);
       }
 
       const user = await db.getRepository(User).findOne(userId);
@@ -84,7 +89,7 @@ export const resolvers: AppResolverMap = {
       });
 
       if (!cart) {
-        throw new Error('Unable to find item in cart');
+        throw new Error(ERROR_ITEM_NOT_FOUND);
       }
 
       return await db.getRepository(Cart).delete(cart.id);
@@ -105,7 +110,7 @@ export const resolvers: AppResolverMap = {
       });
 
       if (!cart.length) {
-        throw new Error('Nothing in cart');
+        throw new Error(ERROR_EMPTY);
       }
 
       const ids = cart.map(x => x.id);

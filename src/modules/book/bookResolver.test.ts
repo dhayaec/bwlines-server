@@ -1,5 +1,9 @@
 import { graphql } from 'graphql';
 import { Connection } from 'typeorm';
+import {
+  ERROR_INVALID_CATEGORY,
+  ERROR_VALIDATION_FAILED,
+} from '../../utils/errors';
 import { genSchema } from '../../utils/schema-utils';
 import { bookData } from '../data';
 import { connectDbTest } from './../../utils/connect-db';
@@ -50,7 +54,7 @@ describe('addBook', () => {
     );
 
     const { errors } = result;
-    expect(errors![0].message).toEqual('Category does not exists');
+    expect(errors![0].message).toEqual(ERROR_INVALID_CATEGORY);
   });
 
   it('addBook invalid input', async () => {
@@ -82,7 +86,7 @@ describe('addBook', () => {
       {},
     );
     const { errors: validationFAil } = validationFailQueryResult;
-    expect(validationFAil![0].message).toEqual('Validation failed');
+    expect(validationFAil![0].message).toEqual(ERROR_VALIDATION_FAILED);
   });
 
   it('valid category', async () => {
@@ -224,7 +228,7 @@ describe('getBookByCategory', () => {
 
     const { errors } = getBookByCategoryResult;
 
-    expect(errors![0].message).toEqual('Invalid category');
+    expect(errors![0].message).toEqual(ERROR_INVALID_CATEGORY);
   });
 
   it('should get books by category', async () => {

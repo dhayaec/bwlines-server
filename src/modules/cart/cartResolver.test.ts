@@ -2,8 +2,13 @@ import { graphql } from 'graphql';
 import * as ioredis from 'ioredis';
 import { Connection } from 'typeorm';
 import { createDb } from '../../utils/create-db';
+import {
+  ERROR_ITEM_NOT_FOUND,
+  ERROR_LOGIN_TO_CONTINUE,
+} from '../../utils/errors';
 import { genSchema } from '../../utils/schema-utils';
 import { connectDbTest } from './../../utils/connect-db';
+import { ERROR_ALREADY_IN_CART, ERROR_EMPTY } from './../../utils/errors';
 import { bookData } from './../data';
 
 let connection: Connection;
@@ -50,7 +55,7 @@ describe('getCart', () => {
       {},
     );
     const { errors } = result;
-    expect(errors![0].message).toEqual('Please login to continue');
+    expect(errors![0].message).toEqual(ERROR_LOGIN_TO_CONTINUE);
 
     const loginQuery = `
       mutation {
@@ -208,7 +213,7 @@ describe('getCart', () => {
       );
 
       const { errors: errorAgain } = addToCart2QueryResult;
-      expect(errorAgain![0].message).toEqual('Already in cart');
+      expect(errorAgain![0].message).toEqual(ERROR_ALREADY_IN_CART);
 
       const addToCartQueryInvalidBookResult = await graphql(
         genSchema(),
@@ -224,7 +229,7 @@ describe('getCart', () => {
       );
 
       const { errors } = addToCartQueryInvalidBookResult;
-      expect(errors![0].message).toEqual('Book not found');
+      expect(errors![0].message).toEqual(ERROR_ITEM_NOT_FOUND);
 
       const addToCartQueryInvalidUserResult = await graphql(
         genSchema(),
@@ -239,7 +244,7 @@ describe('getCart', () => {
         {},
       );
       const { errors: e } = addToCartQueryInvalidUserResult;
-      expect(e![0].message).toEqual('Please login to continue');
+      expect(e![0].message).toEqual(ERROR_LOGIN_TO_CONTINUE);
     });
   });
 
@@ -284,7 +289,7 @@ describe('getCart', () => {
       );
 
       const { errors: wLErrors } = removeInvalidQueryWithoutLoginResult;
-      expect(wLErrors![0].message).toEqual('Please login to continue');
+      expect(wLErrors![0].message).toEqual(ERROR_LOGIN_TO_CONTINUE);
 
       const removeInvalidQueryResult = await graphql(
         genSchema(),
@@ -300,7 +305,7 @@ describe('getCart', () => {
       );
 
       const { errors } = removeInvalidQueryResult;
-      expect(errors![0].message).toEqual('Book not found');
+      expect(errors![0].message).toEqual(ERROR_ITEM_NOT_FOUND);
     });
   });
 
@@ -319,7 +324,7 @@ describe('getCart', () => {
       );
 
       const { errors } = emptyCartResult;
-      expect(errors![0].message).toEqual('Please login to continue');
+      expect(errors![0].message).toEqual(ERROR_LOGIN_TO_CONTINUE);
 
       const q1 = `mutation{emptyCart}`;
       const emptyCart1Result = await graphql(
@@ -334,7 +339,7 @@ describe('getCart', () => {
       );
 
       const { errors: e1 } = emptyCart1Result;
-      expect(e1![0].message).toEqual('Nothing in cart');
+      expect(e1![0].message).toEqual(ERROR_EMPTY);
 
       const q2 = `mutation{addToCart(bookId:"${bookId}"){
         title

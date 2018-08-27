@@ -2,6 +2,11 @@ import { graphql } from 'graphql';
 import { Connection } from 'typeorm';
 import { connectDbTest } from '../../utils/connect-db';
 import { createDb } from '../../utils/create-db';
+import {
+  ERROR_INVALID_CATEGORY,
+  ERROR_LOGIN_TO_CONTINUE,
+  ERROR_PERMISSION_DENIED,
+} from '../../utils/errors';
 import { genSchema } from '../../utils/schema-utils';
 import { makeSlug } from './../../utils/utils';
 
@@ -32,7 +37,7 @@ describe('category resolver', () => {
       isAdmin: false,
     },
     expectation: (result: any) => {
-      expect(result.errors![0].message).toEqual('Please login to continue');
+      expect(result.errors![0].message).toEqual(ERROR_LOGIN_TO_CONTINUE);
     },
   };
 
@@ -48,9 +53,7 @@ describe('category resolver', () => {
       isAdmin: false,
     },
     expectation: (result: any) => {
-      expect(result.errors![0].message).toEqual(
-        'You dont have permission to perform this operation',
-      );
+      expect(result.errors![0].message).toEqual(ERROR_PERMISSION_DENIED);
     },
   };
 
@@ -152,7 +155,7 @@ describe('category resolver', () => {
     } } }`,
     session: {},
     expectation: (result: any) => {
-      expect(result.errors![0].message).toEqual('Invalid category');
+      expect(result.errors![0].message).toEqual(ERROR_INVALID_CATEGORY);
     },
   };
 
@@ -172,7 +175,7 @@ describe('category resolver', () => {
     query: `{ getChildCategories(id:"0"){ slug children{ slug } } }`,
     session: {},
     expectation: (result: any) => {
-      expect(result.errors![0].message).toEqual('Invalid category');
+      expect(result.errors![0].message).toEqual(ERROR_INVALID_CATEGORY);
     },
   };
 

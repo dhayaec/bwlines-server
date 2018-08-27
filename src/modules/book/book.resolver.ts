@@ -1,4 +1,7 @@
-import { InputValidationError } from '../../utils/errors';
+import {
+  ERROR_INVALID_CATEGORY,
+  InputValidationError,
+} from '../../utils/errors';
 import { formatYupError } from '../../utils/utils';
 import { bookSchema } from '../validation-rules';
 import { Book } from './../../entity/Book';
@@ -24,7 +27,7 @@ export const resolvers: AppResolverMap = {
     ) => {
       const category = await db.getRepository(Category).findOne(categoryId);
       if (!category) {
-        throw new Error('Invalid category');
+        throw new Error(ERROR_INVALID_CATEGORY);
       }
 
       return await db
@@ -64,7 +67,7 @@ export const resolvers: AppResolverMap = {
       const category = await db.getRepository(Category).findOne(categoryId);
 
       if (!category) {
-        throw new Error('Category does not exists');
+        throw new Error(ERROR_INVALID_CATEGORY);
       }
 
       const c = db.getRepository(Book).create({

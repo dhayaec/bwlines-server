@@ -3,6 +3,10 @@ import * as ioredis from 'ioredis';
 import { Connection } from 'typeorm';
 import { connectDbTest } from '../../utils/connect-db';
 import { createDb } from '../../utils/create-db';
+import {
+  ERROR_LOGIN_TO_CONTINUE,
+  ERROR_VALIDATION_FAILED,
+} from '../../utils/errors';
 import { genSchema } from '../../utils/schema-utils';
 import { user } from '../data';
 
@@ -62,7 +66,7 @@ describe('login', () => {
         {},
       );
       const error = registerInvalidResult.errors;
-      expect(error![0].message).toEqual('Validation failed');
+      expect(error![0].message).toEqual(ERROR_VALIDATION_FAILED);
     });
 
     it('register with valid detail and login', async () => {
@@ -83,7 +87,7 @@ describe('login', () => {
         {},
       );
       const regAdminError = registerAdminResult.errors;
-      expect(regAdminError![0].message).toEqual('Please login to continue');
+      expect(regAdminError![0].message).toEqual(ERROR_LOGIN_TO_CONTINUE);
 
       const query = `
       mutation {
