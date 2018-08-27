@@ -10,77 +10,6 @@ export async function seeder(db: Connection) {
   const category = db.getRepository(Category);
   const user = db.getRepository(User);
   const book = db.getRepository(Book);
-  //   const manager = getManager();
-  const treeCategory = db.getRepository(Category);
-
-  const parent = new Category();
-  parent.name = 'Agriculture';
-  const p = await treeCategory.save(parent);
-
-  const parent1 = new Category();
-  parent1.name = 'Arts';
-  await treeCategory.save(parent1);
-
-  const child = new Category();
-  child.name = 'Agriculture Products';
-  child.parent = p;
-
-  await treeCategory.save(child);
-
-  const child2 = new Category();
-  child2.name = 'Agriculture Machines';
-  child2.parent = p;
-
-  const child3 = new Category();
-  child3.name = 'Arts & Crafts';
-  child3.parent = parent1;
-  await treeCategory.save(child3);
-
-  await treeCategory.save(child2);
-
-  //   const trees = await manager.getTreeRepository(Category).findRoots();
-
-  //   const grandChild = new Category();
-  //   grandChild.name = 'Grand Child';
-  //   grandChild.parent = child3;
-  //   await treeCategory.save(grandChild);
-
-  //   console.log(trees);
-
-  //   const d = await manager.query(
-  //     `DELETE FROM TreePaths WHERE descendant IN (SELECT descendant FROM TreePaths WHERE ancestor = ${2})`,
-  //   );
-
-  //   const deleteId = trees[1].id;
-
-  //   const children = await manager
-  //     .getTreeRepository(Category)
-  //     .findDescendants(parent);
-
-  //   console.log('children');
-
-  //   console.log(children);
-
-  //   const treeList = await manager.getTreeRepository(Category).findTrees();
-  //   console.log(JSON.stringify(treeList));
-
-  //   const descendants = await manager
-  //     .getTreeRepository(Category)
-  //     .findDescendantsTree(parent1);
-  //   console.log('descs');
-  //   console.log(JSON.stringify(descendants));
-
-  //   const ancestorTree = await manager
-  //     .getTreeRepository(Category)
-  //     .findAncestorsTree(grandChild);
-  //   console.log(JSON.stringify(ancestorTree));
-
-  //   const ancestorCount = await manager
-  //     .getTreeRepository(Category)
-  //     .countDescendants(parent1);
-  //   console.log(ancestorCount);
-
-  //   const d = await manager.getTreeRepository(Category);
 
   const existingUsers = await user.find({});
 
@@ -115,6 +44,21 @@ export async function seeder(db: Connection) {
         name: x,
       });
       const ct = await c.save();
+
+      const sub = await category
+        .create({
+          name: ct.name + ' Sub',
+          parent: ct,
+        })
+        .save();
+
+      const grandChildCategory = await category
+        .create({
+          name: sub.name + ' Sub',
+          parent: sub,
+        })
+        .save();
+
       const bks = new Set();
       const ar = Array(5).fill(0);
       ar.forEach(() =>
@@ -139,7 +83,7 @@ export async function seeder(db: Connection) {
           datePublished: bk.datePublished,
           displayPrice: bk.displayPrice,
           listPrice: bk.listPrice,
-          category: ct,
+          category: grandChildCategory,
         });
         await b.save();
       });
