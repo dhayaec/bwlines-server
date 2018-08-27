@@ -205,3 +205,45 @@ describe('getBook', () => {
     expect(getBookResult.data!.getBook.title).toEqual(bookData.title);
   });
 });
+
+describe('getBookByCategory', () => {
+  it('should throw error if invalid categoryId', async () => {
+    const getBookByCategoryQuery = `{
+      getBookByCategory(categoryId:"${bookData.categoryId}"){
+            title
+        }
+    }`;
+
+    const getBookByCategoryResult = await graphql(
+      genSchema(),
+      getBookByCategoryQuery,
+      null,
+      { db: connection },
+      {},
+    );
+
+    const { errors } = getBookByCategoryResult;
+
+    expect(errors![0].message).toEqual('Invalid category');
+  });
+
+  it('should get books by category', async () => {
+    const getBookByCategoryQuery = `{
+      getBookByCategory(categoryId:"${categoryId}"){
+            title
+        }
+    }`;
+
+    const getBookByCategoryResult = await graphql(
+      genSchema(),
+      getBookByCategoryQuery,
+      null,
+      { db: connection },
+      {},
+    );
+
+    const { data } = getBookByCategoryResult;
+
+    expect(data!.getBookByCategory[0].title).toEqual(bookData.title);
+  });
+});

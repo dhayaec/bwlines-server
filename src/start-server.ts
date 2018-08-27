@@ -34,7 +34,9 @@ export async function startServer() {
     await connection.runMigrations();
   }
 
-  await seeder(connection);
+  if (process.env.NODE_ENV !== Env.test) {
+    await seeder(connection);
+  }
 
   const server = new GraphQLServer({
     schema: genSchema(),

@@ -15,6 +15,7 @@ module.exports = {
     '!src/migration/**',
     '!src/utils/create-types.ts',
     '!src/index.ts',
+    '!src/seeder.ts',
     '!**/node_modules/**',
     '!**/vendor/**',
   ],
