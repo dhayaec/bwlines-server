@@ -32,7 +32,7 @@ describe('category resolver', () => {
       isAdmin: false,
     },
     expectation: (result: any) => {
-      expect(result.errors![0].message).toEqual('Authentication Failed');
+      expect(result.errors![0].message).toEqual('Please login to continue');
     },
   };
 
@@ -48,7 +48,9 @@ describe('category resolver', () => {
       isAdmin: false,
     },
     expectation: (result: any) => {
-      expect(result.errors![0].message).toEqual('Authorization Failed');
+      expect(result.errors![0].message).toEqual(
+        'You dont have permission to perform this operation',
+      );
     },
   };
 

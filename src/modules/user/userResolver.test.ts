@@ -83,7 +83,7 @@ describe('login', () => {
         {},
       );
       const regAdminError = registerAdminResult.errors;
-      expect(regAdminError![0].message).toEqual('Authentication Failed');
+      expect(regAdminError![0].message).toEqual('Please login to continue');
 
       const query = `
       mutation {

@@ -50,7 +50,7 @@ describe('getCart', () => {
       {},
     );
     const { errors } = result;
-    expect(errors![0].message).toEqual('Authentication Failed');
+    expect(errors![0].message).toEqual('Please login to continue');
 
     const loginQuery = `
       mutation {
@@ -239,7 +239,7 @@ describe('getCart', () => {
         {},
       );
       const { errors: e } = addToCartQueryInvalidUserResult;
-      expect(e![0].message).toEqual('Authentication Failed');
+      expect(e![0].message).toEqual('Please login to continue');
     });
   });
 
@@ -284,7 +284,7 @@ describe('getCart', () => {
       );
 
       const { errors: wLErrors } = removeInvalidQueryWithoutLoginResult;
-      expect(wLErrors![0].message).toEqual('Authentication Failed');
+      expect(wLErrors![0].message).toEqual('Please login to continue');
 
       const removeInvalidQueryResult = await graphql(
         genSchema(),
@@ -319,7 +319,7 @@ describe('getCart', () => {
       );
 
       const { errors } = emptyCartResult;
-      expect(errors![0].message).toEqual('Authentication Failed');
+      expect(errors![0].message).toEqual('Please login to continue');
 
       const q1 = `mutation{emptyCart}`;
       const emptyCart1Result = await graphql(

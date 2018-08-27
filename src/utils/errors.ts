@@ -5,9 +5,9 @@ export const InputValidationError = createError('InputValidationError', {
 });
 
 export const AuthenticationError = createError('AuthenticationError', {
-  message: 'Authentication Failed',
+  message: 'Please login to continue',
 });
 
 export const AuthorizationError = createError('AuthorizationError', {
-  message: 'Authorization Failed',
+  message: 'You dont have permission to perform this operation',
 });
