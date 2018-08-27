@@ -14,7 +14,7 @@ import {
 
 @Entity('users')
 @Unique(['email'])
-@Index(['isBanned'])
+@Index(['isBanned', 'username', 'confirmed'])
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

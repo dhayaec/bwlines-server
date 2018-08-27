@@ -5,6 +5,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   OneToMany,
   PrimaryGeneratedColumn,
   Tree,
@@ -19,6 +20,7 @@ import { Book } from './Book';
 @Entity('categories')
 @Unique(['slug'])
 @Tree('nested-set')
+@Index(['parent', 'isBanned'])
 export class Category extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: string;

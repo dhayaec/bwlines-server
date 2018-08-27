@@ -16,7 +16,7 @@ import { Category } from './Category';
 
 @Entity('books')
 @Unique(['slug', 'isbn'])
-@Index(['isBanned'])
+@Index(['isBanned', 'datePublished'])
 export class Book extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
