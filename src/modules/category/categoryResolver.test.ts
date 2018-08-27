@@ -27,9 +27,38 @@ describe('category resolver', () => {
         name
         slug
       }}`,
+    loggedIn: false,
+    isAdmin: false,
     expectation: (result: any) => {
-      expect(result.data!.addCategory.name).toEqual(name);
-      expect(result.data!.addCategory.slug).toEqual(slug);
+      expect(result.errors![0].message).toEqual('Authentication Failed');
+    },
+  };
+
+  const addCategoryLoggedInTestCase = {
+    caseId: 'logged in but not admin',
+    query: `mutation { addCategory(name:"${name}"){
+        id
+        name
+        slug
+      }}`,
+    loggedIn: true,
+    isAdmin: false,
+    expectation: (result: any) => {
+      expect(result.errors![0].message).toEqual('Authorization Failed');
+    },
+  };
+
+  const addCategoryLoggedInIsAdminTestCase = {
+    caseId: 'logged & admin',
+    query: `mutation { addCategory(name:"${name}"){
+        id
+        name
+        slug
+      }}`,
+    loggedIn: true,
+    isAdmin: true,
+    expectation: (result: any) => {
+      expect(result.errors![0].message).toEqual('Authorization Failed');
     },
   };
 
@@ -40,6 +69,8 @@ describe('category resolver', () => {
         name
         slug
       }}`,
+    loggedIn: false,
+    isAdmin: false,
     expectation: (result: any) => {
       expect(result.data!.addCategory.name).toEqual(child);
       expect(result.data!.addCategory.slug).toEqual(childSlug);
@@ -53,6 +84,8 @@ describe('category resolver', () => {
         name
         slug
       }}`,
+    loggedIn: false,
+    isAdmin: false,
     expectation: (result: any) => {
       expect(result.errors![0].message).toEqual('Invalid parent');
     },
@@ -61,6 +94,8 @@ describe('category resolver', () => {
   const listMainCategoriesTestCase = {
     caseId: 'listMainCategories',
     query: `{ listMainCategories{ slug } }`,
+    loggedIn: false,
+    isAdmin: false,
     expectation: (result: any) => {
       expect(result).toEqual({
         data: { listMainCategories: [{ slug }] },
@@ -71,6 +106,8 @@ describe('category resolver', () => {
   const getCategoryByIdTestCase = {
     caseId: 'getCategoryById',
     query: `{ getCategoryById(id:"1"){ slug } }`,
+    loggedIn: false,
+    isAdmin: false,
     expectation: (result: any) => {
       expect(result).toEqual({
         data: { getCategoryById: { slug } },
@@ -83,6 +120,8 @@ describe('category resolver', () => {
     query: `{ getBreadCrumbPath(id:"2"){ slug, parent{
       slug
     } } }`,
+    loggedIn: false,
+    isAdmin: false,
     expectation: (result: any) => {
       expect(result).toEqual({
         data: {
@@ -102,6 +141,8 @@ describe('category resolver', () => {
     query: `{ getBreadCrumbPath(id:"0"){ slug, parent{
       slug
     } } }`,
+    loggedIn: false,
+    isAdmin: false,
     expectation: (result: any) => {
       expect(result.errors![0].message).toEqual('Invalid category');
     },
@@ -110,6 +151,8 @@ describe('category resolver', () => {
   const getChildCategoriesTestCase = {
     caseId: 'getChildCategories',
     query: `{ getChildCategories(id:"1"){ slug children{ slug } } }`,
+    loggedIn: false,
+    isAdmin: false,
     expectation: (result: any) => {
       expect(result).toEqual({
         data: { getChildCategories: { slug, children: [{ slug: childSlug }] } },
@@ -120,6 +163,8 @@ describe('category resolver', () => {
   const getChildCategories2TestCase = {
     caseId: 'getChildCategories2',
     query: `{ getChildCategories(id:"0"){ slug children{ slug } } }`,
+    loggedIn: false,
+    isAdmin: false,
     expectation: (result: any) => {
       expect(result.errors![0].message).toEqual('Invalid category');
     },
@@ -127,6 +172,8 @@ describe('category resolver', () => {
 
   const cases = [
     addCategoryTestCase,
+    addCategoryLoggedInTestCase,
+    addCategoryLoggedInIsAdminTestCase,
     addCategory2TestCase,
     addCategory3TestCase,
     listMainCategoriesTestCase,
@@ -138,9 +185,21 @@ describe('category resolver', () => {
   ];
 
   cases.forEach(c => {
-    const { query, expectation } = c;
+    const { query, expectation, loggedIn, isAdmin } = c;
     it(`case: ${c.caseId}`, async () => {
-      const ctx = { db: connection };
+      let ctx;
+
+      if (!loggedIn) {
+        ctx = { db: connection, session: { userId: '', isAdmin: false } };
+      } else {
+        if (isAdmin) {
+          ctx = { db: connection, session: { userId: '123', isAdmin: true } };
+        } else {
+          ctx = { db: connection, session: { userId: '123', isAdmin: false } };
+        }
+      }
+      console.log(ctx.session, c.caseId);
+
       const result = await graphql(genSchema(), query, null, ctx, {});
       expectation(result);
     });

@@ -18,10 +18,11 @@ export const login: Resolver = async (
     throw new Error('Invalid Email or Password');
   }
 
-  const { id, name, email: emailAddress } = user;
+  const { id, name, email: emailAddress, isAdmin } = user;
   session.userId = id;
   session.name = name;
   session.email = emailAddress;
+  session.isAdmin = isAdmin;
 
   if (req.sessionID) {
     await redis.lpush(`${USER_SESSION_PREFIX}${user.id}`, req.sessionID);

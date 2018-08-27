@@ -4,6 +4,10 @@ export const InputValidationError = createError('InputValidationError', {
   message: 'Validation failed',
 });
 
-export const AuthError = createError('AuthError', {
+export const AuthenticationError = createError('AuthenticationError', {
+  message: 'Authentication Failed',
+});
+
+export const AuthorizationError = createError('AuthorizationError', {
   message: 'Authentication Failed',
 });

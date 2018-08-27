@@ -11,6 +11,23 @@ export async function seeder(db: Connection) {
   const user = db.getRepository(User);
   const book = db.getRepository(Book);
 
+  const adminUser = await user.find({
+    where: {
+      isAdmin: true,
+    },
+  });
+
+  if (!adminUser.length) {
+    await user
+      .create({
+        name: 'Administrator',
+        email: process.env.SUPER_ADMIN_EMAIL,
+        password: process.env.SUPER_ADMIN_PASS,
+        isAdmin: true,
+      })
+      .save();
+  }
+
   const existingUsers = await user.find({});
 
   if (existingUsers.length === 0) {

@@ -14,7 +14,7 @@ import {
 
 @Entity('users')
 @Unique(['email'])
-@Index(['isBanned', 'username', 'confirmed'])
+@Index(['isBanned', 'username', 'confirmed', 'isAdmin'])
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -45,6 +45,9 @@ export class User extends BaseEntity {
 
   @Column('varchar', { length: 255, nullable: true })
   profilePic: string;
+
+  @Column({ default: false })
+  isAdmin: boolean;
 
   @CreateDateColumn()
   createdAt: Date;

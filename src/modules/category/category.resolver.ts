@@ -1,5 +1,6 @@
 import { Category } from './../../entity/Category';
 import { AppResolverMap } from './../../typings/app-utility-types';
+import { AuthenticationError, AuthorizationError } from './../../utils/errors';
 
 export const resolvers: AppResolverMap = {
   Query: {
@@ -42,8 +43,18 @@ export const resolvers: AppResolverMap = {
     addCategory: async (
       _,
       { name, parentId }: GQL.IAddCategoryOnMutationArguments,
-      { db },
+      { db, session },
     ) => {
+      const { userId, isAdmin } = session;
+
+      if (userId && userId.length > 0) {
+        throw new AuthenticationError();
+      }
+
+      if (!isAdmin) {
+        throw new AuthorizationError();
+      }
+
       let parent;
       if (parentId) {
         parent = await db.getRepository(Category).findOne(parentId);
