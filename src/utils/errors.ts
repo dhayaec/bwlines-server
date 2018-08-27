@@ -9,5 +9,5 @@ export const AuthenticationError = createError('AuthenticationError', {
 });
 
 export const AuthorizationError = createError('AuthorizationError', {
-  message: 'Authentication Failed',
+  message: 'Authorization Failed',
 });

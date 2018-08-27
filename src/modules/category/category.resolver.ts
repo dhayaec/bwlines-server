@@ -47,7 +47,7 @@ export const resolvers: AppResolverMap = {
     ) => {
       const { userId, isAdmin } = session;
 
-      if (userId && userId.length > 0) {
+      if (!userId) {
         throw new AuthenticationError();
       }
 

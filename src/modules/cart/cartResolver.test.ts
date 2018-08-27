@@ -101,7 +101,7 @@ describe('getCart', () => {
         genSchema(),
         addCategoryQuery,
         null,
-        { db: connection },
+        { db: connection, session: { userId: '123', isAdmin: true } },
         {},
       );
       const categoryId = data!.addCategory.id;

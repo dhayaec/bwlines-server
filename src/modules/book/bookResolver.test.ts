@@ -99,7 +99,7 @@ describe('addBook', () => {
       genSchema(),
       addCategoryQuery,
       null,
-      { db: connection },
+      { db: connection, session: { userId: '123', isAdmin: true } },
       {},
     );
     categoryId = data!.addCategory.id;
