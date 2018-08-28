@@ -1,8 +1,8 @@
-import { Env } from '../../constants';
+import { Env, TokenTypes } from '../../constants';
 import { User } from '../../entity/User';
 import { Resolver } from '../../typings/app-utility-types';
 import { InputValidationError } from '../../utils/errors';
-import { createConfirmEmailLink, formatYupError } from '../../utils/user-utils';
+import { createTokenLink, formatYupError } from '../../utils/user-utils';
 import { checkAdminRights } from '../../utils/utils';
 import { userSchema } from '../validation-rules';
 // import { renderEmail } from './../../emails/emails';
@@ -45,8 +45,27 @@ export const register: Resolver = async (
   });
 
   const userData = await user.save();
-  const confirmLink = await createConfirmEmailLink(url, userData.id, redis);
+
+  const confirmLink = await createTokenLink(
+    url,
+    userData.id,
+    redis,
+    TokenTypes.confirm,
+  );
+
   console.log(confirmLink);
+
+  const {
+    id,
+    email: emailAddress,
+    name: uName,
+    mobile: mobileNumber,
+  } = userData;
+
+  session.userId = id;
+  session.name = uName;
+  session.email = emailAddress;
+  session.mobile = mobileNumber;
 
   if (process.env.NODE_ENV !== Env.test) {
     // const subject = 'Confirm your email address';

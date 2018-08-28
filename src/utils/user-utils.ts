@@ -5,6 +5,7 @@ import { ValidationError } from 'yup';
 import {
   FORGOT_PASSWORD_PREFIX,
   REDIS_SESSION_PREFIX,
+  TokenTypes,
   USER_SESSION_PREFIX,
 } from '../constants';
 import { User } from '../entity/User';
@@ -66,14 +67,15 @@ export const middleware = async (
   return resolver(parent, args, context, info);
 };
 
-export const createConfirmEmailLink = async (
+export const createTokenLink = async (
   url: string,
   userId: string,
   redis: IORedis.Redis,
+  type: TokenTypes,
 ) => {
   const id = v4();
   await redis.set(id, userId, 'ex', 60 * 60 * 24);
-  return `${url}/confirm/${id}`;
+  return `${url}/${type}/${id}`;
 };
 
 export const confirmEmail = async (req: Request, res: Response) => {
@@ -85,6 +87,19 @@ export const confirmEmail = async (req: Request, res: Response) => {
     await RedisInstance.del(id);
     res.redirect(`${process.env.FRONTEND_HOST}/login`);
   } else {
-    res.send('invalid or expired token');
+    res.json({ message: 'invalid or expired register token' });
+  }
+};
+
+export const resetPassword = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const RedisInstance = new IORedis();
+  console.log(id, 'id');
+  const userId = await RedisInstance.get(id);
+  console.log(userId, 'userId');
+  if (userId) {
+    res.redirect(`${process.env.FRONTEND_HOST}/reset/${id}`);
+  } else {
+    res.json({ message: 'invalid or expired reset token' });
   }
 };

@@ -133,6 +133,9 @@ addCategory: ICategoryResponse | null;
 register: IUserResponse | null;
 login: IUserResponse | null;
 logout: string | null;
+resendVerifySignup: boolean | null;
+sendResetPassword: boolean | null;
+verifyResetPassword: IUserResponse | null;
 }
 
 interface IAddBookOnMutationArguments {
@@ -172,6 +175,16 @@ admin?: boolean | null;
 interface ILoginOnMutationArguments {
 email: string;
 password: string;
+}
+
+interface ISendResetPasswordOnMutationArguments {
+email: string;
+}
+
+interface IVerifyResetPasswordOnMutationArguments {
+token: string;
+password: string;
+confirmPassword: string;
 }
 
 interface IAnimal {

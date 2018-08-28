@@ -1,4 +1,9 @@
 import { AppResolverMap } from '../../typings/app-utility-types';
+import {
+  resendVerifySignup,
+  sendResetPassword,
+  verifyResetPassword,
+} from './account-services';
 import { getUser } from './get-user';
 import { listUsers } from './list-users';
 import { login } from './login';
@@ -16,5 +21,8 @@ export const resolvers: AppResolverMap = {
     register,
     login,
     logout,
+    resendVerifySignup,
+    sendResetPassword,
+    verifyResetPassword,
   },
 };

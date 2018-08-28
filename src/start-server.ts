@@ -9,12 +9,12 @@ import * as IORedis from 'ioredis';
 import * as RateLimitRedis from 'rate-limit-redis';
 // tslint:disable-next-line:no-import-side-effect
 import 'reflect-metadata';
-import { Env, REDIS_SESSION_PREFIX } from './constants';
+import { Env, REDIS_SESSION_PREFIX, TokenTypes } from './constants';
 import { seeder } from './seeder';
 import { connectDb } from './utils/connect-db';
 import { createDb } from './utils/create-db';
 import { genSchema } from './utils/schema-utils';
-import { confirmEmail } from './utils/user-utils';
+import { confirmEmail, resetPassword } from './utils/user-utils';
 import { formatError } from './utils/utils';
 
 const RedisStore = connectRedis(ExpressSession as any);
@@ -84,7 +84,8 @@ export async function startServer() {
   );
 
   express.get('/', (_, res) => res.json({ message: 'pong' }));
-  express.get('/confirm/:id', confirmEmail);
+  express.get(`/${TokenTypes.confirm}/:id`, confirmEmail);
+  express.get(`/${TokenTypes.reset}/:id`, resetPassword);
 
   const { NODE_ENV } = process.env;
 

@@ -8,3 +8,8 @@ export enum Env {
   test = 'test',
   production = 'production',
 }
+
+export enum TokenTypes {
+  confirm = 'confirm',
+  reset = 'reset',
+}
