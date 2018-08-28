@@ -11,7 +11,7 @@ export const bookData = {
   listPrice: 66.0,
   displayPrice: 56.0,
   categoryId: 'invalid',
-  datePublished: 1534851948491,
+  publishedYear: 1999,
 };
 
 export const user = {

@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class Create1535354610579 implements MigrationInterface {
+export class Create1535440489834 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<any> {
     await queryRunner.query(
       // tslint:disable-next-line:max-line-length
@@ -8,11 +8,11 @@ export class Create1535354610579 implements MigrationInterface {
     );
     await queryRunner.query(
       // tslint:disable-next-line:max-line-length
-      'CREATE TABLE `books` (`id` varchar(255) NOT NULL, `title` varchar(255) NOT NULL, `slug` varchar(255) NOT NULL, `coverImage` varchar(255) NULL, `description` text NULL, `isbn` varchar(13) NOT NULL, `rating` double NOT NULL DEFAULT 0, `listPrice` double NOT NULL DEFAULT 0, `displayPrice` double NOT NULL DEFAULT 0, `yourSavings` double NOT NULL DEFAULT 0, `datePublished` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `isBanned` tinyint NOT NULL DEFAULT 0, `createdAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `updatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `version` int NOT NULL, `categoryId` int NULL, INDEX `IDX_0c562b436315607e6de9f24eaa` (`isBanned`, `datePublished`), UNIQUE INDEX `IDX_e03f6d84c16e96f5f095ecd331` (`slug`, `isbn`), PRIMARY KEY (`id`)) ENGINE=InnoDB',
+      'CREATE TABLE `books` (`id` varchar(255) NOT NULL, `title` varchar(255) NOT NULL, `slug` varchar(255) NOT NULL, `coverImage` varchar(255) NULL, `description` text NULL, `isbn` varchar(13) NOT NULL, `rating` double NOT NULL DEFAULT 0, `listPrice` double NOT NULL DEFAULT 0, `displayPrice` double NOT NULL DEFAULT 0, `yourSavings` double NOT NULL DEFAULT 0, `publishedYear` double NOT NULL DEFAULT 0, `isBanned` tinyint NOT NULL DEFAULT 0, `createdAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `updatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `version` int NOT NULL, `categoryId` int NULL, INDEX `IDX_f4d9ce97adc6bbce5e3aabae1c` (`isBanned`, `publishedYear`), UNIQUE INDEX `IDX_e03f6d84c16e96f5f095ecd331` (`slug`, `isbn`), PRIMARY KEY (`id`)) ENGINE=InnoDB',
     );
     await queryRunner.query(
       // tslint:disable-next-line:max-line-length
-      'CREATE TABLE `users` (`id` varchar(255) NOT NULL, `name` varchar(100) NOT NULL, `email` varchar(255) NOT NULL, `username` varchar(30) NULL, `mobile` varchar(20) NULL, `password` text NOT NULL, `confirmed` tinyint NOT NULL DEFAULT 0, `isBanned` tinyint NOT NULL DEFAULT 0, `lastResetRequestTime` datetime NULL, `profilePic` varchar(255) NULL, `createdAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `updatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `version` int NOT NULL, INDEX `IDX_46dfd017ccfc2288a23081d275` (`isBanned`, `username`, `confirmed`), UNIQUE INDEX `IDX_97672ac88f789774dd47f7c8be` (`email`), PRIMARY KEY (`id`)) ENGINE=InnoDB',
+      'CREATE TABLE `users` (`id` varchar(255) NOT NULL, `name` varchar(100) NOT NULL, `email` varchar(255) NOT NULL, `username` varchar(30) NULL, `mobile` varchar(20) NULL, `password` text NOT NULL, `confirmed` tinyint NOT NULL DEFAULT 0, `isBanned` tinyint NOT NULL DEFAULT 0, `lastResetRequestTime` datetime NULL, `profilePic` varchar(255) NULL, `isAdmin` tinyint NOT NULL DEFAULT 0, `createdAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `updatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `version` int NOT NULL, INDEX `IDX_3128c66187815919afc18880a7` (`isBanned`, `username`, `confirmed`, `isAdmin`), UNIQUE INDEX `IDX_97672ac88f789774dd47f7c8be` (`email`), PRIMARY KEY (`id`)) ENGINE=InnoDB',
     );
     await queryRunner.query(
       // tslint:disable-next-line:max-line-length
@@ -54,14 +54,14 @@ export class Create1535354610579 implements MigrationInterface {
       'DROP INDEX `IDX_97672ac88f789774dd47f7c8be` ON `users`',
     );
     await queryRunner.query(
-      'DROP INDEX `IDX_46dfd017ccfc2288a23081d275` ON `users`',
+      'DROP INDEX `IDX_3128c66187815919afc18880a7` ON `users`',
     );
     await queryRunner.query('DROP TABLE `users`');
     await queryRunner.query(
       'DROP INDEX `IDX_e03f6d84c16e96f5f095ecd331` ON `books`',
     );
     await queryRunner.query(
-      'DROP INDEX `IDX_0c562b436315607e6de9f24eaa` ON `books`',
+      'DROP INDEX `IDX_f4d9ce97adc6bbce5e3aabae1c` ON `books`',
     );
     await queryRunner.query('DROP TABLE `books`');
     await queryRunner.query(

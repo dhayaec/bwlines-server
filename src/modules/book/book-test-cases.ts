@@ -14,7 +14,7 @@ export const addBookInvalidCategory = {
                   listPrice:${bookData.listPrice},
                   displayPrice:${bookData.displayPrice},
                   categoryId:"${bookData.categoryId}",
-                  datePublished:${bookData.datePublished}
+                  publishedYear:${bookData.publishedYear}
               ){ id title slug isbn}
           }`,
   session: {},
@@ -34,7 +34,7 @@ export const addBookInvalidData = {
                   listPrice:${bookData.listPrice},
                   displayPrice:${bookData.displayPrice},
                   categoryId:"${bookData.categoryId}",
-                  datePublished:${bookData.datePublished}
+                  publishedYear:${bookData.publishedYear}
               ){ id title slug isbn}
           }`,
   session: {},
@@ -56,7 +56,7 @@ export const addBookValidData = {
             listPrice:${bookData.listPrice},
             displayPrice:${bookData.displayPrice},
             categoryId:"1",
-            datePublished:${bookData.datePublished}
+            publishedYear:${bookData.publishedYear}
         ){
             id
             title

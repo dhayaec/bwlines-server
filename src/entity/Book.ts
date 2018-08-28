@@ -16,7 +16,7 @@ import { Category } from './Category';
 
 @Entity('books')
 @Unique(['slug', 'isbn'])
-@Index(['isBanned', 'datePublished'])
+@Index(['isBanned', 'publishedYear'])
 export class Book extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -48,8 +48,8 @@ export class Book extends BaseEntity {
   @Column('double', { default: 0 })
   yourSavings: number;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  datePublished: Date;
+  @Column('double', { default: 0 })
+  publishedYear: number;
 
   @Column({ default: false })
   isBanned: boolean;

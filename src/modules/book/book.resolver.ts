@@ -13,6 +13,7 @@ export const resolvers: AppResolverMap = {
     listBooks: async (_, __, { db }) => {
       return await db.getRepository(Book).find({
         relations: ['category'],
+        take: 20,
       });
     },
     getBook: async (_, { id }: GQL.IGetBookOnQueryArguments, { db }) => {
@@ -37,13 +38,8 @@ export const resolvers: AppResolverMap = {
   },
   Mutation: {
     addBook: async (_, args: GQL.IAddBookOnMutationArguments, { db }) => {
-      const values = {
-        ...args,
-        datePublished: new Date(args.datePublished),
-      };
-
       try {
-        await bookSchema.validate(values, { abortEarly: false });
+        await bookSchema.validate(args, { abortEarly: false });
       } catch (err) {
         const errors = formatYupError(err);
 
@@ -60,9 +56,9 @@ export const resolvers: AppResolverMap = {
         description,
         listPrice,
         displayPrice,
-        datePublished,
+        publishedYear,
         categoryId,
-      } = values;
+      } = args;
 
       const category = await db.getRepository(Category).findOne(categoryId);
 
@@ -78,7 +74,7 @@ export const resolvers: AppResolverMap = {
         description,
         listPrice,
         displayPrice,
-        datePublished,
+        publishedYear,
         category,
       });
 

@@ -129,7 +129,7 @@ describe('getCart', () => {
             listPrice:${bookDataWithCategoryId.listPrice},
             displayPrice:${bookDataWithCategoryId.displayPrice},
             categoryId:"${bookDataWithCategoryId.categoryId}",
-            datePublished:${bookDataWithCategoryId.datePublished}
+            publishedYear:${bookDataWithCategoryId.publishedYear}
         ){
             id
             title

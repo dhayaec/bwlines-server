@@ -71,7 +71,7 @@ rating: number | null;
 listPrice: number | null;
 displayPrice: number | null;
 yourSavings: number | null;
-datePublished: any | null;
+publishedYear: any | null;
 category: ICategoryResponse | null;
 }
 
@@ -134,7 +134,7 @@ description: string;
 rating: number;
 listPrice: number;
 displayPrice: number;
-datePublished: any;
+publishedYear: number;
 categoryId: string;
 }
 
