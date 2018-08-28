@@ -69,7 +69,6 @@ export const addBookValidData = {
   session: {},
   expectation: (result: any) => {
     const { data } = result;
-    process.env.BOOK_ID = data.addBook.id;
     expect(data.addBook.title).toEqual(bookData.title);
   },
 };

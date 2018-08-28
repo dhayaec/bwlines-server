@@ -1,7 +1,7 @@
 scalar Date
 
 type Query {
-  listBooks: [BookResponse]
+  listBooks(page: Int): [BookResponse]
   getBook(id: ID!): BookResponse
   getBookByCategory(categoryId: ID!): [BookResponse]
 }
@@ -12,10 +12,10 @@ type Mutation {
     coverImage: String!
     isbn: String!
     description: String!
-    rating: Float!
+    rating: Int!
     listPrice: Float!
     displayPrice: Float!
-    publishedYear: Float!
+    publishedYear: Int!
     categoryId: ID!
   ): BookResponse
 }
@@ -27,7 +27,7 @@ type BookResponse {
   coverImage: String
   isbn: String
   description: String
-  rating: Float
+  rating: Int
   listPrice: Float
   displayPrice: Float
   yourSavings: Float

@@ -35,6 +35,10 @@ getUser: IUserResponse | null;
 getAdmins: Array<IUserResponse> | null;
 }
 
+interface IListBooksOnQueryArguments {
+page?: number | null;
+}
+
 interface IGetBookOnQueryArguments {
 id: string;
 }

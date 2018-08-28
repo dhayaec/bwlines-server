@@ -4,16 +4,26 @@ import {
 } from '../../utils/errors';
 import { formatYupError } from '../../utils/utils';
 import { bookSchema } from '../validation-rules';
+import { ITEMS_PER_PAGE } from './../../constants';
 import { Book } from './../../entity/Book';
 import { Category } from './../../entity/Category';
 import { AppResolverMap } from './../../typings/app-utility-types';
 
 export const resolvers: AppResolverMap = {
   Query: {
-    listBooks: async (_, __, { db }) => {
+    listBooks: async (_, { page }: GQL.IListBooksOnQueryArguments, { db }) => {
+      let offset: number;
+
+      if (page && page > 0) {
+        offset = (page - 1) * ITEMS_PER_PAGE + 1;
+      } else {
+        offset = 0;
+      }
+
       return await db.getRepository(Book).find({
         relations: ['category'],
-        take: 20,
+        skip: offset,
+        take: ITEMS_PER_PAGE,
       });
     },
     getBook: async (_, { id }: GQL.IGetBookOnQueryArguments, { db }) => {

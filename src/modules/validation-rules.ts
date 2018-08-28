@@ -41,7 +41,7 @@ export const bookSchema = yup.object().shape({
   displayPrice: yup.number().required(),
   publishedYear: yup
     .number()
-    .min(4)
-    .max(4)
+    .min(1000)
+    .max(new Date().getFullYear())
     .required(),
 });
