@@ -32,7 +32,7 @@ getBreadCrumbPath: IBreadCrumb | null;
 getCategoryById: ICategoryResponse | null;
 me: IUserResponse | null;
 getUser: IUserResponse | null;
-getAdmins: Array<IUserResponse> | null;
+listUsers: Array<IUserResponse> | null;
 }
 
 interface IListBooksOnQueryArguments {
@@ -61,6 +61,11 @@ id: string;
 
 interface IGetUserOnQueryArguments {
 id: string;
+}
+
+interface IListUsersOnQueryArguments {
+isAdmin?: boolean | null;
+page?: number | null;
 }
 
 interface IBookResponse {

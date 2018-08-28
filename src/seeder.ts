@@ -28,7 +28,11 @@ export async function seeder(db: Connection) {
       .save();
   }
 
-  const existingUsers = await user.find({});
+  const existingUsers = await user.find({
+    where: {
+      isAdmin: false,
+    },
+  });
 
   if (existingUsers.length === 0) {
     const us = new Set();

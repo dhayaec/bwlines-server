@@ -12,7 +12,7 @@ import { AppResolverMap } from './../../typings/app-utility-types';
 export const resolvers: AppResolverMap = {
   Query: {
     listBooks: async (_, { page }: GQL.IListBooksOnQueryArguments, { db }) => {
-      const skip = page && page > 0 ? (page - 1) * ITEMS_PER_PAGE + 1 : 0;
+      const skip = page && page > 0 ? (page - 1) * ITEMS_PER_PAGE : 0;
 
       return await db.getRepository(Book).find({
         skip,

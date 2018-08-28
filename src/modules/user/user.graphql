@@ -1,7 +1,7 @@
 type Query {
   me: UserResponse
   getUser(id: ID!): UserResponse
-  getAdmins: [UserResponse]
+  listUsers(isAdmin: Boolean, page: Int): [UserResponse]
 }
 
 type Mutation {
