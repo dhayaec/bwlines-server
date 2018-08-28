@@ -5,7 +5,7 @@ import { Resolver } from './../../typings/app-utility-types';
 
 export const listUsers: Resolver = async (
   _,
-  { isAdmin = false, page },
+  { isAdmin = false, page }: GQL.IListUsersOnQueryArguments,
   { db, session },
 ) => {
   checkAdminRights(session);

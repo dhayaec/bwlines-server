@@ -76,7 +76,7 @@ export const addBookValidData = {
 export const listBooks = {
   caseId: 'listBooks',
   query: `{
-               listBooks{
+               listBooks(page:1){
                    id
                    isbn
                    title
