@@ -136,6 +136,8 @@ logout: string | null;
 resendVerifySignup: boolean | null;
 sendResetPassword: boolean | null;
 verifyResetPassword: IUserResponse | null;
+changePassword: IUserResponse | null;
+changeEmail: IUserResponse | null;
 }
 
 interface IAddBookOnMutationArguments {
@@ -185,6 +187,15 @@ interface IVerifyResetPasswordOnMutationArguments {
 token: string;
 password: string;
 confirmPassword: string;
+}
+
+interface IChangePasswordOnMutationArguments {
+oldPassword: string;
+password: string;
+}
+
+interface IChangeEmailOnMutationArguments {
+email: string;
 }
 
 interface IAnimal {

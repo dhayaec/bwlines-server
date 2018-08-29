@@ -116,3 +116,56 @@ export const verifyResetPassword: Resolver = async (
   // TODO send an alert email
   return user;
 };
+
+export const changePassword: Resolver = async (
+  _,
+  { oldPassword, password }: GQL.IChangePasswordOnMutationArguments,
+  { db, session },
+) => {
+  const { userId } = session;
+  if (!userId) {
+    throw new AuthenticationError();
+  }
+
+  const user = await db.getRepository(User).findOne(userId);
+  if (!user) {
+    throw new Error(ERROR_ITEM_NOT_FOUND);
+  }
+
+  const valid = await bcryptjs.compare(oldPassword, user.password);
+  if (!valid) {
+    throw new Error('Invalid old password');
+  }
+
+  const hashedPassword = await bcryptjs.hash(password, 10);
+  await db.getRepository(User).update(userId, { password: hashedPassword });
+  // TODO send an alert email
+  return user;
+};
+
+export const changeEmail: Resolver = async (
+  _,
+  { email }: GQL.IChangeEmailOnMutationArguments,
+  { db, session },
+) => {
+  const { userId } = session;
+  if (!userId) {
+    throw new AuthenticationError();
+  }
+
+  const user = await db.getRepository(User).findOne(userId);
+  if (!user) {
+    throw new Error(ERROR_ITEM_NOT_FOUND);
+  }
+
+  if (user.email === email) {
+    throw new Error('New email is same as old one');
+  }
+
+  await db.getRepository(User).update(userId, { email });
+
+  const newUser = await db.getRepository(User).findOne(userId);
+
+  // TODO send an alert email
+  return newUser;
+};

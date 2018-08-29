@@ -11,271 +11,220 @@ import { genSchema } from '../../utils/schema-utils';
 import { user } from '../data';
 
 let connection: Connection;
-let context: any;
-let loggedInContext: any;
 let registerId: any;
+let redis: ioredis.Redis;
 
 beforeAll(async () => {
   await createDb();
-
+  redis = new ioredis();
   connection = await connectDbTest(true);
-
-  context = {
-    db: connection,
-    redis: new ioredis(),
-    url: 'http://localhost:4000',
-  };
-
-  loggedInContext = (userId: any) => {
-    return {
-      db: connection,
-      redis: new ioredis(),
-      session: {
-        userId,
-        destroy: () => null,
-      },
-      url: 'http://localhost:4000',
-      req: {
-        sessionID: '123',
-      },
-    };
-  };
 });
 
 afterAll(async () => {
   connection.close();
 });
 
-describe('login', () => {
-  describe('register', () => {
-    it('invalid input', async () => {
-      const registerInvalid = `
-      mutation {
-        register(name:"", email: "dummy.com", password: "12") {
-          email
-          name
-          id
-        }
-      }
-    `;
-      const registerInvalidResult = await graphql(
-        genSchema(),
-        registerInvalid,
-        null,
-        context,
-        {},
-      );
-      const error = registerInvalidResult.errors;
-      expect(error![0].message).toEqual(ERROR_VALIDATION_FAILED);
+interface TestCase {
+  caseId: string;
+  query: string;
+  session: { userId: string };
+  expectation: (r: any) => void;
+}
+
+const registerInvalidData = {
+  caseId: 'register with invalid data',
+  query: `mutation {
+             register(name:"", email: "dummy.com", password: "12") {
+               email
+               name
+               id
+} }`,
+  session: { userId: '' },
+  expectation: (result: any) => {
+    const error = result.errors;
+    expect(error![0].message).toEqual(ERROR_VALIDATION_FAILED);
+  },
+};
+
+const registerAdminValidData = {
+  caseId: 'register admin with valid data w/o login',
+  query: `mutation {
+             register(name:"admin user", email: "dummy@dummy.com", password: "123456", admin:true) {
+               email
+               name
+               id }}`,
+  session: { userId: '' },
+  expectation: (result: any) => {
+    const error = result.errors;
+    expect(error![0].message).toEqual(ERROR_LOGIN_TO_CONTINUE);
+  },
+};
+
+const registerUserValidData = {
+  caseId: 'registerUserValidData',
+  query: `mutation {
+           register(name:"${user.name}", email: "${user.email}", password: "${
+    user.password
+  }") { email name id }}`,
+  session: { userId: '' },
+  expectation: (result: any) => {
+    registerId = result.data!.register.id;
+    expect(result.data!.register.email).toEqual(user.email);
+  },
+};
+
+const reRegister = {
+  caseId: 'reRegister',
+  query: `mutation {
+             register(name:"${user.name}", email: "${user.email}", password: "${
+    user.password
+  }") {email name }}`,
+  session: { userId: '' },
+  expectation: (result: any) => {
+    expect(result.errors![0].message).toEqual(
+      `${user.email} is already registered with us`,
+    );
+  },
+};
+
+const login = {
+  caseId: 'login',
+  query: `mutation {
+         login( email: "${user.email}", password: "${
+    user.password
+  }") { email name } }`,
+  session: { userId: '' },
+  expectation: (result: any) => {
+    expect(result).toEqual({
+      data: { login: { email: user.email, name: user.name } },
     });
+  },
+};
 
-    it('register with valid detail and login', async () => {
-      const registerAdmin = `
-      mutation {
-        register(name:"admin user", email: "dummy@dummy.com", password: "123456", admin:true) {
-          email
-          name
-          id
-        }
-      }
-    `;
-      const registerAdminResult = await graphql(
-        genSchema(),
-        registerAdmin,
-        null,
-        { db: connection, session: { userId: '' } },
-        {},
-      );
-      const regAdminError = registerAdminResult.errors;
-      expect(regAdminError![0].message).toEqual(ERROR_LOGIN_TO_CONTINUE);
+const invalidLogin = {
+  caseId: 'invalidLogin',
+  query: `mutation {
+         login( email: "${user.email}", password: "invalid") { email name } }`,
+  session: { userId: '' },
+  expectation: (result: any) => {
+    expect(result.errors![0].message).toEqual('Invalid Email or Password');
+  },
+};
 
-      const query = `
-      mutation {
-        register(name:"${user.name}", email: "${user.email}", password: "${
-        user.password
-      }") {
-          email
-          name
-          id
-        }
-      }
-    `;
+const invalidUser = {
+  caseId: 'invalidUser',
+  query: `mutation { login(email: "nonexisting@email.com", password: "123456") { name } }`,
+  session: { userId: '' },
+  expectation: (result: any) => {
+    expect(result.errors![0].message).toEqual('User does not exists');
+  },
+};
 
-      const result = await graphql(genSchema(), query, null, context, {});
-      expect(result.data!.register.email).toEqual(user.email);
-
-      registerId = result.data!.register.id;
-
-      const reRegister = `
-      mutation {
-        register(name:"${user.name}", email: "${user.email}", password: "${
-        user.password
-      }") {
-          email
-          name
-        }
-      }
-    `;
-      const reRegisterResult = await graphql(
-        genSchema(),
-        reRegister,
-        null,
-        context,
-        {},
-      );
-
-      const { errors: err } = reRegisterResult;
-
-      expect(err![0].message).toEqual(
-        `${user.email} is already registered with us`,
-      );
-
-      const login = `
-    mutation {
-      login( email: "${user.email}", password: "${user.password}") {
-        email
-        name
-      }
-    }`;
-      const loginResult = await graphql(
-        genSchema(),
-        login,
-        null,
-        loggedInContext(registerId),
-        {},
-      );
-
-      expect(loginResult).toEqual({
-        data: { login: { email: user.email, name: user.name } },
+const getUser = (id: string): TestCase => {
+  return {
+    caseId: 'getUser',
+    query: `{ getUser(id:"${id}"){ id }}`,
+    session: { userId: '' },
+    expectation: (result: any) => {
+      expect(result).toEqual({
+        data: { getUser: { id } },
       });
-    });
-  });
+    },
+  };
+};
 
-  describe('login', () => {
-    it('invalid login', async () => {
-      const inValidLogin = `
-    mutation {
-      login( email: "${user.email}", password: "beautiful") {
-        email
-        name
-      }
-    }
-  `;
-
-      const inValidLoginResult = await graphql(
-        genSchema(),
-        inValidLogin,
-        null,
-        loggedInContext(registerId),
-        {},
-      );
-
-      const errors = inValidLoginResult.errors;
-
-      expect(errors![0].message).toEqual('Invalid Email or Password');
-
-      const queryNonExisting = `
-      mutation {
-        login(email: "nonexisting@email.com", password: "123456") {
-          name
-        }
-      }
-    `;
-
-      const nonExisting = await graphql(
-        genSchema(),
-        queryNonExisting,
-        null,
-        context,
-        {},
-      );
-      const { errors: nonExistingError } = nonExisting;
-      expect(nonExistingError![0].message).toEqual('User does not exists');
-    });
-  });
-
-  describe('getUser', () => {
-    it('get user by id', async () => {
-      const getUserQuery = `
-      {
-        getUser(id:"${registerId}"){
-          id
-        }
-      }
-      `;
-
-      const getUserQueryResult = await graphql(
-        genSchema(),
-        getUserQuery,
-        null,
-        loggedInContext(registerId),
-        {},
-      );
-
-      expect(getUserQueryResult).toEqual({
-        data: { getUser: { id: registerId } },
-      });
-    });
-  });
-
-  describe('me', () => {
-    it('get logged in me', async () => {
-      const meQuery = `
-      query{
-          me{
-              id
-              name
-          }
-      }
-      `;
-
-      const meResult = await graphql(
-        genSchema(),
-        meQuery,
-        null,
-        loggedInContext(registerId),
-        {},
-      );
-
-      expect(meResult).toEqual({
+const me = (id: string): TestCase => {
+  return {
+    caseId: 'me',
+    query: `query{ me{ id name } }`,
+    session: { userId: id },
+    expectation: (result: any) => {
+      expect(result).toEqual({
         data: {
-          me: { id: registerId, name: user.name },
+          me: { id, name: user.name },
         },
       });
+    },
+  };
+};
 
-      const logoutQuery = `
-      mutation{
-          logout
-      }
-      `;
-      const logoutResult = await graphql(
-        genSchema(),
-        logoutQuery,
-        null,
-        loggedInContext(registerId),
-        {},
-      );
-
-      expect(logoutResult).toEqual({
-        data: { logout: registerId },
+const logout = (id: string): TestCase => {
+  return {
+    caseId: 'logout',
+    query: `mutation{ logout }`,
+    session: { userId: id },
+    expectation: (result: any) => {
+      expect(result).toEqual({
+        data: { logout: id },
       });
+    },
+  };
+};
 
-      const loggedOutContext = {
-        ...loggedInContext(registerId),
-        session: {
-          userId: null,
-        },
+const meLoggedOut = {
+  caseId: 'meLoggedOut',
+  query: `mutation{ logout }`,
+  session: { userId: '' },
+  expectation: (result: any) => {
+    expect(result).toEqual({
+      data: {
+        logout: '',
+      },
+    });
+  },
+};
+
+describe('user resolver', () => {
+  const cases = [
+    registerInvalidData,
+    registerAdminValidData,
+    registerUserValidData,
+    reRegister,
+    login,
+    invalidLogin,
+    invalidUser,
+    getUser,
+    me,
+    logout,
+    meLoggedOut,
+  ];
+
+  cases.forEach(c => {
+    it(`case:`, async () => {
+      const { query, expectation, session } =
+        typeof c === 'function' ? c(registerId) : c;
+
+      const context = {
+        redis,
+        session,
+        db: connection,
+        url: 'http://localhost:4000',
+        req: {},
       };
 
-      const meQueryNow = await graphql(
-        genSchema(),
-        meQuery,
-        null,
-        loggedOutContext,
-        {},
-      );
+      const loggedInContext = (userId: any) => {
+        return {
+          redis,
+          db: connection,
+          session: {
+            userId,
+            destroy: () => null,
+          },
+          url: 'http://localhost:4000',
+          req: {
+            sessionID: '123',
+          },
+        };
+      };
 
-      expect(meQueryNow).toEqual({ data: { me: null } });
+      const ctx = session.userId ? loggedInContext(session.userId) : context;
+      const result = await graphql(genSchema(), query, null, ctx, {});
+
+      if (result.errors && result.errors!.length) {
+        console.log(result.errors);
+      }
+
+      expectation(result);
     });
   });
 });

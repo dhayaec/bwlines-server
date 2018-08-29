@@ -21,6 +21,8 @@ type Mutation {
     password: String!
     confirmPassword: String!
   ): UserResponse
+  changePassword(oldPassword: String!, password: String!): UserResponse
+  changeEmail(email: String!): UserResponse
 }
 
 type Animal {

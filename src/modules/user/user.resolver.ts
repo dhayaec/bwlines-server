@@ -1,5 +1,7 @@
 import { AppResolverMap } from '../../typings/app-utility-types';
 import {
+  changeEmail,
+  changePassword,
   resendVerifySignup,
   sendResetPassword,
   verifyResetPassword,
@@ -24,5 +26,7 @@ export const resolvers: AppResolverMap = {
     resendVerifySignup,
     sendResetPassword,
     verifyResetPassword,
+    changePassword,
+    changeEmail,
   },
 };
