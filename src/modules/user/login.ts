@@ -1,6 +1,7 @@
 import * as bcryptjs from 'bcryptjs';
 import { USER_SESSION_PREFIX } from '../../constants';
 import { User } from '../../entity/User';
+import { ERROR_USER_NOT_FOUND } from '../../utils/errors';
 import { Resolver } from './../../typings/app-utility-types';
 
 export const login: Resolver = async (
@@ -10,7 +11,7 @@ export const login: Resolver = async (
 ) => {
   const user = await db.getRepository(User).findOne({ where: { email } });
   if (!user) {
-    throw new Error('User does not exists');
+    throw new Error(ERROR_USER_NOT_FOUND);
   }
 
   const valid = await bcryptjs.compare(password, user.password);

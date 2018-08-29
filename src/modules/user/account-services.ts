@@ -1,12 +1,11 @@
 import * as bcryptjs from 'bcryptjs';
 import { Env, TokenTypes } from '../../constants';
 import { User } from '../../entity/User';
-import { AuthenticationError } from '../../utils/errors';
+import { AuthenticationError, ERROR_USER_NOT_FOUND } from '../../utils/errors';
 import { createTokenLink } from '../../utils/user-utils';
 import { Resolver } from './../../typings/app-utility-types';
 import {
   ERROR_INVALID_TOKEN,
-  ERROR_ITEM_NOT_FOUND,
   ERROR_PASSWORDS_DONT_MATCH,
 } from './../../utils/errors';
 
@@ -61,7 +60,7 @@ export const sendResetPassword: Resolver = async (
   });
 
   if (!user) {
-    throw new Error(ERROR_ITEM_NOT_FOUND);
+    throw new Error(ERROR_USER_NOT_FOUND);
   }
 
   const { id: userId } = user;
@@ -108,7 +107,7 @@ export const verifyResetPassword: Resolver = async (
 
   const user = await db.getRepository(User).findOne(userId);
   if (!user) {
-    throw new Error(ERROR_ITEM_NOT_FOUND);
+    throw new Error(ERROR_USER_NOT_FOUND);
   }
 
   const hashedPassword = await bcryptjs.hash(password, 10);
@@ -129,7 +128,7 @@ export const changePassword: Resolver = async (
 
   const user = await db.getRepository(User).findOne(userId);
   if (!user) {
-    throw new Error(ERROR_ITEM_NOT_FOUND);
+    throw new Error(ERROR_USER_NOT_FOUND);
   }
 
   const valid = await bcryptjs.compare(oldPassword, user.password);
@@ -155,7 +154,7 @@ export const changeEmail: Resolver = async (
 
   const user = await db.getRepository(User).findOne(userId);
   if (!user) {
-    throw new Error(ERROR_ITEM_NOT_FOUND);
+    throw new Error(ERROR_USER_NOT_FOUND);
   }
 
   if (user.email === email) {
