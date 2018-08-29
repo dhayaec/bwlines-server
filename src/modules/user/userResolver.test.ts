@@ -6,6 +6,7 @@ import { createDb } from '../../utils/create-db';
 import {
   ERROR_INVALID_LOGIN,
   ERROR_LOGIN_TO_CONTINUE,
+  ERROR_USER_NOT_FOUND,
   ERROR_VALIDATION_FAILED,
 } from '../../utils/errors';
 import { genSchema } from '../../utils/schema-utils';
@@ -117,7 +118,7 @@ const invalidUser = {
   query: `mutation { login(email: "nonexisting@email.com", password: "123456") { name } }`,
   session: { userId: '' },
   expectation: (result: any) => {
-    expect(result.errors![0].message).toEqual('User does not exists');
+    expect(result.errors![0].message).toEqual(ERROR_USER_NOT_FOUND);
   },
 };
 
