@@ -6,7 +6,11 @@ import * as nodemailer from 'nodemailer';
 import slugify from 'slugify';
 import { ValidationError } from 'yup';
 import { Env } from '../constants';
-import { AuthenticationError, AuthorizationError } from './errors';
+import {
+  AuthenticationError,
+  AuthorizationError,
+  InputValidationError,
+} from './errors';
 
 export const add = (...args: number[]) => args.reduce((c, p) => c + p);
 
@@ -90,5 +94,16 @@ export const checkAdminRights = (session: any) => {
   }
   if (!isAdmin) {
     throw new AuthorizationError();
+  }
+};
+
+export const validateInputs = async (schema: any, inputs: any) => {
+  try {
+    await schema.validate(inputs, { abortEarly: false });
+  } catch (err) {
+    const errors = formatYupError(err);
+    throw new InputValidationError({
+      data: errors,
+    });
   }
 };

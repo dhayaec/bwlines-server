@@ -1,9 +1,8 @@
 import { Env, TokenTypes } from '../../constants';
 import { User } from '../../entity/User';
 import { Resolver } from '../../typings/app-utility-types';
-import { InputValidationError } from '../../utils/errors';
-import { createTokenLink, formatYupError } from '../../utils/user-utils';
-import { checkAdminRights } from '../../utils/utils';
+import { createTokenLink } from '../../utils/user-utils';
+import { checkAdminRights, validateInputs } from '../../utils/utils';
 import { userSchema } from '../validation-rules';
 // import { renderEmail } from './../../emails/emails';
 // import { sendEmail } from './../../utils/utils';
@@ -19,15 +18,7 @@ export const register: Resolver = async (
     checkAdminRights(session);
   }
 
-  try {
-    await userSchema.validate(args, { abortEarly: false });
-  } catch (err) {
-    const errors = formatYupError(err);
-
-    throw new InputValidationError({
-      data: errors,
-    });
-  }
+  await validateInputs(userSchema, args);
 
   const { email, password: pass, name, mobile } = args;
 

@@ -1,13 +1,10 @@
-import {
-  ERROR_INVALID_CATEGORY,
-  InputValidationError,
-} from '../../utils/errors';
-import { formatYupError } from '../../utils/utils';
+import { ERROR_INVALID_CATEGORY } from '../../utils/errors';
 import { bookSchema } from '../validation-rules';
 import { ITEMS_PER_PAGE } from './../../constants';
 import { Book } from './../../entity/Book';
 import { Category } from './../../entity/Category';
 import { AppResolverMap } from './../../typings/app-utility-types';
+import { validateInputs } from './../../utils/utils';
 
 export const resolvers: AppResolverMap = {
   Query: {
@@ -42,15 +39,7 @@ export const resolvers: AppResolverMap = {
   },
   Mutation: {
     addBook: async (_, args: GQL.IAddBookOnMutationArguments, { db }) => {
-      try {
-        await bookSchema.validate(args, { abortEarly: false });
-      } catch (err) {
-        const errors = formatYupError(err);
-
-        throw new InputValidationError({
-          data: errors,
-        });
-      }
+      await validateInputs(bookSchema, args);
 
       const {
         title,

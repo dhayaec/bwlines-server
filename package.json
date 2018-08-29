@@ -75,6 +75,7 @@
     "debug": "NODE_ENV=development node --inspect -r ts-node/register/transpile-only src/index.ts",
     "test": "jest --runInBand --forceExit --detectOpenHandles",
     "test:w": "jest --watch --runInBand",
+    "test:ci": "CI=true jest --runInBand --forceExit --detectOpenHandles --findRelatedTests",
     "lint": "tslint --project tsconfig.json -c tslint.json 'src/**/*.ts' --fix",
     "precommit": "lint-staged",
     "create:migration": "ts-node ./node_modules/.bin/typeorm migration:generate -n Create -c production"
@@ -82,7 +83,7 @@
   "lint-staged": {
     "*.ts": [
       "yarn lint",
-      "jest -o --runInBand --forceExit --detectOpenHandles",
+      "yarn test:ci",
       "git add ."
     ]
   }
