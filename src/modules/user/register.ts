@@ -55,17 +55,17 @@ export const register: Resolver = async (
 
   console.log(confirmLink);
 
-  // const {
-  //   id,
-  //   email: emailAddress,
-  //   name: uName,
-  //   mobile: mobileNumber,
-  // } = userData;
+  const {
+    id,
+    email: emailAddress,
+    name: uName,
+    mobile: mobileNumber,
+  } = userData;
 
-  // session.userId = id;
-  // session.name = uName;
-  // session.email = emailAddress;
-  // session.mobile = mobileNumber;
+  session.userId = id;
+  session.name = uName;
+  session.email = emailAddress;
+  session.mobile = mobileNumber;
 
   if (process.env.NODE_ENV !== Env.test) {
     // const subject = 'Confirm your email address';

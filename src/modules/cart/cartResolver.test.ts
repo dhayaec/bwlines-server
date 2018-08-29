@@ -25,6 +25,7 @@ beforeAll(async () => {
     db: connection,
     redis: new ioredis(),
     url: 'http://localhost:4000',
+    session: {},
   };
   user = {
     name: 'example',
