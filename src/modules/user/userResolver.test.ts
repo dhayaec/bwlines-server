@@ -26,13 +26,6 @@ afterAll(async () => {
   connection.close();
 });
 
-interface TestCase {
-  caseId: string;
-  query: string;
-  session: { userId: string };
-  expectation: (r: any) => void;
-}
-
 const registerInvalidData = {
   caseId: 'register with invalid data',
   query: `mutation {
@@ -223,7 +216,7 @@ describe('user resolver', () => {
       const result = await graphql(genSchema(), query, null, ctx, {});
 
       if (result.errors && result.errors!.length) {
-        console.log(result.errors);
+        // console.log(result.errors);
       }
 
       expectation(result);
