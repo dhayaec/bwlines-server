@@ -4,6 +4,7 @@ import { Connection } from 'typeorm';
 import { connectDbTest } from '../../utils/connect-db';
 import { createDb } from '../../utils/create-db';
 import {
+  ERROR_INVALID_LOGIN,
   ERROR_LOGIN_TO_CONTINUE,
   ERROR_VALIDATION_FAILED,
 } from '../../utils/errors';
@@ -107,7 +108,7 @@ const invalidLogin = {
          login( email: "${user.email}", password: "invalid") { email name } }`,
   session: { userId: '' },
   expectation: (result: any) => {
-    expect(result.errors![0].message).toEqual('Invalid Email or Password');
+    expect(result.errors![0].message).toEqual(ERROR_INVALID_LOGIN);
   },
 };
 

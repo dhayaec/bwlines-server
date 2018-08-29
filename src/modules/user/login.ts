@@ -1,7 +1,7 @@
 import * as bcryptjs from 'bcryptjs';
 import { USER_SESSION_PREFIX } from '../../constants';
 import { User } from '../../entity/User';
-import { ERROR_USER_NOT_FOUND } from '../../utils/errors';
+import { ERROR_INVALID_LOGIN, ERROR_USER_NOT_FOUND } from '../../utils/errors';
 import { Resolver } from './../../typings/app-utility-types';
 
 export const login: Resolver = async (
@@ -16,7 +16,7 @@ export const login: Resolver = async (
 
   const valid = await bcryptjs.compare(password, user.password);
   if (!valid) {
-    throw new Error('Invalid Email or Password');
+    throw new Error(ERROR_INVALID_LOGIN);
   }
 
   const { id, name, email: emailAddress, isAdmin } = user;

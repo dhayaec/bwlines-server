@@ -6,6 +6,7 @@ export const ERROR_INVALID_TOKEN = 'Token is Invalid or Expired';
 export const ERROR_INVALID_CATEGORY = 'Invalid Category';
 export const ERROR_ITEM_NOT_FOUND = 'Item not found';
 export const ERROR_USER_NOT_FOUND = 'User not found';
+export const ERROR_INVALID_LOGIN = 'User not found';
 export const ERROR_ALREADY_IN_CART = 'Already in Cart';
 export const ERROR_EMPTY = 'Empty';
 export const ERROR_LOGIN_TO_CONTINUE = 'Please login to continue';
