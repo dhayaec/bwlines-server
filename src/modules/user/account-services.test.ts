@@ -7,6 +7,7 @@ import { genSchema } from '../../utils/schema-utils';
 import { user } from '../data';
 import {
   ERROR_LOGIN_TO_CONTINUE,
+  ERROR_PASSWORDS_DONT_MATCH,
   ERROR_USER_NOT_FOUND,
 } from './../../utils/errors';
 
@@ -166,6 +167,18 @@ const changeEmailInvalidUser = {
     expect(error![0].message).toEqual(ERROR_USER_NOT_FOUND);
   },
 };
+const verifyResetPassword = {
+  query: `mutation{
+    verifyResetPassword
+    (token:"123",password:"password1",confirmPassword:"password2",)
+    {email}}`,
+  caseId: 'verifyResetPassword',
+  session: { userId: '123' },
+  expectation: (result: any) => {
+    const error = result.errors;
+    expect(error![0].message).toEqual(ERROR_PASSWORDS_DONT_MATCH);
+  },
+};
 
 describe('account services', () => {
   const cases = [
@@ -182,6 +195,7 @@ describe('account services', () => {
     changeEmailSame,
     changeEmailWoLogin,
     changeEmailInvalidUser,
+    verifyResetPassword,
   ];
 
   cases.forEach(c => {
