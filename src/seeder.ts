@@ -90,8 +90,8 @@ export async function seeder(db: Connection) {
           description: faker.lorem.paragraphs(),
           rating: faker.random.number(5),
           publishedYear: faker.date.future().getFullYear(),
-          displayPrice: faker.commerce.price(55),
-          listPrice: faker.commerce.price(99),
+          price: faker.commerce.price(55),
+          offerPrice: faker.commerce.price(99),
         }),
       );
       bks.forEach(async bk => {
@@ -102,8 +102,8 @@ export async function seeder(db: Connection) {
           description: bk.description,
           rating: bk.rating,
           publishedYear: bk.publishedYear,
-          displayPrice: bk.displayPrice,
-          listPrice: bk.listPrice,
+          price: bk.price,
+          offerPrice: bk.offerPrice,
           category: grandChildCategory,
         });
         await b.save();

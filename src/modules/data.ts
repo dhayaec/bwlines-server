@@ -8,8 +8,8 @@ export const bookData = {
     'I would like the output to include  and any other test descriptions' +
     ' (like how the output looks when an test is run).',
   rating: 0,
-  listPrice: 66.0,
-  displayPrice: 56.0,
+  price: 66.0,
+  offerPrice: 56.0,
   categoryId: 'invalid',
   publishedYear: 1999,
 };

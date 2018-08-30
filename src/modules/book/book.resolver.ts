@@ -1,5 +1,5 @@
+import { bookSchema } from '../../entity/bookSchema';
 import { ERROR_INVALID_CATEGORY } from '../../utils/errors';
-import { bookSchema } from '../validation-rules';
 import { ITEMS_PER_PAGE } from './../../constants';
 import { Book } from './../../entity/Book';
 import { Category } from './../../entity/Category';
@@ -47,8 +47,8 @@ export const resolvers: AppResolverMap = {
         isbn,
         rating,
         description,
-        listPrice,
-        displayPrice,
+        price,
+        offerPrice,
         publishedYear,
         categoryId,
       } = args;
@@ -65,8 +65,8 @@ export const resolvers: AppResolverMap = {
         isbn,
         rating,
         description,
-        listPrice,
-        displayPrice,
+        price,
+        offerPrice,
         publishedYear,
         category,
       });

@@ -42,8 +42,8 @@ export const addCategoryWoAdmin = {
   },
 };
 
-export const addCategory = {
-  caseId: 'logged & admin',
+export const addCategoryValid = {
+  caseId: 'addCategoryValid',
   query: `mutation { addCategory(name:"${name}"){
           id
           name

@@ -13,8 +13,8 @@ type Mutation {
     isbn: String!
     description: String!
     rating: Int!
-    listPrice: Float!
-    displayPrice: Float!
+    price: Float!
+    offerPrice: Float!
     publishedYear: Int!
     categoryId: ID!
   ): BookResponse
@@ -28,8 +28,8 @@ type BookResponse {
   isbn: String
   description: String
   rating: Int
-  listPrice: Float
-  displayPrice: Float
+  price: Float
+  offerPrice: Float
   yourSavings: Float
   publishedYear: Date
   category: CategoryResponse

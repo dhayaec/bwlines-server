@@ -11,8 +11,8 @@ export const addBookInvalidCategory = {
                   isbn:"${bookData.isbn}",
                   description:"${bookData.description}",
                   rating:${bookData.rating},
-                  listPrice:${bookData.listPrice},
-                  displayPrice:${bookData.displayPrice},
+                  price:${bookData.price},
+                  offerPrice:${bookData.offerPrice},
                   categoryId:"${bookData.categoryId}",
                   publishedYear:${bookData.publishedYear}
               ){ id title slug isbn}
@@ -31,8 +31,8 @@ export const addBookInvalidData = {
                   isbn:"22",
                   description:"${bookData.description}",
                   rating:${bookData.rating},
-                  listPrice:${bookData.listPrice},
-                  displayPrice:${bookData.displayPrice},
+                  price:${bookData.price},
+                  offerPrice:${bookData.offerPrice},
                   categoryId:"${bookData.categoryId}",
                   publishedYear:${bookData.publishedYear}
               ){ id title slug isbn}
@@ -43,8 +43,9 @@ export const addBookInvalidData = {
     expect(errors![0].message).toEqual(ERROR_VALIDATION_FAILED);
   },
 };
+
 export const addBookValidData = {
-  caseId: 'add book with valid data',
+  caseId: 'addBookValidData',
   query: `
     mutation{
         addBook(
@@ -53,8 +54,8 @@ export const addBookValidData = {
             isbn:"${bookData.isbn}",
             description:"${bookData.description}",
             rating:${bookData.rating},
-            listPrice:${bookData.listPrice},
-            displayPrice:${bookData.displayPrice},
+            price:${bookData.price},
+            offerPrice:${bookData.offerPrice},
             categoryId:"1",
             publishedYear:${bookData.publishedYear}
         ){

@@ -11,7 +11,7 @@ import {
   listBooks,
 } from './book-test-cases';
 
-import { addCategory } from '../category/category-test-cases';
+import { addCategoryValid } from '../category/category-test-cases';
 import { connectDbTest } from './../../utils/connect-db';
 
 let connection: Connection;
@@ -28,7 +28,7 @@ describe('books resolver', () => {
   const cases = [
     addBookInvalidCategory,
     addBookInvalidData,
-    addCategory,
+    addCategoryValid,
     addBookValidData,
     listBooks,
     getBookByCategoryInvalid,

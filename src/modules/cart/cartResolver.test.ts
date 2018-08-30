@@ -127,8 +127,8 @@ describe('getCart', () => {
             isbn:"${bookDataWithCategoryId.isbn}",
             description:"${bookDataWithCategoryId.description}",
             rating:${bookDataWithCategoryId.rating},
-            listPrice:${bookDataWithCategoryId.listPrice},
-            displayPrice:${bookDataWithCategoryId.displayPrice},
+            price:${bookDataWithCategoryId.price},
+            offerPrice:${bookDataWithCategoryId.offerPrice},
             categoryId:"${bookDataWithCategoryId.categoryId}",
             publishedYear:${bookDataWithCategoryId.publishedYear}
         ){

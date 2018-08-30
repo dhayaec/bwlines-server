@@ -40,10 +40,10 @@ export class Book extends BaseEntity {
   rating: number;
 
   @Column('double', { default: 0 })
-  listPrice: number;
+  offerPrice: number;
 
   @Column('double', { default: 0 })
-  displayPrice: number;
+  price: number;
 
   @Column('double', { default: 0 })
   yourSavings: number;
@@ -69,6 +69,6 @@ export class Book extends BaseEntity {
   @BeforeInsert()
   async slugify() {
     this.slug = slugify(this.title, { lower: true });
-    this.yourSavings = this.listPrice - this.displayPrice;
+    this.yourSavings = this.offerPrice - this.price;
   }
 }

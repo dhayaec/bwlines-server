@@ -4,8 +4,8 @@ import { connectDbTest } from '../../utils/connect-db';
 import { createDb } from '../../utils/create-db';
 import { genSchema } from '../../utils/schema-utils';
 import {
-  addCategory,
   addCategoryInvalidParent,
+  addCategoryValid,
   addCategoryWoAdmin,
   addCategoryWoLogin,
   addCategoryWParent,
@@ -30,7 +30,7 @@ describe('category resolver', () => {
   const cases = [
     addCategoryWoLogin,
     addCategoryWoAdmin,
-    addCategory,
+    addCategoryValid,
     addCategoryWParent,
     addCategoryInvalidParent,
     listMainCategories,
