@@ -42,7 +42,7 @@ describe('books resolver', () => {
       const result = await graphql(genSchema(), query, null, ctx, {});
       expectation(result);
       if (result.errors && result.errors!.length) {
-        console.log(result.errors);
+        // console.log(result.errors);
       }
     });
   });

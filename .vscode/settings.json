@@ -39,5 +39,6 @@
     "typeorm",
     "varchar",
     "slugify"
-  ]
+  ],
+  "editor.emptySelectionClipboard": false
 }
