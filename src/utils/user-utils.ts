@@ -40,7 +40,7 @@ export const removeAllUsersSessions = async (
 };
 
 export const formatYupError = (err: ValidationError) => {
-  const errors: [{ path: string; message: string }] = [] as any;
+  const errors: [{path: string; message: string}] = [] as any;
   err.inner.forEach(e => {
     errors.push({
       path: e.path,
@@ -94,9 +94,7 @@ export const confirmEmail = async (req: Request, res: Response) => {
 export const resetPassword = async (req: Request, res: Response) => {
   const { id } = req.params;
   const RedisInstance = new IORedis();
-  console.log(id, 'id');
   const userId = await RedisInstance.get(id);
-  console.log(userId, 'userId');
   if (userId) {
     res.redirect(`${process.env.FRONTEND_HOST}/reset/${id}`);
   } else {
