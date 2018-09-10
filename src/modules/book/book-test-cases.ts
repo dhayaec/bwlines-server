@@ -1,7 +1,3 @@
-import {
-  ERROR_INVALID_CATEGORY,
-  ERROR_VALIDATION_FAILED,
-} from '../../utils/errors';
 import { bookData } from '../data';
 
 export const addBookInvalidCategory = {
@@ -18,10 +14,6 @@ export const addBookInvalidCategory = {
               ){ id title slug isbn}
           }`,
   session: {},
-  expectation: (result: any) => {
-    const { errors } = result;
-    expect(errors![0].message).toEqual(ERROR_INVALID_CATEGORY);
-  },
 };
 
 export const addBookInvalidData = {
@@ -38,10 +30,6 @@ export const addBookInvalidData = {
               ){ id title slug isbn}
           }`,
   session: {},
-  expectation: (result: any) => {
-    const { errors } = result;
-    expect(errors![0].message).toEqual(ERROR_VALIDATION_FAILED);
-  },
 };
 
 export const addBookValidData = {
@@ -59,7 +47,6 @@ export const addBookValidData = {
             categoryId:"1",
             publishedYear:${bookData.publishedYear}
         ){
-            id
             title
             isbn
             category{
@@ -68,26 +55,17 @@ export const addBookValidData = {
         }
     }`,
   session: {},
-  expectation: (result: any) => {
-    const { data } = result;
-    expect(data.addBook.title).toEqual(bookData.title);
-  },
 };
 
 export const listBooks = {
   caseId: 'listBooks',
   query: `{
                listBooks(page:1){
-                   id
                    isbn
                    title
                }
            }`,
   session: {},
-  expectation: (result: any) => {
-    process.env.BOOK_ID = result.data.listBooks[0].id;
-    expect(result.data.listBooks[0].title).toEqual(bookData.title);
-  },
 };
 
 export const getBook = {
@@ -98,9 +76,6 @@ export const getBook = {
                }
            }`,
   session: {},
-  expectation: (result: any) => {
-    expect(result.data!.getBook).toEqual(null);
-  },
 };
 
 export const getBookByCategoryInvalid = {
@@ -111,10 +86,6 @@ export const getBookByCategoryInvalid = {
                }
            }`,
   session: {},
-  expectation: (result: any) => {
-    const { errors } = result;
-    expect(errors![0].message).toEqual(ERROR_INVALID_CATEGORY);
-  },
 };
 
 export const getBookByCategory = {
@@ -125,8 +96,4 @@ export const getBookByCategory = {
                }
            }`,
   session: {},
-  expectation: (result: any) => {
-    const { data } = result;
-    expect(data!.getBookByCategory[0].title).toEqual(bookData.title);
-  },
 };

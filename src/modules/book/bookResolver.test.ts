@@ -36,11 +36,11 @@ describe('books resolver', () => {
     getBook,
   ];
   cases.forEach(c => {
-    const { query, expectation, session } = c;
+    const { query, session } = c;
     it(`case: ${c.caseId}`, async () => {
       const ctx = { session, db: connection };
       const result = await graphql(genSchema(), query, null, ctx, {});
-      expectation(result);
+      expect(result).toMatchSnapshot();
       if (result.errors && result.errors!.length) {
         // console.log(result.errors);
       }

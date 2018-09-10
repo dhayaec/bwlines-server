@@ -1,0 +1,130 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`category resolver case: add category with invalid parent 1`] = `
+Object {
+  "data": Object {
+    "addCategory": null,
+  },
+  "errors": Array [
+    [GraphQLError: Invalid parent],
+  ],
+}
+`;
+
+exports[`category resolver case: add category with parent 1`] = `
+Object {
+  "data": Object {
+    "addCategory": Object {
+      "id": "2",
+      "name": "Child",
+      "slug": "child",
+    },
+  },
+}
+`;
+
+exports[`category resolver case: add category without login 1`] = `
+Object {
+  "data": Object {
+    "addCategory": null,
+  },
+  "errors": Array [
+    [GraphQLError: Please login to continue],
+  ],
+}
+`;
+
+exports[`category resolver case: addCategoryValid 1`] = `
+Object {
+  "data": Object {
+    "addCategory": Object {
+      "id": "1",
+      "name": "Information Technology",
+      "slug": "information-technology",
+    },
+  },
+}
+`;
+
+exports[`category resolver case: getBreadCrumbPath 1`] = `
+Object {
+  "data": Object {
+    "getBreadCrumbPath": Object {
+      "parent": Object {
+        "slug": "information-technology",
+      },
+      "slug": "child",
+    },
+  },
+}
+`;
+
+exports[`category resolver case: getBreadCrumbPath2 1`] = `
+Object {
+  "data": Object {
+    "getBreadCrumbPath": null,
+  },
+  "errors": Array [
+    [GraphQLError: Invalid Category],
+  ],
+}
+`;
+
+exports[`category resolver case: getCategoryById 1`] = `
+Object {
+  "data": Object {
+    "getCategoryById": Object {
+      "slug": "information-technology",
+    },
+  },
+}
+`;
+
+exports[`category resolver case: getChildCategories 1`] = `
+Object {
+  "data": Object {
+    "getChildCategories": Object {
+      "children": Array [
+        Object {
+          "slug": "child",
+        },
+      ],
+      "slug": "information-technology",
+    },
+  },
+}
+`;
+
+exports[`category resolver case: getChildCategories2 1`] = `
+Object {
+  "data": Object {
+    "getChildCategories": null,
+  },
+  "errors": Array [
+    [GraphQLError: Invalid Category],
+  ],
+}
+`;
+
+exports[`category resolver case: listMainCategories 1`] = `
+Object {
+  "data": Object {
+    "listMainCategories": Array [
+      Object {
+        "slug": "information-technology",
+      },
+    ],
+  },
+}
+`;
+
+exports[`category resolver case: logged in but not admin 1`] = `
+Object {
+  "data": Object {
+    "addCategory": null,
+  },
+  "errors": Array [
+    [GraphQLError: You dont have permission to perform this operation],
+  ],
+}
+`;

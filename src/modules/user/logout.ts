@@ -11,5 +11,5 @@ export const logout: Resolver = async (_, __, { session, redis }) => {
       }
     });
   }
-  return userId;
+  return userId !== '';
 };

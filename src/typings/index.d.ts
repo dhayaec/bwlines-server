@@ -28,5 +28,4 @@ interface TestCase {
   caseId: string;
   query: string;
   session: { userId: string };
-  expectation: (r: any) => void;
 }

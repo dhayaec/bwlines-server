@@ -3,17 +3,11 @@ import * as ioredis from 'ioredis';
 import { Connection } from 'typeorm';
 import { connectDbTest } from '../../utils/connect-db';
 import { createDb } from '../../utils/create-db';
-import {
-  ERROR_INVALID_LOGIN,
-  ERROR_LOGIN_TO_CONTINUE,
-  ERROR_USER_NOT_FOUND,
-  ERROR_VALIDATION_FAILED,
-} from '../../utils/errors';
 import { genSchema } from '../../utils/schema-utils';
 import { user } from '../data';
 
 let connection: Connection;
-let registerId: any;
+let registerId: any = '';
 let redis: ioredis.Redis;
 
 beforeAll(async () => {
@@ -35,10 +29,6 @@ const registerInvalidData = {
                id
 } }`,
   session: { userId: '' },
-  expectation: (result: any) => {
-    const error = result.errors;
-    expect(error![0].message).toEqual(ERROR_VALIDATION_FAILED);
-  },
 };
 
 const registerAdminValidData = {
@@ -49,10 +39,6 @@ const registerAdminValidData = {
                name
                id }}`,
   session: { userId: '' },
-  expectation: (result: any) => {
-    const error = result.errors;
-    expect(error![0].message).toEqual(ERROR_LOGIN_TO_CONTINUE);
-  },
 };
 
 const registerUserValidData = {
@@ -60,12 +46,8 @@ const registerUserValidData = {
   query: `mutation {
            register(name:"${user.name}", email: "${user.email}", password: "${
     user.password
-  }") { email name id }}`,
+  }") { email name id}}`,
   session: { userId: '' },
-  expectation: (result: any) => {
-    registerId = result.data!.register.id;
-    expect(result.data!.register.email).toEqual(user.email);
-  },
 };
 
 const reRegister = {
@@ -75,11 +57,6 @@ const reRegister = {
     user.password
   }") {email name }}`,
   session: { userId: '' },
-  expectation: (result: any) => {
-    expect(result.errors![0].message).toEqual(
-      `${user.email} is already registered with us`,
-    );
-  },
 };
 
 const login = {
@@ -89,11 +66,6 @@ const login = {
     user.password
   }") { email name } }`,
   session: { userId: '' },
-  expectation: (result: any) => {
-    expect(result).toEqual({
-      data: { login: { email: user.email, name: user.name } },
-    });
-  },
 };
 
 const invalidLogin = {
@@ -101,45 +73,25 @@ const invalidLogin = {
   query: `mutation {
          login( email: "${user.email}", password: "invalid") { email name } }`,
   session: { userId: '' },
-  expectation: (result: any) => {
-    expect(result.errors![0].message).toEqual(ERROR_INVALID_LOGIN);
-  },
 };
 
 const invalidUser = {
   caseId: 'invalidUser',
   query: `mutation { login(email: "nonexisting@email.com", password: "123456") { name } }`,
   session: { userId: '' },
-  expectation: (result: any) => {
-    expect(result.errors![0].message).toEqual(ERROR_USER_NOT_FOUND);
-  },
 };
 
-const getUser = (id: string): TestCase => {
-  return {
-    caseId: 'getUser',
-    query: `{ getUser(id:"${id}"){ id }}`,
-    session: { userId: '' },
-    expectation: (result: any) => {
-      expect(result).toEqual({
-        data: { getUser: { id } },
-      });
-    },
-  };
+const getUser = {
+  caseId: 'getUser',
+  query: `{ getUser(id:"123"){ id }}`,
+  session: { userId: '' },
 };
 
 const me = (id: string): TestCase => {
   return {
     caseId: 'me',
-    query: `query{ me{ id name } }`,
+    query: `query{ me{ name } }`,
     session: { userId: id },
-    expectation: (result: any) => {
-      expect(result).toEqual({
-        data: {
-          me: { id, name: user.name },
-        },
-      });
-    },
   };
 };
 
@@ -148,11 +100,6 @@ const logout = (id: string): TestCase => {
     caseId: 'logout',
     query: `mutation{ logout }`,
     session: { userId: id },
-    expectation: (result: any) => {
-      expect(result).toEqual({
-        data: { logout: id },
-      });
-    },
   };
 };
 
@@ -160,13 +107,6 @@ const meLoggedOut = {
   caseId: 'meLoggedOut',
   query: `mutation{ logout }`,
   session: { userId: '' },
-  expectation: (result: any) => {
-    expect(result).toEqual({
-      data: {
-        logout: '',
-      },
-    });
-  },
 };
 
 describe('user resolver', () => {
@@ -186,7 +126,7 @@ describe('user resolver', () => {
 
   cases.forEach(c => {
     it(`case:`, async () => {
-      const { query, expectation, session } =
+      const { query, session, caseId } =
         typeof c === 'function' ? c(registerId) : c;
 
       const context = {
@@ -213,13 +153,15 @@ describe('user resolver', () => {
       };
 
       const ctx = session.userId ? loggedInContext(session.userId) : context;
-      const result = await graphql(genSchema(), query, null, ctx, {});
+      const result: any = await graphql(genSchema(), query, null, ctx, {});
 
-      if (result.errors && result.errors!.length) {
-        // console.log(result.errors);
+      if (caseId === 'registerUserValidData') {
+        const { data } = result;
+        registerId = data.register!.id;
+        expect(data.register!.name).toEqual(user.name);
+      } else {
+        expect(result).toMatchSnapshot();
       }
-
-      expectation(result);
     });
   });
 });

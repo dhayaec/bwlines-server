@@ -132,7 +132,7 @@ emptyCart: boolean | null;
 addCategory: ICategoryResponse | null;
 register: IUserResponse | null;
 login: IUserResponse | null;
-logout: string | null;
+logout: boolean | null;
 resendVerifySignup: boolean | null;
 sendResetPassword: boolean | null;
 verifyResetPassword: IUserResponse | null;

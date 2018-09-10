@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`books resolver case: add book with invalid category 1`] = `
+Object {
+  "data": Object {
+    "addBook": null,
+  },
+  "errors": Array [
+    [GraphQLError: Invalid Category],
+  ],
+}
+`;
+
+exports[`books resolver case: add book with invalid data 1`] = `
+Object {
+  "data": Object {
+    "addBook": null,
+  },
+  "errors": Array [
+    [GraphQLError: Validation failed],
+  ],
+}
+`;
+
+exports[`books resolver case: addBookValidData 1`] = `
+Object {
+  "data": Object {
+    "addBook": Object {
+      "category": Object {
+        "name": "Information Technology",
+      },
+      "isbn": "1233434234",
+      "title": "My Book",
+    },
+  },
+}
+`;
+
+exports[`books resolver case: addCategoryValid 1`] = `
+Object {
+  "data": Object {
+    "addCategory": Object {
+      "id": "1",
+      "name": "Information Technology",
+      "slug": "information-technology",
+    },
+  },
+}
+`;
+
+exports[`books resolver case: getBook 1`] = `
+Object {
+  "data": Object {
+    "getBook": null,
+  },
+}
+`;
+
+exports[`books resolver case: getBookByCategory 1`] = `
+Object {
+  "data": Object {
+    "getBookByCategory": null,
+  },
+  "errors": Array [
+    [GraphQLError: Invalid Category],
+  ],
+}
+`;
+
+exports[`books resolver case: getBookByCategory 2`] = `
+Object {
+  "data": Object {
+    "getBookByCategory": Array [
+      Object {
+        "title": "My Book",
+      },
+    ],
+  },
+}
+`;
+
+exports[`books resolver case: listBooks 1`] = `
+Object {
+  "data": Object {
+    "listBooks": Array [
+      Object {
+        "isbn": "1233434234",
+        "title": "My Book",
+      },
+    ],
+  },
+}
+`;

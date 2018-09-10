@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`list-users case: listUsers 1`] = `
+Object {
+  "data": Object {
+    "listUsers": Array [],
+  },
+}
+`;

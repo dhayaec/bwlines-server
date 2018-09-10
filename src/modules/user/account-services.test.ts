@@ -5,11 +5,6 @@ import { connectDbTest } from '../../utils/connect-db';
 import { createDb } from '../../utils/create-db';
 import { genSchema } from '../../utils/schema-utils';
 import { user } from '../data';
-import {
-  ERROR_LOGIN_TO_CONTINUE,
-  ERROR_PASSWORDS_DONT_MATCH,
-  ERROR_USER_NOT_FOUND,
-} from './../../utils/errors';
 
 let connection: Connection;
 let redis: ioredis.Redis;
@@ -31,7 +26,7 @@ const resendVerifySignup = {
   query: `mutation{ resendVerifySignup }`,
   session: { userId: '123' },
   expectation: (result: any) => {
-    expect(result.data.resendVerifySignup).toEqual(true);
+    expect(result).toMatchSnapshot();
   },
 };
 
@@ -40,8 +35,7 @@ const resendVerifySignupWoLogin = {
   query: `mutation{ resendVerifySignup }`,
   session: { userId: '' },
   expectation: (result: any) => {
-    const error = result.errors;
-    expect(error![0].message).toEqual(ERROR_LOGIN_TO_CONTINUE);
+    expect(result).toMatchSnapshot();
   },
 };
 
@@ -50,8 +44,7 @@ const sendResetPasswordInvalidEmail = {
   query: `mutation{ sendResetPassword(email:"invalid") }`,
   session: { userId: '' },
   expectation: (result: any) => {
-    const error = result.errors;
-    expect(error![0].message).toEqual(ERROR_USER_NOT_FOUND);
+    expect(result).toMatchSnapshot();
   },
 };
 
@@ -75,7 +68,7 @@ const sendResetPassword = (email: string, id: string) => {
     query: `mutation{ sendResetPassword(email:"${email}") }`,
     session: { userId: id },
     expectation: (result: any) => {
-      expect(result).toEqual({ data: { sendResetPassword: true } });
+      expect(result).toMatchSnapshot();
     },
   };
 };
@@ -97,8 +90,7 @@ const changePasswordInvalidOldPassword = (_: string, id: string) => {
     query: `mutation{ changePassword(oldPassword:"invalid",password:"1234567"){id} }`,
     session: { userId: id },
     expectation: (result: any) => {
-      const error = result.errors;
-      expect(error![0].message).toEqual('Invalid old password');
+      expect(result).toMatchSnapshot();
     },
   };
 };
@@ -108,8 +100,7 @@ const changePasswordWoLogin = {
   query: `mutation{ changePassword(oldPassword:"123456",password:"1234567"){id} }`,
   session: { userId: '' },
   expectation: (result: any) => {
-    const error = result.errors;
-    expect(error![0].message).toEqual(ERROR_LOGIN_TO_CONTINUE);
+    expect(result).toMatchSnapshot();
   },
 };
 
@@ -118,8 +109,7 @@ const changePasswordInvalidUser = {
   caseId: 'changePasswordInvalidUser',
   session: { userId: '123' },
   expectation: (result: any) => {
-    const error = result.errors;
-    expect(error![0].message).toEqual(ERROR_USER_NOT_FOUND);
+    expect(result).toMatchSnapshot();
   },
 };
 
@@ -129,9 +119,7 @@ const changeEmail = (_: string, id: string) => {
     query: `mutation{ changeEmail(email:"new@email.com"){email} }`,
     session: { userId: id },
     expectation: (result: any) => {
-      expect(result).toEqual({
-        data: { changeEmail: { email: 'new@email.com' } },
-      });
+      expect(result).toMatchSnapshot();
     },
   };
 };
@@ -142,8 +130,7 @@ const changeEmailSame = (_: string, id: string) => {
     query: `mutation{ changeEmail(email:"new@email.com"){email} }`,
     session: { userId: id },
     expectation: (result: any) => {
-      const error = result.errors;
-      expect(error![0].message).toEqual('New email is same as old one');
+      expect(result).toMatchSnapshot();
     },
   };
 };
@@ -153,8 +140,7 @@ const changeEmailWoLogin = {
   query: `mutation{ changeEmail(email:"new@email.com"){email} }`,
   session: { userId: '' },
   expectation: (result: any) => {
-    const error = result.errors;
-    expect(error![0].message).toEqual(ERROR_LOGIN_TO_CONTINUE);
+    expect(result).toMatchSnapshot();
   },
 };
 
@@ -163,8 +149,7 @@ const changeEmailInvalidUser = {
   caseId: 'changeEmailInvalidUser',
   session: { userId: '123' },
   expectation: (result: any) => {
-    const error = result.errors;
-    expect(error![0].message).toEqual(ERROR_USER_NOT_FOUND);
+    expect(result).toMatchSnapshot();
   },
 };
 const verifyResetPassword = {
@@ -175,8 +160,7 @@ const verifyResetPassword = {
   caseId: 'verifyResetPassword',
   session: { userId: '123' },
   expectation: (result: any) => {
-    const error = result.errors;
-    expect(error![0].message).toEqual(ERROR_PASSWORDS_DONT_MATCH);
+    expect(result).toMatchSnapshot();
   },
 };
 
@@ -212,10 +196,6 @@ describe('account services', () => {
       };
 
       const result = await graphql(genSchema(), query, null, ctx, {});
-
-      if (result.errors && result.errors!.length) {
-        // console.log(result.errors);
-      }
 
       expectation(result);
     });

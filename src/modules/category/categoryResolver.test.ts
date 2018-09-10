@@ -42,14 +42,11 @@ describe('category resolver', () => {
   ];
 
   cases.forEach(c => {
-    const { query, expectation, session } = c;
+    const { query, session } = c;
     it(`case: ${c.caseId}`, async () => {
       const ctx = { session, db: connection };
       const result = await graphql(genSchema(), query, null, ctx, {});
-      expectation(result);
-      if (result.errors && result.errors!.length) {
-        // console.log(result.errors);
-      }
+      expect(result).toMatchSnapshot();
     });
   });
 });

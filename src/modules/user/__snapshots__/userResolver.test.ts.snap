@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`user resolver case: 1`] = `
+Object {
+  "data": Object {
+    "register": null,
+  },
+  "errors": Array [
+    [GraphQLError: Validation failed],
+  ],
+}
+`;
+
+exports[`user resolver case: 2`] = `
+Object {
+  "data": Object {
+    "register": null,
+  },
+  "errors": Array [
+    [GraphQLError: Please login to continue],
+  ],
+}
+`;
+
+exports[`user resolver case: 3`] = `
+Object {
+  "data": Object {
+    "register": null,
+  },
+  "errors": Array [
+    [GraphQLError: example@email.com is already registered with us],
+  ],
+}
+`;
+
+exports[`user resolver case: 4`] = `
+Object {
+  "data": Object {
+    "login": Object {
+      "email": "example@email.com",
+      "name": "example",
+    },
+  },
+}
+`;
+
+exports[`user resolver case: 5`] = `
+Object {
+  "data": Object {
+    "login": null,
+  },
+  "errors": Array [
+    [GraphQLError: Invalid email or password],
+  ],
+}
+`;
+
+exports[`user resolver case: 6`] = `
+Object {
+  "data": Object {
+    "login": null,
+  },
+  "errors": Array [
+    [GraphQLError: User not found],
+  ],
+}
+`;
+
+exports[`user resolver case: 7`] = `
+Object {
+  "data": Object {
+    "getUser": null,
+  },
+}
+`;
+
+exports[`user resolver case: 8`] = `
+Object {
+  "data": Object {
+    "me": Object {
+      "name": "example",
+    },
+  },
+}
+`;
+
+exports[`user resolver case: 9`] = `
+Object {
+  "data": Object {
+    "logout": true,
+  },
+}
+`;
+
+exports[`user resolver case: 10`] = `
+Object {
+  "data": Object {
+    "logout": false,
+  },
+}
+`;
