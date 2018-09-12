@@ -1,4 +1,4 @@
-![Logo of the project](./docs/images/logo.sample.png)
+![Logo of the project](https://raw.githubusercontent.com/dhayaec/bwlines-server/master/docs/images/README.png)
 
 # BWLINES server
 
