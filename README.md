@@ -38,6 +38,14 @@ cd bwlines-server/
 npm install
 ```
 
+Enter environmental variables
+
+> default values are available in docker-compose.yml file
+
+```shell
+cp .env.example .env
+```
+
 make sure you have installed docker and then run
 
 ```shell
