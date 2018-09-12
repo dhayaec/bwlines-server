@@ -33,12 +33,12 @@
     "ormconfig",
     "preheader",
     "proviced",
+    "repo",
     "resave",
     "rspace",
     "slugify",
     "typeorm",
-    "varchar",
-    "slugify"
+    "varchar"
   ],
   "editor.emptySelectionClipboard": false
 }
