@@ -1,17 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`cart resolver case: 1`] = `
-Object {
-  "data": Object {
-    "getCart": null,
-  },
-  "errors": Array [
-    [GraphQLError: Please login to continue],
-  ],
-}
-`;
+exports[`cart resolver case: addBook 1`] = `"My Book"`;
 
-exports[`cart resolver case: 2`] = `
+exports[`cart resolver case: addCategory 1`] = `
 Object {
   "data": Object {
     "addCategory": Object {
@@ -22,17 +13,22 @@ Object {
 }
 `;
 
-exports[`cart resolver case: 3`] = `"My Book"`;
+exports[`cart resolver case: addToCart 1`] = `"My Book"`;
 
-exports[`cart resolver case: 4`] = `"My Book"`;
-
-exports[`cart resolver case: 5`] = `
+exports[`cart resolver case: addToCartAgain 1`] = `
 Array [
   [GraphQLError: Already in Cart],
 ]
 `;
 
-exports[`cart resolver case: 6`] = `
+exports[`cart resolver case: addToCartLater 1`] = `
+Object {
+  "slug": "my-book",
+  "title": "My Book",
+}
+`;
+
+exports[`cart resolver case: addToCartQueryInvalidBook 1`] = `
 Object {
   "data": Object {
     "addToCart": null,
@@ -43,7 +39,7 @@ Object {
 }
 `;
 
-exports[`cart resolver case: 7`] = `
+exports[`cart resolver case: addToCartQueryInvalidBook 2`] = `
 Object {
   "data": Object {
     "addToCart": null,
@@ -54,48 +50,7 @@ Object {
 }
 `;
 
-exports[`cart resolver case: 8`] = `
-Object {
-  "data": Object {
-    "removeFromCart": true,
-  },
-}
-`;
-
-exports[`cart resolver case: 9`] = `
-Object {
-  "data": Object {
-    "removeFromCart": null,
-  },
-  "errors": Array [
-    [GraphQLError: Please login to continue],
-  ],
-}
-`;
-
-exports[`cart resolver case: 10`] = `
-Object {
-  "data": Object {
-    "removeFromCart": null,
-  },
-  "errors": Array [
-    [GraphQLError: Item not found],
-  ],
-}
-`;
-
-exports[`cart resolver case: 11`] = `
-Object {
-  "data": Object {
-    "emptyCart": null,
-  },
-  "errors": Array [
-    [GraphQLError: Please login to continue],
-  ],
-}
-`;
-
-exports[`cart resolver case: 12`] = `
+exports[`cart resolver case: emptyCartWLogin 1`] = `
 Object {
   "data": Object {
     "emptyCart": null,
@@ -106,7 +61,26 @@ Object {
 }
 `;
 
-exports[`cart resolver case: 13`] = `
+exports[`cart resolver case: emptyCartWLoginLater 1`] = `
+Object {
+  "data": Object {
+    "emptyCart": true,
+  },
+}
+`;
+
+exports[`cart resolver case: emptyCartWoLogin 1`] = `
+Object {
+  "data": Object {
+    "emptyCart": null,
+  },
+  "errors": Array [
+    [GraphQLError: Please login to continue],
+  ],
+}
+`;
+
+exports[`cart resolver case: getCart 1`] = `
 Object {
   "data": Object {
     "getCart": Array [],
@@ -114,17 +88,43 @@ Object {
 }
 `;
 
-exports[`cart resolver case: 14`] = `
+exports[`cart resolver case: getCartEmpty 1`] = `
 Object {
-  "slug": "my-book",
-  "title": "My Book",
+  "data": Object {
+    "getCart": null,
+  },
+  "errors": Array [
+    [GraphQLError: Please login to continue],
+  ],
 }
 `;
 
-exports[`cart resolver case: 15`] = `
+exports[`cart resolver case: removeFromCart 1`] = `
 Object {
   "data": Object {
-    "emptyCart": true,
+    "removeFromCart": true,
   },
+}
+`;
+
+exports[`cart resolver case: removeWoLogin 1`] = `
+Object {
+  "data": Object {
+    "removeFromCart": null,
+  },
+  "errors": Array [
+    [GraphQLError: Please login to continue],
+  ],
+}
+`;
+
+exports[`cart resolver case: removeWoLogin 2`] = `
+Object {
+  "data": Object {
+    "removeFromCart": null,
+  },
+  "errors": Array [
+    [GraphQLError: Item not found],
+  ],
 }
 `;

@@ -24,7 +24,7 @@ afterAll(async () => {
 const getCartEmpty = {
   caseId: 'getCartEmpty',
   query: `{ getCart{ title } }`,
-  session: {},
+  session: { userId: '' },
 };
 
 const addCategory = {
@@ -65,7 +65,7 @@ const addBook = {
           }
       }
   }`,
-  session: {},
+  session: { userId: '' },
 };
 
 const registerUserValidData = {
@@ -217,10 +217,11 @@ describe('cart resolver', () => {
   let userId = '';
 
   cases.forEach(c => {
-    it(`case:`, async () => {
-      const { query, session, caseId } =
+    const testCase: TestCase =
+      typeof c === 'function' ? c(bookId, cid, userId) : c;
+    it(`case: ${testCase.caseId}`, async () => {
+      const { caseId, query, session } =
         typeof c === 'function' ? c(bookId, cid, userId) : c;
-
       const ctx = {
         redis,
         session,

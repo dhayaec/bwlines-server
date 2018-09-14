@@ -101,11 +101,16 @@ using the project.
 
 ## Tests
 
-Describe and show how to run the tests with code examples.
-Explain what these tests test and why.
+Run tests once
 
 ```shell
-Give an example
+npm test
+```
+
+run tests in watch mode
+
+```shell
+npm test:w
 ```
 
 ## Style guide
